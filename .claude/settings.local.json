@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dir /a \"C:\\Users\\wyahy\\OneDrive\\Desktop\\Claude Coder\\Code Base\")"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
