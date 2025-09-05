@@ -22,12 +22,91 @@ export const PERMISSIONS = {
 } as const;
 
 export const MODULES = {
+  CORE: 'core',
+  WMS: 'wms',
   ACCOUNTING: 'accounting',
+  POS: 'pos',
+  HR: 'hr',
   INVENTORY: 'inventory',
   CRM: 'crm',
-  HR: 'hr',
   PROJECT: 'project',
-  PROCUREMENT: 'procurement'
+  PROCUREMENT: 'procurement',
+  MANUFACTURING: 'manufacturing'
+} as const;
+
+export const MODULE_ROLES = {
+  // Core module roles
+  CORE: {
+    TENANT_ADMIN: 'tenant_admin',
+    SYSTEM_MANAGER: 'system_manager',
+    USER_MANAGER: 'user_manager',
+    READONLY_USER: 'readonly_user'
+  },
+  // WMS module roles
+  WMS: {
+    WAREHOUSE_ADMIN: 'warehouse_admin',
+    WAREHOUSE_MANAGER: 'warehouse_manager',
+    WAREHOUSE_SUPERVISOR: 'warehouse_supervisor',
+    WAREHOUSE_WORKER: 'warehouse_worker',
+    INVENTORY_AUDITOR: 'inventory_auditor'
+  },
+  // Accounting module roles
+  ACCOUNTING: {
+    FINANCE_ADMIN: 'finance_admin',
+    FINANCE_MANAGER: 'finance_manager',
+    ACCOUNTANT: 'accountant',
+    BOOKKEEPER: 'bookkeeper',
+    EXPENSE_SUBMITTER: 'expense_submitter'
+  },
+  // POS module roles
+  POS: {
+    POS_ADMIN: 'pos_admin',
+    REGIONAL_MANAGER: 'regional_manager',
+    STORE_MANAGER: 'store_manager',
+    SHIFT_SUPERVISOR: 'shift_supervisor',
+    CASHIER: 'cashier'
+  },
+  // HR module roles
+  HR: {
+    HR_ADMIN: 'hr_admin',
+    HR_MANAGER: 'hr_manager',
+    PAYROLL_PROCESSOR: 'payroll_processor',
+    DEPARTMENT_MANAGER: 'department_manager',
+    EMPLOYEE: 'employee'
+  }
+} as const;
+
+export const PERMISSION_ACTIONS = {
+  VIEW: 'view',
+  CREATE: 'create',
+  EDIT: 'edit',
+  DELETE: 'delete',
+  APPROVE: 'approve',
+  EXPORT: 'export',
+  PROCESS: 'process',
+  SEND: 'send',
+  VOID: 'void',
+  FILE: 'file'
+} as const;
+
+export const RESOURCE_TYPES = {
+  MENU: 'menu',
+  API: 'api',
+  REPORT: 'report',
+  WIDGET: 'widget',
+  DATA: 'data'
+} as const;
+
+export const DATA_SCOPE_TYPES = {
+  ALL: 'all',
+  OWN_RECORDS: 'own_records',
+  DEPARTMENT: 'department',
+  LOCATION: 'location',
+  WAREHOUSE: 'warehouse',
+  STORE: 'store',
+  REGION: 'region',
+  TEAM: 'team',
+  MANAGER: 'manager'
 } as const;
 
 export const CURRENCIES = [

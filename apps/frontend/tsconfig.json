@@ -20,9 +20,10 @@
     "paths": {
       "@/*": ["./src/*"],
       "@shared/*": ["../../packages/shared/src/*"],
-      "@ui/*": ["../../packages/ui/src/*"]
+      "@erp/ui": ["../../packages/ui/src"],
+      "@erp/ui/*": ["../../packages/ui/src/*"]
     }
   },
-  "include": ["src", "../../packages/shared/src"],
+  "include": ["src", "../../packages/shared/src", "../../packages/ui/src"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

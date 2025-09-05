@@ -10,6 +10,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@erp/ui": "file:../../packages/ui",
     "@erp-saas/shared": "file:../../packages/shared",
     "@hookform/resolvers": "^3.9.0",
     "@radix-ui/react-dialog": "^1.1.0",

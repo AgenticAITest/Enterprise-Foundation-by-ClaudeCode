@@ -2,6 +2,7 @@ import { Router, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { logger } from '../utils/logger.js';
+import { tenantQuery, query } from '../config/database.js';
 
 const router = Router();
 const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-key';
@@ -18,30 +19,72 @@ router.post('/login', async (req: Request, res: Response) => {
       });
     }
 
-    // TODO: Implement actual user lookup from database
-    // const user = await db.query('SELECT * FROM users WHERE email = ?', [email]);
-    
-    // For development, create mock user authentication
-    const mockUsers = [
-      {
-        id: 'user_1',
-        email: 'admin@example.com',
-        password_hash: await bcrypt.hash('password', 10),
-        role: 'admin',
-        tenantId: 'dev',
-        permissions: ['read', 'write', 'delete', 'admin']
-      },
-      {
-        id: 'user_2',
-        email: 'user@example.com',
-        password_hash: await bcrypt.hash('password', 10),
-        role: 'user',
-        tenantId: 'dev',
-        permissions: ['read', 'write']
-      }
-    ];
+    // Check if this is a super admin first
+    const superAdminResult = await query(
+      'SELECT id, email, password_hash, first_name, last_name, permissions, is_active FROM super_admins WHERE email = $1 AND is_active = true',
+      [email]
+    );
 
-    const user = mockUsers.find(u => u.email === email);
+    if (superAdminResult.rows.length > 0) {
+      const superAdmin = superAdminResult.rows[0];
+      
+      if (!await bcrypt.compare(password, superAdmin.password_hash)) {
+        return res.status(401).json({
+          status: 'error',
+          message: 'Invalid email or password'
+        });
+      }
+
+      const token = jwt.sign(
+        {
+          userId: superAdmin.id,
+          email: superAdmin.email,
+          role: 'super_admin',
+          tenantId: null,
+          permissions: superAdmin.permissions,
+          firstName: superAdmin.first_name,
+          lastName: superAdmin.last_name
+        },
+        JWT_SECRET,
+        { expiresIn: '24h' }
+      );
+
+      logger.info(`Super admin logged in: ${superAdmin.email}`);
+
+      return res.json({
+        status: 'success',
+        data: {
+          token,
+          user: {
+            id: superAdmin.id,
+            email: superAdmin.email,
+            role: 'super_admin',
+            tenantId: null,
+            permissions: superAdmin.permissions,
+            firstName: superAdmin.first_name,
+            lastName: superAdmin.last_name
+          }
+        }
+      });
+    }
+
+    // If not super admin, try tenant user login (default to 'dev' tenant for now)
+    const tenantSubdomain = 'dev'; // TODO: Extract from subdomain or request
+    
+    const userResult = await tenantQuery(
+      tenantSubdomain,
+      'SELECT id, email, password_hash, first_name, last_name, role, permissions, is_active FROM users WHERE email = $1 AND is_active = true',
+      [email]
+    );
+
+    if (userResult.rows.length === 0) {
+      return res.status(401).json({
+        status: 'error',
+        message: 'Invalid email or password'
+      });
+    }
+
+    const user = userResult.rows[0];
     
     if (!user || !await bcrypt.compare(password, user.password_hash)) {
       return res.status(401).json({
@@ -50,20 +93,22 @@ router.post('/login', async (req: Request, res: Response) => {
       });
     }
 
-    // Generate JWT token
+    // Generate JWT token for tenant user
     const token = jwt.sign(
       {
         userId: user.id,
         email: user.email,
         role: user.role,
-        tenantId: user.tenantId,
-        permissions: user.permissions
+        tenantId: tenantSubdomain,
+        permissions: user.permissions,
+        firstName: user.first_name,
+        lastName: user.last_name
       },
       JWT_SECRET,
       { expiresIn: '24h' }
     );
 
-    logger.info(`User logged in: ${user.email}`);
+    logger.info(`User logged in: ${user.email} (tenant: ${tenantSubdomain})`);
 
     res.json({
       status: 'success',
@@ -73,8 +118,10 @@ router.post('/login', async (req: Request, res: Response) => {
           id: user.id,
           email: user.email,
           role: user.role,
-          tenantId: user.tenantId,
-          permissions: user.permissions
+          tenantId: tenantSubdomain,
+          permissions: user.permissions,
+          firstName: user.first_name,
+          lastName: user.last_name
         }
       }
     });
@@ -112,7 +159,7 @@ router.get('/me', async (req: Request, res: Response) => {
     const token = authHeader.substring(7);
     const decoded = jwt.verify(token, JWT_SECRET) as any;
     
-    // TODO: Get fresh user data from database
+    // Note: In production, you may want to refresh user data from database
     res.json({
       status: 'success',
       data: {

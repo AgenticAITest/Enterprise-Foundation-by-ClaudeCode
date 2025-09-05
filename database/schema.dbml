@@ -1,0 +1,209 @@
+// ERP SaaS Multi-Tenant Database Schema
+// Generated from PostgreSQL initialization script
+// Use with dbml.org for visualization
+
+Project ERP_SaaS {
+  database_type: 'PostgreSQL'
+  Note: '''
+    Multi-tenant SaaS ERP application database schema
+    - Public schema: System-wide tables (tenants, super_admins, billing)
+    - Dynamic tenant schemas: Per-tenant isolated data
+    - Schema naming: tenant_{subdomain} (e.g., tenant_dev, tenant_acme)
+  '''
+}
+
+//==============================================================================
+// PUBLIC SCHEMA - System-wide tables
+//==============================================================================
+
+Table public.super_admins {
+  id UUID [pk, default: `uuid_generate_v4()`]
+  email varchar(255) [unique, not null]
+  password_hash varchar(255) [not null]
+  first_name varchar(100) [not null]
+  last_name varchar(100) [not null]
+  permissions text[] [default: `ARRAY['read', 'write', 'admin']`]
+  is_active boolean [default: true]
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`]
+  updated_at timestamptz [default: `CURRENT_TIMESTAMP`]
+
+  Note: 'System administrators with global access across all tenants'
+}
+
+Table public.tenants {
+  id UUID [pk, default: `uuid_generate_v4()`]
+  subdomain varchar(50) [unique, not null]
+  company_name varchar(255) [not null]
+  status varchar(20) [default: 'active', note: 'active, suspended, inactive']
+  plan_id varchar(50) [default: 'basic']
+  settings jsonb [default: '{}']
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`]
+  updated_at timestamptz [default: `CURRENT_TIMESTAMP`]
+
+  Note: 'Master tenant registry - each tenant gets isolated schema'
+}
+
+Table public.billing_usage {
+  id UUID [pk, default: `uuid_generate_v4()`]
+  tenant_id UUID [ref: > public.tenants.id, not null]
+  month_year varchar(7) [not null, note: 'Format: 2024-01']
+  user_count integer [default: 0]
+  storage_used_gb decimal(10,2) [default: 0.00]
+  api_requests integer [default: 0]
+  total_amount decimal(10,2) [default: 0.00]
+  currency varchar(3) [default: 'USD']
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`]
+
+  indexes {
+    (tenant_id, month_year) [unique]
+  }
+
+  Note: 'Monthly billing and usage tracking per tenant'
+}
+
+//==============================================================================
+// TENANT SCHEMA TEMPLATE - Replicated per tenant
+// Schema naming: tenant_{subdomain}
+//==============================================================================
+
+Table tenant_template.users {
+  id UUID [pk, default: `uuid_generate_v4()`]
+  email varchar(255) [unique, not null]
+  password_hash varchar(255) [not null]
+  first_name varchar(100) [not null]
+  last_name varchar(100) [not null]
+  role varchar(50) [default: 'user', note: 'admin, manager, user']
+  permissions text[] [default: `ARRAY['read']`]
+  is_active boolean [default: true]
+  last_login timestamptz
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`]
+  updated_at timestamptz [default: `CURRENT_TIMESTAMP`]
+
+  Note: 'Per-tenant user accounts with role-based permissions'
+}
+
+Table tenant_template.company_settings {
+  id UUID [pk, default: `uuid_generate_v4()`]
+  setting_key varchar(100) [unique, not null]
+  setting_value jsonb
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`]
+  updated_at timestamptz [default: `CURRENT_TIMESTAMP`]
+
+  Note: 'Flexible key-value settings per tenant'
+}
+
+Table tenant_template.currencies {
+  id UUID [pk, default: `uuid_generate_v4()`]
+  code varchar(3) [unique, not null]
+  name varchar(100) [not null]
+  symbol varchar(10) [not null]
+  exchange_rate decimal(10,6) [not null, default: 1.000000]
+  is_base boolean [default: false]
+  is_active boolean [default: true]
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`]
+  updated_at timestamptz [default: `CURRENT_TIMESTAMP`]
+
+  Note: 'Multi-currency support with exchange rates per tenant'
+}
+
+Table tenant_template.documents {
+  id UUID [pk, default: `uuid_generate_v4()`]
+  filename varchar(255) [not null]
+  original_name varchar(255) [not null]
+  mime_type varchar(100) [not null]
+  file_size bigint [not null]
+  file_path varchar(500) [not null]
+  uploaded_by UUID [ref: > tenant_template.users.id]
+  is_active boolean [default: true]
+  metadata jsonb [default: '{}']
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`]
+
+  Note: 'File storage and document management per tenant'
+}
+
+Table tenant_template.audit_log {
+  id UUID [pk, default: `uuid_generate_v4()`]
+  user_id UUID [ref: > tenant_template.users.id]
+  action varchar(100) [not null]
+  table_name varchar(100)
+  record_id UUID
+  old_values jsonb
+  new_values jsonb
+  ip_address inet
+  user_agent text
+  created_at timestamptz [default: `CURRENT_TIMESTAMP`]
+
+  Note: 'Comprehensive audit trail for all tenant operations'
+}
+
+//==============================================================================
+// EXAMPLE TENANT SCHEMAS (Created dynamically)
+//==============================================================================
+
+// These represent actual schemas created by the create_tenant_schema() function
+// Each tenant gets identical table structure in their own schema
+
+TableGroup tenant_dev {
+  tenant_dev.users
+  tenant_dev.company_settings
+  tenant_dev.currencies
+  tenant_dev.documents  
+  tenant_dev.audit_log
+}
+
+TableGroup tenant_acme {
+  tenant_acme.users
+  tenant_acme.company_settings
+  tenant_acme.currencies
+  tenant_acme.documents
+  tenant_acme.audit_log
+}
+
+TableGroup tenant_techcorp {
+  tenant_techcorp.users
+  tenant_techcorp.company_settings
+  tenant_techcorp.currencies
+  tenant_techcorp.documents
+  tenant_techcorp.audit_log
+}
+
+//==============================================================================
+// RELATIONSHIPS & INDEXES
+//==============================================================================
+
+// Cross-tenant relationships (public schema only)
+Ref: public.billing_usage.tenant_id > public.tenants.id [delete: cascade]
+
+// Within-tenant relationships are identical across all tenant schemas
+// Note: DBML doesn't support dynamic schema references, so showing template
+
+//==============================================================================
+// SEED DATA EXAMPLES
+//==============================================================================
+
+// Super Admin
+// admin@example.com / password (bcrypt hashed)
+
+// Tenants
+// dev.yourapp.com (Development Company)
+// acme.yourapp.com (ACME Corporation)  
+// techcorp.yourapp.com (Tech Corp Ltd)
+
+// tenant_dev Users
+// admin@example.com / password (tenant admin)
+// user@example.com / password (regular user)
+
+// Default Currencies (per tenant)
+// USD (base), EUR, GBP, JPY, CAD with exchange rates
+
+//==============================================================================
+// NOTES
+//==============================================================================
+
+// 1. Multi-tenant isolation via PostgreSQL schemas
+// 2. Dynamic schema creation using create_tenant_schema() function
+// 3. Each tenant schema is completely isolated
+// 4. Search path used for tenant context: SET search_path TO tenant_xxx, public
+// 5. Extensions: uuid-ossp, pgcrypto for UUID and password hashing
+// 6. All timestamps use timestamptz (timezone-aware)
+// 7. JSONB used for flexible settings and metadata storage

@@ -1,51 +1,69 @@
 import { Router, Response } from 'express';
 import { logger } from '../utils/logger.js';
 import { TenantRequest } from '../types/express.js';
+import { query } from '../config/database.js';
 
 const router = Router();
 
 // Get tenant dashboard data
 router.get('/dashboard', async (req: any, res: Response) => {
   try {
-    // TODO: Implement actual database queries using tenant schema
-    // const stats = await db.query(`SELECT * FROM ${req.tenant.schema}.dashboard_stats`);
-    
-    const mockDashboardData = {
+    if (!req.tenant?.id) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'Tenant context not available'
+      });
+    }
+
+    // Get real tenant statistics from database
+    const [userStatsResult, moduleStatsResult, activityResult] = await Promise.all([
+      query('SELECT COUNT(*) as total_users FROM public.users WHERE tenant_id = $1', [req.tenant.id]),
+      query('SELECT COUNT(*) as active_modules FROM public.tenant_modules WHERE tenant_id = $1 AND status = $2', [req.tenant.id, 'active']),
+      query('SELECT COUNT(*) as recent_activities FROM public.audit_logs WHERE tenant_id = $1 AND created_at > CURRENT_TIMESTAMP - INTERVAL \'7 days\'', [req.tenant.id])
+    ]);
+
+    // Get recent activity from audit logs
+    const recentActivityResult = await query(`
+      SELECT 
+        action_type,
+        resource_type,
+        created_at
+      FROM public.audit_logs 
+      WHERE tenant_id = $1 
+      ORDER BY created_at DESC 
+      LIMIT 5
+    `, [req.tenant.id]);
+
+    const dashboardData = {
       companyInfo: {
         name: req.tenant?.companyName,
         subdomain: req.tenant?.subdomain,
-        status: req.tenant?.status
+        status: req.tenant?.status || 'active'
       },
       stats: {
-        totalUsers: 25,
-        activeProjects: 12,
-        pendingTasks: 47,
-        completedThisMonth: 156,
+        totalUsers: parseInt(userStatsResult.rows[0]?.total_users || '0'),
+        activeModules: parseInt(moduleStatsResult.rows[0]?.active_modules || '0'),
+        recentActivities: parseInt(activityResult.rows[0]?.recent_activities || '0'),
+        // These would need additional business logic integration
+        pendingTasks: 0,
+        completedThisMonth: 0,
         revenue: {
-          thisMonth: 45680.00,
-          lastMonth: 42150.00,
-          growth: '+8.4%'
+          thisMonth: 0,
+          lastMonth: 0,
+          growth: '0%'
         }
       },
-      recentActivity: [
-        {
-          id: '1',
-          type: 'user_login',
-          message: 'John Doe logged in',
-          timestamp: new Date()
-        },
-        {
-          id: '2',
-          type: 'project_created',
-          message: 'New project "Mobile App" created',
-          timestamp: new Date()
-        }
-      ]
+      recentActivity: recentActivityResult.rows.map((activity, index) => ({
+        id: String(index + 1),
+        type: activity.action_type || 'system_activity',
+        message: `${activity.resource_type || 'System'} activity recorded`,
+        timestamp: activity.created_at
+      }))
     };
 
     res.json({
       status: 'success',
-      data: mockDashboardData
+      data: dashboardData
     });
   } catch (error) {
     logger.error('Tenant dashboard fetch error:', error);
@@ -59,35 +77,37 @@ router.get('/dashboard', async (req: any, res: Response) => {
 // Get tenant users
 router.get('/users', async (req: any, res: Response) => {
   try {
-    // TODO: Implement actual query from tenant-specific schema
-    // const users = await db.query(`SELECT * FROM ${req.tenant.schema}.users WHERE is_active = true`);
-    
-    const mockUsers = [
-      {
-        id: 'user_1',
-        email: 'john@acme.com',
-        firstName: 'John',
-        lastName: 'Doe',
-        role: 'manager',
-        isActive: true,
-        lastLogin: new Date(),
-        createdAt: new Date('2024-01-20')
-      },
-      {
-        id: 'user_2',
-        email: 'jane@acme.com',
-        firstName: 'Jane',
-        lastName: 'Smith',
-        role: 'employee',
-        isActive: true,
-        lastLogin: new Date(),
-        createdAt: new Date('2024-02-01')
-      }
-    ];
+    if (!req.tenant?.id) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'Tenant context not available'
+      });
+    }
+
+    // Get users for this tenant from the global users table
+    const usersResult = await query(`
+      SELECT 
+        id,
+        email,
+        first_name as "firstName",
+        last_name as "lastName",
+        is_active as "isActive",
+        is_tenant_admin,
+        last_login_at as "lastLogin",
+        created_at as "createdAt"
+      FROM public.users 
+      WHERE tenant_id = $1
+      ORDER BY created_at DESC
+    `, [req.tenant.id]);
+
+    const users = usersResult.rows.map(user => ({
+      ...user,
+      role: user.is_tenant_admin ? 'admin' : 'user'
+    }));
 
     res.json({
       status: 'success',
-      data: { users: mockUsers }
+      data: { users }
     });
   } catch (error) {
     logger.error('Tenant users fetch error:', error);
@@ -101,12 +121,39 @@ router.get('/users', async (req: any, res: Response) => {
 // Get tenant settings
 router.get('/settings', async (req: any, res: Response) => {
   try {
-    // TODO: Implement actual query from tenant-specific schema
-    // const settings = await db.query(`SELECT * FROM ${req.tenant.schema}.company_settings`);
-    
-    const mockSettings = {
+    if (!req.tenant?.id) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'Tenant context not available'
+      });
+    }
+
+    // Get basic tenant info
+    const tenantResult = await query(
+      'SELECT company_name, subdomain, plan_id, created_at FROM public.tenants WHERE id = $1',
+      [req.tenant.id]
+    );
+
+    if (tenantResult.rows.length === 0) {
+      return res.status(404).json({
+        status: 'error',
+        message: 'Tenant not found'
+      });
+    }
+
+    // Get active modules for features
+    const modulesResult = await query(`
+      SELECT m.name, m.code 
+      FROM public.tenant_modules tm
+      JOIN public.modules m ON tm.module_id = m.id
+      WHERE tm.tenant_id = $1 AND tm.status = 'active'
+    `, [req.tenant.id]);
+
+    const tenant = tenantResult.rows[0];
+
+    const settings = {
       company: {
-        name: req.tenant?.companyName,
+        name: tenant.company_name,
         logo: null,
         timezone: 'UTC',
         dateFormat: 'MM/DD/YYYY',
@@ -114,19 +161,21 @@ router.get('/settings', async (req: any, res: Response) => {
       },
       financial: {
         baseCurrency: 'USD',
-        taxRate: 8.5,
+        taxRate: 0,
         fiscalYearStart: 'January'
       },
       features: {
-        modules: ['crm', 'inventory', 'accounting'],
-        integrations: ['slack', 'email'],
-        customFields: true
+        modules: modulesResult.rows.map(m => m.code),
+        planId: tenant.plan_id,
+        memberSince: tenant.created_at,
+        integrations: [],
+        customFields: false
       }
     };
 
     res.json({
       status: 'success',
-      data: { settings: mockSettings }
+      data: { settings }
     });
   } catch (error) {
     logger.error('Tenant settings fetch error:', error);
@@ -142,8 +191,8 @@ router.put('/settings', async (req: any, res: Response) => {
   try {
     const { company, financial, features } = req.body;
     
-    // TODO: Implement actual database update
-    // await db.query(`UPDATE ${req.tenant.schema}.company_settings SET ...`);
+    // Note: In a full implementation, this would update tenant configuration tables
+    logger.info(`Settings update requested for tenant ${req.tenant?.id}:`, { company, financial, features });
 
     logger.info(`Tenant ${req.tenant?.id} settings updated by ${req.user?.email}`);
 
@@ -163,34 +212,47 @@ router.put('/settings', async (req: any, res: Response) => {
 // Get tenant modules
 router.get('/modules', async (req: any, res: Response) => {
   try {
-    // TODO: Query actual modules from database
-    const mockModules = [
-      {
-        id: 'crm',
-        name: 'Customer Relationship Management',
-        description: 'Manage customers, leads, and sales pipeline',
-        isActive: true,
-        version: '1.2.0'
-      },
-      {
-        id: 'inventory',
-        name: 'Inventory Management',
-        description: 'Track products, stock levels, and warehouses',
-        isActive: true,
-        version: '1.1.5'
-      },
-      {
-        id: 'accounting',
-        name: 'Financial Accounting',
-        description: 'Manage accounts, transactions, and reports',
-        isActive: false,
-        version: '1.0.8'
-      }
-    ];
+    if (!req.tenant?.id) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'Tenant context not available'
+      });
+    }
+
+    // Get all available modules with tenant subscription status
+    const modulesResult = await query(`
+      SELECT 
+        m.id,
+        m.code,
+        m.name,
+        m.description,
+        m.version,
+        m.icon,
+        m.color,
+        tm.status as subscription_status,
+        tm.activated_at,
+        CASE WHEN tm.status = 'active' THEN true ELSE false END as "isActive"
+      FROM public.modules m
+      LEFT JOIN public.tenant_modules tm ON m.id = tm.module_id AND tm.tenant_id = $1
+      WHERE m.is_active = true
+      ORDER BY m.name
+    `, [req.tenant.id]);
+
+    const modules = modulesResult.rows.map(module => ({
+      id: module.code,
+      name: module.name,
+      description: module.description,
+      isActive: module.isActive,
+      version: module.version,
+      icon: module.icon,
+      color: module.color,
+      subscriptionStatus: module.subscription_status,
+      activatedAt: module.activated_at
+    }));
 
     res.json({
       status: 'success',
-      data: { modules: mockModules }
+      data: { modules }
     });
   } catch (error) {
     logger.error('Tenant modules fetch error:', error);

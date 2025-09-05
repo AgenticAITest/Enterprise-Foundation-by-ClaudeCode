@@ -26,10 +26,8 @@ export const tenantMiddleware = async (
       return next();
     }
 
-    // TODO: Implement actual tenant lookup from database
-    // const tenant = await db.query('SELECT * FROM tenants WHERE subdomain = ?', [subdomain]);
-    
-    // For now, mock tenant data
+    // Note: In production, implement actual tenant lookup from database
+    // const tenant = await query('SELECT * FROM tenants WHERE subdomain = ?', [subdomain]);
     if (subdomain && subdomain !== 'www') {
       req.tenant = {
         id: `tenant_${subdomain}`,

@@ -31,17 +31,25 @@ const DashboardLayout: React.FC = () => {
                 >
                   Dashboard
                 </a>
+                {user?.role === 'admin' && (
+                  <a
+                    href="/tenants"
+                    className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium"
+                  >
+                    Tenants
+                  </a>
+                )}
                 <a
-                  href="#"
+                  href="/currencies"
                   className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium"
                 >
-                  Customers
+                  Currencies
                 </a>
                 <a
                   href="#"
                   className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium"
                 >
-                  Inventory
+                  Customers
                 </a>
                 <a
                   href="#"
