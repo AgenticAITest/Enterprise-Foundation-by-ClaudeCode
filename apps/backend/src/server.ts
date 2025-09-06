@@ -18,6 +18,7 @@ import userRoleRoutes from './routes/user-roles.js';
 import rateLimitRoutes from './routes/rate-limit-demo.js';
 import auditRoutes from './routes/audit.js';
 import adminStatsRoutes from './routes/admin-stats.js';
+import integrationRoutes from './routes/integrations.js';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -27,6 +28,7 @@ app.use(compression());
 app.use(cors({
   origin: [
     'http://localhost:3000',
+    'http://localhost:3002',
     'http://localhost:3005', 
     'http://localhost:3006',
     'http://localhost:3007'
@@ -55,6 +57,7 @@ app.use('/api/roles', roleRoutes);
 app.use('/api/permissions', permissionRoutes);
 app.use('/api/user-roles', userRoleRoutes);
 app.use('/api/audit', auditRoutes);
+app.use('/api/integrations', integrationRoutes);
 app.use('/api', tenantMiddleware as any, authMiddleware as any, tenantRoutes);
 
 app.use(errorHandler);

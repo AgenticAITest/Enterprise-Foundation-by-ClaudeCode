@@ -181,3 +181,109 @@ export interface TestResult {
   status: 'PASSED' | 'FAILED' | 'SKIPPED';
   errorMessage?: string;
 }
+
+// Integration Module Types
+export interface Integration {
+  id: string;
+  tenant_id: string;
+  name: string;
+  type: 'inbound_api' | 'outbound_api' | 'webhook';
+  status: 'active' | 'inactive' | 'error';
+  description?: string;
+  environment: 'development' | 'staging' | 'production';
+  created_by?: string;
+  created_at: Date;
+  updated_at: Date;
+}
+
+export interface InboundAPI {
+  id: string;
+  integration_id: string;
+  endpoint_path: string;
+  http_methods: string[];
+  authentication_type: 'none' | 'api_key' | 'bearer_token' | 'basic_auth' | 'oauth2';
+  api_key?: string;
+  rate_limit_requests: number;
+  rate_limit_window_minutes: number;
+  request_validation_schema?: object;
+  response_mapping?: object;
+  is_active: boolean;
+  created_at: Date;
+  updated_at: Date;
+}
+
+export interface OutboundAPI {
+  id: string;
+  integration_id: string;
+  name: string;
+  base_url: string;
+  authentication_type: 'none' | 'api_key' | 'bearer_token' | 'basic_auth' | 'oauth2';
+  auth_credentials?: object;
+  default_headers?: object;
+  timeout_seconds: number;
+  retry_attempts: number;
+  retry_delay_seconds: number;
+  request_template?: object;
+  response_mapping?: object;
+  is_active: boolean;
+  created_at: Date;
+  updated_at: Date;
+}
+
+export interface Webhook {
+  id: string;
+  integration_id: string;
+  name: string;
+  url: string;
+  events: string[];
+  authentication_type: 'none' | 'api_key' | 'bearer_token' | 'signature';
+  auth_credentials?: object;
+  headers?: object;
+  payload_template?: object;
+  retry_attempts: number;
+  retry_delay_seconds: number;
+  timeout_seconds: number;
+  is_active: boolean;
+  created_at: Date;
+  updated_at: Date;
+}
+
+export interface IntegrationLog {
+  id: string;
+  integration_id: string;
+  integration_type: string;
+  execution_type: 'inbound_request' | 'outbound_request' | 'webhook_delivery';
+  status: 'success' | 'error' | 'pending' | 'timeout';
+  request_data?: object;
+  response_data?: object;
+  error_message?: string;
+  execution_time_ms?: number;
+  created_at: Date;
+}
+
+export interface IntegrationAPIKey {
+  id: string;
+  integration_id: string;
+  key_name: string;
+  api_key_hash: string;
+  permissions: string[];
+  last_used_at?: Date;
+  expires_at?: Date;
+  is_active: boolean;
+  created_by?: string;
+  created_at: Date;
+  updated_at: Date;
+}
+
+export interface IntegrationFieldMapping {
+  id: string;
+  integration_id: string;
+  mapping_type: 'inbound' | 'outbound' | 'webhook';
+  source_field: string;
+  target_field: string;
+  transformation_rule?: object;
+  is_required: boolean;
+  default_value?: string;
+  created_at: Date;
+  updated_at: Date;
+}
