@@ -123,6 +123,60 @@ class AdminApiClient {
     });
   }
 
+  async getTenants(): Promise<any[]> {
+    const data = await this.request('/api/admin/tenants');
+    return data.tenants;
+  }
+
+  async getTenantDetails(tenantId: string): Promise<any> {
+    return this.request(`/api/admin/tenants/${tenantId}`);
+  }
+
+  async getTenantModules(tenantId: string): Promise<any[]> {
+    const data = await this.request(`/api/admin/tenants/${tenantId}/modules`);
+    return data.modules;
+  }
+
+  async updateTenantModuleSubscription(
+    tenantId: string, 
+    moduleId: string, 
+    status: string, 
+    settings?: any, 
+    expiresAt?: string
+  ): Promise<void> {
+    return this.request(`/api/admin/tenants/${tenantId}/modules/${moduleId}`, {
+      method: 'PUT',
+      body: JSON.stringify({ status, settings, expires_at: expiresAt }),
+    });
+  }
+
+  async updateTenantTrial(
+    tenantId: string, 
+    trialEndsAt: string, 
+    trialModules: string[]
+  ): Promise<void> {
+    return this.request(`/api/admin/tenants/${tenantId}/trial`, {
+      method: 'PUT',
+      body: JSON.stringify({ trial_ends_at: trialEndsAt, trial_modules: trialModules }),
+    });
+  }
+
+  async updateTenantLimits(
+    tenantId: string, 
+    maxUsers: number, 
+    maxStorageGb: number, 
+    maxApiCallsPerDay: number
+  ): Promise<void> {
+    return this.request(`/api/admin/tenants/${tenantId}/limits`, {
+      method: 'PUT',
+      body: JSON.stringify({ 
+        max_users: maxUsers, 
+        max_storage_gb: maxStorageGb, 
+        max_api_calls_per_day: maxApiCallsPerDay 
+      }),
+    });
+  }
+
   // Module Management APIs
   async updateModuleSettings(moduleId: string, settings: any): Promise<void> {
     return this.request(`/api/admin/modules/${moduleId}/settings`, {

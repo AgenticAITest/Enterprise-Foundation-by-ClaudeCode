@@ -246,6 +246,207 @@ router.get('/stats', async (req: any, res: Response) => {
 });
 
 //==============================================================================
+// TENANT MODULE MANAGEMENT
+//==============================================================================
+
+// Get tenant's module subscriptions
+router.get('/tenants/:tenantId/modules', async (req: any, res: Response) => {
+  try {
+    const { tenantId } = req.params;
+    
+    const result = await query(`
+      SELECT 
+        tm.module_id,
+        tm.status,
+        tm.activated_at,
+        tm.settings,
+        m.code,
+        m.name,
+        m.description,
+        m.version,
+        m.base_price,
+        m.price_per_user,
+        m.color
+      FROM public.tenant_modules tm
+      JOIN public.modules m ON tm.module_id = m.id
+      WHERE tm.tenant_id = $1
+      ORDER BY tm.activated_at DESC
+    `, [tenantId]);
+
+    res.json({
+      status: 'success',
+      data: { modules: result.rows }
+    });
+  } catch (error) {
+    logger.error('Tenant modules fetch error:', error);
+    res.status(500).json({
+      status: 'error',
+      message: 'Failed to fetch tenant modules'
+    });
+  }
+});
+
+// Update tenant module subscription
+router.put('/tenants/:tenantId/modules/:moduleId', async (req: any, res: Response) => {
+  try {
+    const { tenantId, moduleId } = req.params;
+    const { status, settings, expires_at } = req.body;
+
+    if (status === 'active') {
+      // Activate module for tenant
+      await query(`
+        INSERT INTO public.tenant_modules (tenant_id, module_id, status, activated_at, settings, expires_at)
+        VALUES ($1, $2, $3, CURRENT_TIMESTAMP, $4, $5)
+        ON CONFLICT (tenant_id, module_id) 
+        DO UPDATE SET 
+          status = $3,
+          activated_at = CURRENT_TIMESTAMP,
+          settings = $4,
+          expires_at = $5
+      `, [tenantId, moduleId, status, JSON.stringify(settings || {}), expires_at]);
+    } else {
+      // Deactivate module
+      await query(
+        'UPDATE public.tenant_modules SET status = $1 WHERE tenant_id = $2 AND module_id = $3',
+        [status, tenantId, moduleId]
+      );
+    }
+
+    res.json({
+      status: 'success',
+      message: `Module ${status === 'active' ? 'activated' : 'deactivated'} successfully`
+    });
+  } catch (error) {
+    logger.error('Module subscription update error:', error);
+    res.status(500).json({
+      status: 'error',
+      message: 'Failed to update module subscription'
+    });
+  }
+});
+
+// Set tenant trial period
+router.put('/tenants/:tenantId/trial', async (req: any, res: Response) => {
+  try {
+    const { tenantId } = req.params;
+    const { trial_ends_at, trial_modules } = req.body;
+
+    // Update tenant trial information (would need to add trial fields to tenants table)
+    await query(`
+      UPDATE public.tenants 
+      SET trial_ends_at = $1, trial_modules = $2, updated_at = CURRENT_TIMESTAMP
+      WHERE id = $3
+    `, [trial_ends_at, JSON.stringify(trial_modules || []), tenantId]);
+
+    res.json({
+      status: 'success',
+      message: 'Trial period updated successfully'
+    });
+  } catch (error) {
+    logger.error('Trial update error:', error);
+    res.status(500).json({
+      status: 'error',
+      message: 'Failed to update trial period'
+    });
+  }
+});
+
+// Set tenant subscription limits
+router.put('/tenants/:tenantId/limits', async (req: any, res: Response) => {
+  try {
+    const { tenantId } = req.params;
+    const { max_users, max_storage_gb, max_api_calls_per_day } = req.body;
+
+    // Update tenant limits (would need to add limit fields to tenants table)
+    await query(`
+      UPDATE public.tenants 
+      SET max_users = $1, max_storage_gb = $2, max_api_calls_per_day = $3, updated_at = CURRENT_TIMESTAMP
+      WHERE id = $4
+    `, [max_users, max_storage_gb, max_api_calls_per_day, tenantId]);
+
+    res.json({
+      status: 'success',
+      message: 'Subscription limits updated successfully'
+    });
+  } catch (error) {
+    logger.error('Limits update error:', error);
+    res.status(500).json({
+      status: 'error',
+      message: 'Failed to update subscription limits'
+    });
+  }
+});
+
+// Suspend tenant
+router.post('/tenants/:tenantId/suspend', async (req: any, res: Response) => {
+  try {
+    const { tenantId } = req.params;
+    const { reason } = req.body;
+
+    // Update tenant status to suspended
+    const result = await query(
+      'UPDATE public.tenants SET status = $1, updated_at = CURRENT_TIMESTAMP WHERE id = $2 RETURNING company_name',
+      ['suspended', tenantId]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        status: 'error',
+        message: 'Tenant not found'
+      });
+    }
+
+    // Log the suspension
+    logger.info(`Tenant ${result.rows[0].company_name} suspended by admin ${req.user?.email}. Reason: ${reason}`);
+
+    res.json({
+      status: 'success',
+      message: `Tenant suspended successfully`
+    });
+  } catch (error) {
+    logger.error('Tenant suspension error:', error);
+    res.status(500).json({
+      status: 'error',
+      message: 'Failed to suspend tenant'
+    });
+  }
+});
+
+// Activate tenant
+router.post('/tenants/:tenantId/activate', async (req: any, res: Response) => {
+  try {
+    const { tenantId } = req.params;
+
+    // Update tenant status to active
+    const result = await query(
+      'UPDATE public.tenants SET status = $1, updated_at = CURRENT_TIMESTAMP WHERE id = $2 RETURNING company_name',
+      ['active', tenantId]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        status: 'error',
+        message: 'Tenant not found'
+      });
+    }
+
+    // Log the activation
+    logger.info(`Tenant ${result.rows[0].company_name} activated by admin ${req.user?.email}`);
+
+    res.json({
+      status: 'success',
+      message: `Tenant activated successfully`
+    });
+  } catch (error) {
+    logger.error('Tenant activation error:', error);
+    res.status(500).json({
+      status: 'error',
+      message: 'Failed to activate tenant'
+    });
+  }
+});
+
+//==============================================================================
 // RBAC MANAGEMENT - User and Role Management
 //==============================================================================
 

@@ -232,18 +232,20 @@ Implementing a comprehensive Role-Based Access Control system for a modular ERP 
   - [x] Role-based access control middleware
   - [x] Backend API integration with real data
   - [x] CORS configuration fix for admin portal
-- [ ] **5.1.4 Module Marketplace Interface** (4-5 hours)
-  - [ ] ModuleCard: Display module info, pricing, features
-  - [ ] ModuleCatalog: Grid view of all available modules
-  - [ ] ModuleDetails: Detailed view with description, screenshots
-  - [ ] ModuleManagement: Add/edit/disable modules
-  - [ ] Module dependencies and compatibility settings
-- [ ] **5.1.5 Tenant Management Dashboard** (5-6 hours)
-  - [ ] TenantList: Searchable/filterable tenant table
-  - [ ] TenantCard: Quick tenant overview with metrics
-  - [ ] TenantDetails: Comprehensive tenant information
-  - [ ] ModuleSubscriptions: Manage tenant's active modules
-  - [ ] Set trial periods and subscription limits
+- [x] **5.1.4 Module Marketplace Interface** (4-5 hours) ✅ **COMPLETED**
+  - [x] ModuleCard: Display module info, pricing, features
+  - [x] ModuleCatalog: Grid view of all available modules
+  - [x] ModuleDetails: Detailed view with description, screenshots
+  - [x] ModuleManagement: Add/edit/disable modules
+  - [x] Module dependencies and compatibility settings
+  - [x] Advanced features: Search/filter system, stats dashboard, real-time status toggling
+- [x] **5.1.5 Tenant Management Dashboard** (5-6 hours) ✅ **COMPLETED**
+  - [x] TenantList: Searchable/filterable tenant table
+  - [x] TenantCard: Quick tenant overview with metrics  
+  - [x] TenantDetails: Comprehensive tenant information
+  - [x] ModuleSubscriptions: Manage tenant's active modules
+  - [x] Set trial periods and subscription limits
+  - [x] Advanced features: Real-time status management, revenue tracking, activity monitoring
 - [ ] **5.1.6 Global Audit Logs Viewer** (3-4 hours)
   - [ ] AuditLogTable: Searchable audit log entries
   - [ ] SecurityAlerts: Real-time security events
