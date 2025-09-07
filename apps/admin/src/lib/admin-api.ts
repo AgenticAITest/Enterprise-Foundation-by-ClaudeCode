@@ -177,6 +177,75 @@ class AdminApiClient {
     });
   }
 
+  // Audit Log APIs
+  async getAuditLogs(params: {
+    tenant_id?: string;
+    user_id?: string;
+    action?: string;
+    resource_type?: string;
+    module_code?: string;
+    severity?: string;
+    from_date?: string;
+    to_date?: string;
+    search?: string;
+    page?: number;
+    limit?: number;
+    sort_by?: string;
+    sort_order?: string;
+  }): Promise<any> {
+    const queryParams = new URLSearchParams();
+    Object.entries(params).forEach(([key, value]) => {
+      if (value !== undefined) {
+        queryParams.append(key, value.toString());
+      }
+    });
+    
+    return this.request(`/api/admin/audit-logs?${queryParams.toString()}`);
+  }
+
+  async getAuditLogStats(params?: {
+    tenant_id?: string;
+    from_date?: string;
+    to_date?: string;
+  }): Promise<any> {
+    const queryParams = new URLSearchParams();
+    if (params) {
+      Object.entries(params).forEach(([key, value]) => {
+        if (value !== undefined) {
+          queryParams.append(key, value);
+        }
+      });
+    }
+    
+    return this.request(`/api/admin/audit-logs/stats?${queryParams.toString()}`);
+  }
+
+  async getSecurityAlerts(limit: number = 20): Promise<any> {
+    return this.request(`/api/admin/security-alerts?limit=${limit}`);
+  }
+
+  async exportAuditLogs(params: {
+    tenant_id?: string;
+    user_id?: string;
+    action?: string;
+    resource_type?: string;
+    from_date?: string;
+    to_date?: string;
+    format?: 'csv' | 'json';
+  }): Promise<Response> {
+    const queryParams = new URLSearchParams();
+    Object.entries(params).forEach(([key, value]) => {
+      if (value !== undefined) {
+        queryParams.append(key, value);
+      }
+    });
+    
+    return fetch(`${API_BASE_URL}/api/admin/audit-logs/export?${queryParams.toString()}`, {
+      method: 'GET',
+      headers: this.getAuthHeaders(),
+    });
+  }
+
   // Module Management APIs
   async updateModuleSettings(moduleId: string, settings: any): Promise<void> {
     return this.request(`/api/admin/modules/${moduleId}/settings`, {
@@ -208,32 +277,6 @@ class AdminApiClient {
 
   async getSystemMetrics(): Promise<any> {
     return this.request('/api/admin/system/metrics');
-  }
-
-  // Audit Log APIs
-  async getAuditLogs(filters?: {
-    tenant_id?: string;
-    user_id?: string;
-    action_type?: string;
-    start_date?: string;
-    end_date?: string;
-    limit?: number;
-    offset?: number;
-  }): Promise<any[]> {
-    const params = new URLSearchParams();
-    
-    if (filters) {
-      Object.entries(filters).forEach(([key, value]) => {
-        if (value !== undefined) {
-          params.append(key, value.toString());
-        }
-      });
-    }
-
-    const queryString = params.toString();
-    const endpoint = queryString ? `/api/audit/logs?${queryString}` : '/api/audit/logs';
-    
-    return this.request<any[]>(endpoint);
   }
 
   async getSecurityEvents(): Promise<any[]> {

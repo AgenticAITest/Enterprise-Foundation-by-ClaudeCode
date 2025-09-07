@@ -11,7 +11,8 @@ import {
   Database, 
   LogOut,
   Shield,
-  Package
+  Package,
+  FileText
 } from 'lucide-react';
 
 const AdminLayout: React.FC = () => {
@@ -38,6 +39,7 @@ const AdminLayout: React.FC = () => {
     { name: 'Users', href: '/users', icon: Users },
     { name: 'Billing', href: '/billing', icon: CreditCard },
     { name: 'Analytics', href: '/analytics', icon: BarChart3 },
+    { name: 'Audit Logs', href: '/audit-logs', icon: FileText },
     { name: 'Settings', href: '/settings', icon: Settings },
   ];
 

@@ -8,7 +8,8 @@ import ModulesPage from '@/pages/modules';
 import SystemPage from '@/pages/system';
 import UsersPage from '@/pages/users';
 import BillingPage from '@/pages/billing';
-import AnalyticsPage from '@/pages/analytics';
+import AnalyticsBasic from '@/pages/analytics-basic';
+import AuditLogsSimple from '@/pages/audit-logs-simple';
 import SettingsPage from '@/pages/settings';
 
 function App() {
@@ -23,7 +24,8 @@ function App() {
           <Route path="system" element={<SystemPage />} />
           <Route path="users" element={<UsersPage />} />
           <Route path="billing" element={<BillingPage />} />
-          <Route path="analytics" element={<AnalyticsPage />} />
+          <Route path="analytics" element={<AnalyticsBasic />} />
+          <Route path="audit-logs" element={<AuditLogsSimple />} />
           <Route path="settings" element={<SettingsPage />} />
         </Route>
       </Routes>

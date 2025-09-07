@@ -12,7 +12,9 @@
       "Bash(taskkill:*)",
       "Bash(git add:*)",
       "Bash(git push:*)",
-      "Bash(psql:*)"
+      "Bash(psql:*)",
+      "Bash(node:*)",
+      "Bash(TASKKILL:*)"
     ],
     "deny": [],
     "ask": []

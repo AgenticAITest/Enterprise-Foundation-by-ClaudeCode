@@ -447,6 +447,416 @@ router.post('/tenants/:tenantId/activate', async (req: any, res: Response) => {
 });
 
 //==============================================================================
+// AUDIT LOGS MANAGEMENT
+//==============================================================================
+
+// Get audit logs with advanced filtering
+router.get('/audit-logs', async (req: any, res: Response) => {
+  try {
+    const {
+      tenant_id,
+      user_id,
+      action,
+      resource_type,
+      module_code,
+      severity,
+      from_date,
+      to_date,
+      search,
+      page = 1,
+      limit = 50,
+      sort_by = 'performed_at',
+      sort_order = 'desc'
+    } = req.query;
+
+    let whereConditions = [];
+    let queryParams = [];
+    let paramIndex = 1;
+
+    // Build dynamic WHERE clause
+    if (tenant_id) {
+      whereConditions.push(`tenant_id = $${paramIndex++}`);
+      queryParams.push(tenant_id);
+    }
+
+    if (user_id) {
+      whereConditions.push(`user_id = $${paramIndex++}`);
+      queryParams.push(user_id);
+    }
+
+    if (action) {
+      whereConditions.push(`action ILIKE $${paramIndex++}`);
+      queryParams.push(`%${action}%`);
+    }
+
+    if (resource_type) {
+      whereConditions.push(`resource_type = $${paramIndex++}`);
+      queryParams.push(resource_type);
+    }
+
+    if (module_code) {
+      whereConditions.push(`module_code = $${paramIndex++}`);
+      queryParams.push(module_code);
+    }
+
+    if (severity) {
+      whereConditions.push(`severity = $${paramIndex++}`);
+      queryParams.push(severity);
+    }
+
+    if (from_date) {
+      whereConditions.push(`performed_at >= $${paramIndex++}`);
+      queryParams.push(from_date);
+    }
+
+    if (to_date) {
+      whereConditions.push(`performed_at <= $${paramIndex++}`);
+      queryParams.push(to_date);
+    }
+
+    // Search across multiple text fields
+    if (search) {
+      whereConditions.push(`(
+        action ILIKE $${paramIndex} OR 
+        user_email ILIKE $${paramIndex} OR 
+        resource_name ILIKE $${paramIndex} OR 
+        resource_type ILIKE $${paramIndex}
+      )`);
+      queryParams.push(`%${search}%`);
+      paramIndex++;
+    }
+
+    const whereClause = whereConditions.length > 0 ? `WHERE ${whereConditions.join(' AND ')}` : '';
+    const offset = (parseInt(page) - 1) * parseInt(limit);
+    
+    // Validate sort column
+    const allowedSortColumns = ['performed_at', 'action', 'user_email', 'resource_type', 'severity'];
+    const sortColumn = allowedSortColumns.includes(sort_by) ? sort_by : 'performed_at';
+    const sortDirection = sort_order.toLowerCase() === 'asc' ? 'ASC' : 'DESC';
+
+    // Get total count
+    const countQuery = `SELECT COUNT(*) as total FROM audit_logs ${whereClause}`;
+    const countResult = await query(countQuery, queryParams);
+    const totalRecords = parseInt(countResult.rows[0].total);
+
+    // Get paginated results
+    const dataQuery = `
+      SELECT 
+        id,
+        tenant_id,
+        user_id,
+        user_email,
+        user_role,
+        session_id,
+        action,
+        resource_type,
+        resource_id,
+        resource_name,
+        http_method,
+        endpoint,
+        ip_address,
+        user_agent,
+        old_values,
+        new_values,
+        status,
+        error_message,
+        severity,
+        module_code,
+        permission_required,
+        data_scope,
+        performed_at,
+        details
+      FROM audit_logs 
+      ${whereClause}
+      ORDER BY ${sortColumn} ${sortDirection}
+      LIMIT $${paramIndex++} OFFSET $${paramIndex++}
+    `;
+
+    queryParams.push(parseInt(limit), offset);
+    const result = await query(dataQuery, queryParams);
+
+    res.json({
+      status: 'success',
+      data: {
+        logs: result.rows,
+        pagination: {
+          total: totalRecords,
+          page: parseInt(page),
+          limit: parseInt(limit),
+          total_pages: Math.ceil(totalRecords / parseInt(limit))
+        }
+      }
+    });
+
+  } catch (error) {
+    logger.error('Audit logs fetch error:', error);
+    res.status(500).json({
+      status: 'error',
+      message: 'Failed to fetch audit logs'
+    });
+  }
+});
+
+// Get audit log statistics
+router.get('/audit-logs/stats', async (req: any, res: Response) => {
+  try {
+    const { tenant_id, from_date, to_date } = req.query;
+    
+    let whereConditions = [];
+    let queryParams = [];
+    let paramIndex = 1;
+
+    if (tenant_id) {
+      whereConditions.push(`tenant_id = $${paramIndex++}`);
+      queryParams.push(tenant_id);
+    }
+
+    if (from_date) {
+      whereConditions.push(`performed_at >= $${paramIndex++}`);
+      queryParams.push(from_date);
+    }
+
+    if (to_date) {
+      whereConditions.push(`performed_at <= $${paramIndex++}`);
+      queryParams.push(to_date);
+    }
+
+    const whereClause = whereConditions.length > 0 ? `WHERE ${whereConditions.join(' AND ')}` : '';
+
+    const statsQuery = `
+      SELECT 
+        COUNT(*) as total_events,
+        COUNT(*) FILTER (WHERE status = 'failed') as failed_events,
+        COUNT(*) FILTER (WHERE severity = 'warning') as warning_events,
+        COUNT(*) FILTER (WHERE severity = 'error') as error_events, 
+        COUNT(*) FILTER (WHERE severity = 'critical') as critical_events,
+        COUNT(DISTINCT user_id) as unique_users,
+        COUNT(DISTINCT action) as unique_actions,
+        COUNT(*) FILTER (WHERE performed_at >= NOW() - INTERVAL '24 hours') as events_last_24h,
+        COUNT(*) FILTER (WHERE performed_at >= NOW() - INTERVAL '7 days') as events_last_7d,
+        MIN(performed_at) as earliest_event,
+        MAX(performed_at) as latest_event
+      FROM audit_logs 
+      ${whereClause}
+    `;
+
+    // Get action breakdown
+    const actionStatsQuery = `
+      SELECT 
+        action,
+        COUNT(*) as count,
+        COUNT(*) FILTER (WHERE status = 'failed') as failed_count
+      FROM audit_logs 
+      ${whereClause}
+      GROUP BY action
+      ORDER BY count DESC
+      LIMIT 10
+    `;
+
+    // Get severity breakdown
+    const severityStatsQuery = `
+      SELECT 
+        severity,
+        COUNT(*) as count
+      FROM audit_logs 
+      ${whereClause}
+      GROUP BY severity
+      ORDER BY count DESC
+    `;
+
+    const [statsResult, actionStatsResult, severityStatsResult] = await Promise.all([
+      query(statsQuery, queryParams),
+      query(actionStatsQuery, queryParams), 
+      query(severityStatsQuery, queryParams)
+    ]);
+
+    res.json({
+      status: 'success',
+      data: {
+        overview: statsResult.rows[0],
+        action_breakdown: actionStatsResult.rows,
+        severity_breakdown: severityStatsResult.rows
+      }
+    });
+
+  } catch (error) {
+    logger.error('Audit stats fetch error:', error);
+    res.status(500).json({
+      status: 'error',
+      message: 'Failed to fetch audit statistics'
+    });
+  }
+});
+
+// Get security alerts (critical events)
+router.get('/security-alerts', async (req: any, res: Response) => {
+  try {
+    const { limit = 20 } = req.query;
+
+    const alertsQuery = `
+      SELECT 
+        id,
+        tenant_id,
+        user_id,
+        user_email,
+        action,
+        resource_type,
+        resource_name,
+        ip_address,
+        status,
+        error_message,
+        severity,
+        performed_at,
+        details
+      FROM audit_logs 
+      WHERE 
+        severity IN ('error', 'critical') OR 
+        status = 'failed' OR
+        action IN ('login_failed', 'permission_denied', 'unauthorized_access')
+      ORDER BY performed_at DESC
+      LIMIT $1
+    `;
+
+    const result = await query(alertsQuery, [parseInt(limit)]);
+
+    res.json({
+      status: 'success',
+      data: {
+        alerts: result.rows
+      }
+    });
+
+  } catch (error) {
+    logger.error('Security alerts fetch error:', error);
+    res.status(500).json({
+      status: 'error',
+      message: 'Failed to fetch security alerts'
+    });
+  }
+});
+
+// Export audit logs
+router.get('/audit-logs/export', async (req: any, res: Response) => {
+  try {
+    const {
+      tenant_id,
+      user_id,
+      action,
+      resource_type,
+      from_date,
+      to_date,
+      format = 'csv'
+    } = req.query;
+
+    let whereConditions = [];
+    let queryParams = [];
+    let paramIndex = 1;
+
+    // Build filters (same as main query)
+    if (tenant_id) {
+      whereConditions.push(`tenant_id = $${paramIndex++}`);
+      queryParams.push(tenant_id);
+    }
+
+    if (user_id) {
+      whereConditions.push(`user_id = $${paramIndex++}`);
+      queryParams.push(user_id);
+    }
+
+    if (action) {
+      whereConditions.push(`action ILIKE $${paramIndex++}`);
+      queryParams.push(`%${action}%`);
+    }
+
+    if (resource_type) {
+      whereConditions.push(`resource_type = $${paramIndex++}`);
+      queryParams.push(resource_type);
+    }
+
+    if (from_date) {
+      whereConditions.push(`performed_at >= $${paramIndex++}`);
+      queryParams.push(from_date);
+    }
+
+    if (to_date) {
+      whereConditions.push(`performed_at <= $${paramIndex++}`);
+      queryParams.push(to_date);
+    }
+
+    const whereClause = whereConditions.length > 0 ? `WHERE ${whereConditions.join(' AND ')}` : '';
+
+    const exportQuery = `
+      SELECT 
+        performed_at,
+        tenant_id,
+        user_email,
+        action,
+        resource_type,
+        resource_name,
+        status,
+        severity,
+        module_code,
+        ip_address,
+        error_message
+      FROM audit_logs 
+      ${whereClause}
+      ORDER BY performed_at DESC
+      LIMIT 10000
+    `;
+
+    const result = await query(exportQuery, queryParams);
+
+    if (format === 'csv') {
+      // Generate CSV
+      const headers = [
+        'Timestamp', 'Tenant ID', 'User Email', 'Action', 'Resource Type', 
+        'Resource Name', 'Status', 'Severity', 'Module', 'IP Address', 'Error Message'
+      ];
+      
+      let csvContent = headers.join(',') + '\n';
+      
+      result.rows.forEach(row => {
+        const csvRow = [
+          row.performed_at,
+          row.tenant_id || '',
+          row.user_email || '',
+          row.action,
+          row.resource_type || '',
+          row.resource_name || '',
+          row.status,
+          row.severity,
+          row.module_code || '',
+          row.ip_address || '',
+          (row.error_message || '').replace(/"/g, '""')
+        ].map(field => `"${field}"`).join(',');
+        csvContent += csvRow + '\n';
+      });
+
+      res.setHeader('Content-Type', 'text/csv');
+      res.setHeader('Content-Disposition', `attachment; filename="audit_logs_${new Date().toISOString().split('T')[0]}.csv"`);
+      res.send(csvContent);
+    } else {
+      // JSON format
+      res.setHeader('Content-Type', 'application/json');
+      res.setHeader('Content-Disposition', `attachment; filename="audit_logs_${new Date().toISOString().split('T')[0]}.json"`);
+      res.json({
+        export_date: new Date().toISOString(),
+        total_records: result.rows.length,
+        filters: { tenant_id, user_id, action, resource_type, from_date, to_date },
+        data: result.rows
+      });
+    }
+
+  } catch (error) {
+    logger.error('Audit logs export error:', error);
+    res.status(500).json({
+      status: 'error',
+      message: 'Failed to export audit logs'
+    });
+  }
+});
+
+//==============================================================================
 // RBAC MANAGEMENT - User and Role Management
 //==============================================================================
 
