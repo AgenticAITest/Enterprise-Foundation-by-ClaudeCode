@@ -10,7 +10,8 @@ const LoginPage: React.FC = () => {
 
   // Redirect if already authenticated
   if (isAuthenticated) {
-    return <Navigate to="/" replace />;
+    // All authenticated users go to admin dashboard
+    return <Navigate to="/admin" replace />;
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -24,6 +25,8 @@ const LoginPage: React.FC = () => {
 
     try {
       await login(email, password);
+      // Login successful - navigation will be handled by the redirect logic above
+      // when isAuthenticated becomes true and the component re-renders
     } catch (error: any) {
       setError(error.message || 'Login failed');
     }

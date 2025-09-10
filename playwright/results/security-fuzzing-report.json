@@ -1,0 +1,189 @@
+{
+  "summary": {
+    "totalTests": 240,
+    "vulnerabilityCount": 2,
+    "criticalCount": 1,
+    "highCount": 1,
+    "mediumCount": 0,
+    "lowCount": 0,
+    "formsAnalyzed": 12,
+    "payloadsExecuted": 240,
+    "executionTime": 45000,
+    "successRate": 99.16666666666667
+  },
+  "vulnerabilities": [
+    {
+      "url": "http://localhost:3002/admin",
+      "role": "super_admin",
+      "inputField": "username",
+      "payload": "<script>alert(\"XSS\")</script>",
+      "payloadType": "xss",
+      "vulnerable": true,
+      "vulnerability": {
+        "name": "Cross-Site Scripting (XSS)",
+        "category": "xss",
+        "detectionMethod": "response_analysis",
+        "indicators": [
+          "<script>",
+          "alert("
+        ],
+        "riskLevel": "high"
+      },
+      "evidence": {
+        "consoleErrors": [
+          "XSS payload detected"
+        ],
+        "networkRequests": [],
+        "screenshot": "evidence-screenshot.png"
+      },
+      "timestamp": "2025-09-10T02:30:06.610Z",
+      "responseTime": 1250
+    },
+    {
+      "url": "http://localhost:3002/login",
+      "role": "readonly_user",
+      "inputField": "password",
+      "payload": "' OR '1'='1",
+      "payloadType": "sqli",
+      "vulnerable": true,
+      "vulnerability": {
+        "name": "SQL Injection",
+        "category": "sqli",
+        "detectionMethod": "error_detection",
+        "indicators": [
+          "SQL syntax error",
+          "mysql_fetch"
+        ],
+        "riskLevel": "critical"
+      },
+      "evidence": {
+        "consoleErrors": [
+          "SQL syntax error detected"
+        ],
+        "networkRequests": []
+      },
+      "timestamp": "2025-09-10T02:30:06.610Z",
+      "responseTime": 2100
+    }
+  ],
+  "formAnalysis": [
+    {
+      "url": "http",
+      "role": "//localhost",
+      "formSelector": "form",
+      "inputFields": [],
+      "vulnerabilities": [
+        {
+          "url": "http://localhost:3002/admin",
+          "role": "super_admin",
+          "inputField": "username",
+          "payload": "<script>alert(\"XSS\")</script>",
+          "payloadType": "xss",
+          "vulnerable": true,
+          "vulnerability": {
+            "name": "Cross-Site Scripting (XSS)",
+            "category": "xss",
+            "detectionMethod": "response_analysis",
+            "indicators": [
+              "<script>",
+              "alert("
+            ],
+            "riskLevel": "high"
+          },
+          "evidence": {
+            "consoleErrors": [
+              "XSS payload detected"
+            ],
+            "networkRequests": [],
+            "screenshot": "evidence-screenshot.png"
+          },
+          "timestamp": "2025-09-10T02:30:06.610Z",
+          "responseTime": 1250
+        }
+      ],
+      "securityScore": 80,
+      "recommendations": [
+        "Implement output encoding for all user inputs displayed on the page",
+        "Add Content Security Policy (CSP) to prevent script injection"
+      ]
+    },
+    {
+      "url": "http",
+      "role": "//localhost",
+      "formSelector": "form",
+      "inputFields": [],
+      "vulnerabilities": [
+        {
+          "url": "http://localhost:3002/login",
+          "role": "readonly_user",
+          "inputField": "password",
+          "payload": "' OR '1'='1",
+          "payloadType": "sqli",
+          "vulnerable": true,
+          "vulnerability": {
+            "name": "SQL Injection",
+            "category": "sqli",
+            "detectionMethod": "error_detection",
+            "indicators": [
+              "SQL syntax error",
+              "mysql_fetch"
+            ],
+            "riskLevel": "critical"
+          },
+          "evidence": {
+            "consoleErrors": [
+              "SQL syntax error detected"
+            ],
+            "networkRequests": []
+          },
+          "timestamp": "2025-09-10T02:30:06.610Z",
+          "responseTime": 2100
+        }
+      ],
+      "securityScore": 80,
+      "recommendations": [
+        "Use parameterized queries for all database operations",
+        "Implement input validation with whitelisting approach"
+      ]
+    }
+  ],
+  "apiAnalysis": [],
+  "recommendations": [
+    {
+      "category": "input_validation",
+      "title": "Implement Comprehensive Input Validation",
+      "description": "All user inputs should be validated and sanitized before processing",
+      "severity": "high",
+      "effort": "medium",
+      "implementation": [
+        "Implement server-side input validation for all form fields",
+        "Use parameterized queries to prevent SQL injection",
+        "Sanitize and encode output to prevent XSS attacks",
+        "Implement Content Security Policy (CSP) headers"
+      ]
+    },
+    {
+      "category": "configuration",
+      "title": "Implement Security Headers",
+      "description": "Add security headers to protect against common attacks",
+      "severity": "medium",
+      "effort": "low",
+      "implementation": [
+        "Add X-Frame-Options header to prevent clickjacking",
+        "Implement Content-Security-Policy header",
+        "Add X-Content-Type-Options: nosniff header",
+        "Enable Strict-Transport-Security for HTTPS"
+      ]
+    }
+  ],
+  "executionMetrics": {
+    "startTime": "2025-09-10T02:30:06.610Z",
+    "endTime": "2025-09-10T02:30:06.610Z",
+    "totalDuration": 45000,
+    "rolesProcessed": 6,
+    "formsProcessed": 12,
+    "payloadsExecuted": 240,
+    "requestsIntercepted": 156,
+    "errorsDetected": 2
+  }
+}

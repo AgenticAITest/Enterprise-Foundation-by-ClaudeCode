@@ -1,0 +1,2309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Tenant ERP Security Analysis - Executive Summary</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
+        .dashboard { max-width: 1200px; margin: 0 auto; }
+        .header { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 20px; }
+        .metric-card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .metric-value { font-size: 2em; font-weight: bold; color: #2563eb; }
+        .findings-section { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .risk-high { color: #dc2626; }
+        .risk-medium { color: #ea580c; }
+        .risk-low { color: #65a30d; }
+        .heatmap { display: grid; gap: 2px; margin: 20px 0; }
+        .heatmap-cell { padding: 5px; text-align: center; font-size: 12px; border-radius: 2px; }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <div class="header">
+            <h1>Multi-Tenant ERP Security Analysis - Executive Summary</h1>
+            <p>Generated: 9/10/2025, 9:19:08 AM</p>
+            <p>Overall Security Score: <strong class="risk-medium">70/100</strong></p>
+        </div>
+        
+        <div class="metrics-grid">
+            
+                <div class="metric-card">
+                    <h3>Security Posture</h3>
+                    <div class="metric-value risk-medium">GOOD</div>
+                    <p>Overall security assessment based on role hierarchy and access patterns</p>
+                </div>
+            
+                <div class="metric-card">
+                    <h3>Compliance Score</h3>
+                    <div class="metric-value risk-medium">80.6%</div>
+                    <p>Role hierarchy compliance percentage</p>
+                </div>
+            
+                <div class="metric-card">
+                    <h3>Security Risks</h3>
+                    <div class="metric-value risk-medium">2</div>
+                    <p>Total security risks identified across all roles</p>
+                </div>
+            
+                <div class="metric-card">
+                    <h3>Roles Analyzed</h3>
+                    <div class="metric-value risk-low">6</div>
+                    <p>Number of user roles comprehensively analyzed</p>
+                </div>
+            
+        </div>
+
+        <div class="findings-section">
+            <h2>Security Findings Summary</h2>
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <h3>Critical Issues</h3>
+                    <div class="metric-value risk-high">1</div>
+                </div>
+                <div class="metric-card">
+                    <h3>Medium Issues</h3>
+                    <div class="metric-value risk-medium">1</div>
+                </div>
+                <div class="metric-card">
+                    <h3>Low Issues</h3>
+                    <div class="metric-value risk-low">0</div>
+                </div>
+                <div class="metric-card">
+                    <h3>Compliance Grade</h3>
+                    <div class="metric-value">B</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="findings-section">
+            <h2>Top Recommendations</h2>
+            
+                <div style="border-left: 4px solid #ea580c; padding-left: 15px; margin-bottom: 15px;">
+                    <h4>Fix Unauthorized Admin Access</h4>
+                    <p><strong>Priority:</strong> HIGH | <strong>Impact:</strong> HIGH | <strong>Effort:</strong> MEDIUM</p>
+                    <p>Roles module_admin have unauthorized admin access</p>
+                    <p><strong>Estimated Time:</strong> 6-8 weeks</p>
+                </div>
+            
+                <div style="border-left: 4px solid #d97706; padding-left: 15px; margin-bottom: 15px;">
+                    <h4>Optimize Slow Loading Paths</h4>
+                    <p><strong>Priority:</strong> MEDIUM | <strong>Impact:</strong> MEDIUM | <strong>Effort:</strong> LOW</p>
+                    <p>1 paths have response times > 2 seconds</p>
+                    <p><strong>Estimated Time:</strong> 1-2 weeks</p>
+                </div>
+            
+        </div>
+
+        <div class="findings-section">
+            <h2>Quick Wins</h2>
+            <ul>
+                
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        console.log('Security Dashboard Loaded');
+        console.log('Report Data:', {
+  "executiveSummary": {
+    "title": "Multi-Tenant ERP Security Analysis - Executive Summary",
+    "generatedAt": "2025-09-10T02:19:08.313Z",
+    "overallSecurityScore": 70,
+    "keyMetrics": [
+      {
+        "name": "Security Posture",
+        "value": "GOOD",
+        "trend": "stable",
+        "severity": "medium",
+        "description": "Overall security assessment based on role hierarchy and access patterns"
+      },
+      {
+        "name": "Compliance Score",
+        "value": "80.6%",
+        "trend": "up",
+        "severity": "medium",
+        "description": "Role hierarchy compliance percentage"
+      },
+      {
+        "name": "Security Risks",
+        "value": 2,
+        "trend": "stable",
+        "severity": "medium",
+        "description": "Total security risks identified across all roles"
+      },
+      {
+        "name": "Roles Analyzed",
+        "value": 6,
+        "trend": "new",
+        "severity": "low",
+        "description": "Number of user roles comprehensively analyzed"
+      }
+    ],
+    "criticalFindings": [
+      "Non-admin roles accessing administrative functions"
+    ],
+    "quickWins": [],
+    "investmentRecommendations": [
+      "Strengthen role-based access controls",
+      "Implement comprehensive audit logging",
+      "Optimize application performance",
+      "Enhance security monitoring"
+    ],
+    "complianceStatus": {
+      "overall": "partial",
+      "roleHierarchy": 80.55555555555556,
+      "accessControl": 84.0909090909091,
+      "securityBoundaries": 94.82460317460317,
+      "details": [
+        "Role hierarchy compliance: 80.6%",
+        "Security risks identified: 2",
+        "Permission gaps found: 1",
+        "Roles analyzed: 6"
+      ]
+    }
+  },
+  "roleComparisonMatrix": {
+    "roles": [
+      "super_admin",
+      "tenant_admin",
+      "module_admin",
+      "wms_user",
+      "accounting_user",
+      "readonly_user"
+    ],
+    "paths": [
+      "/",
+      "/accounting",
+      "/admin",
+      "/admin/roles",
+      "/admin/settings",
+      "/admin/users",
+      "/dashboard",
+      "/reports",
+      "/wms"
+    ],
+    "accessMatrix": [
+      [
+        true,
+        false,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        false
+      ],
+      [
+        true,
+        false,
+        true,
+        false,
+        true,
+        true,
+        true,
+        true,
+        false
+      ],
+      [
+        true,
+        false,
+        false,
+        false,
+        true,
+        false,
+        true,
+        true,
+        false
+      ],
+      [
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        true
+      ],
+      [
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        true,
+        true,
+        false
+      ],
+      [
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        true,
+        false
+      ]
+    ],
+    "heatmapData": [
+      [
+        {
+          "role": "super_admin",
+          "path": "/",
+          "accessible": true,
+          "responseTime": 800,
+          "errorCount": 0,
+          "riskLevel": "low",
+          "color": "#00aa00"
+        },
+        {
+          "role": "super_admin",
+          "path": "/accounting",
+          "accessible": false,
+          "responseTime": 0,
+          "errorCount": 0,
+          "riskLevel": "low",
+          "color": "#cccccc"
+        },
+        {
+          "role": "super_admin",
+          "path": "/admin",
+          "accessible": true,
+          "responseTime": 1200,
+          "errorCount": 0,
+          "riskLevel": "low",
+          "color": "#00aa00"
+        },
+        {
+          "role": "super_admin",
+          "path": "/admin/roles",
+          "accessible": true,
+          "responseTime": 1100,
+          "errorCount": 0,
+          "riskLevel": "low",
+          "color": "#00aa00"
+        },
+        {
+          "role": "super_admin",
+          "path": "/admin/settings",
+          "accessible": true,
+          "responseTime": 900,
+          "errorCount": 0,
+          "riskLevel": "low",
+          "color": "#00aa00"
+        },
+        {
+          "role": "super_admin",
+          "path": "/admin/users",
+          "accessible": true,
+          "responseTime": 1500,
+          "errorCount": 0,
+          "riskLevel": "low",
+          "color": "#00aa00"
+        },
+        {
+          "role": "super_admin",
+          "path": "/dashboard",
+          "accessible": true,
+          "responseTime": 600,
+          "errorCount": 0,
+          "riskLevel": "low",
+          "color": "#00aa00"
+        },
+        {
+          "role": "super_admin",
+          "path": "/reports",
+          "accessible": true,
+          "responseTime": 2100,
+          "errorCount": 0,
+          "riskLevel": "low",
+          "color": "#00aa00"
+        },
+        {
+          "role": "super_admin",
+          "path": "/wms",
+          "accessible": false,
+          "responseTime": 0,
+          "errorCount": 0,
+          "riskLevel": "low",
+          "color": "#cccccc"
+        }
+      ],
+      [
+        {
+          "role": "tenant_admin",
+          "path": "/",
+          "accessible": true,
+          "responseTime": 850,
+          "errorCount": 0,
+          "riskLevel": "low",
+          "color": "#00aa00"
+        },
+        {
+          "role": "tenant_admin",
+          "path": "/accounting",
+          "accessible": false,
+          "responseTime": 0,
+          "errorCount": 0,
+          "riskLevel": "low",
+          "color": "#cccccc"
+        },
+        {
+          "role": "tenant_admin",
+          "path": "/admin",
+          "accessible": true,
+          "responseTime": 1300,
+          "errorCount": 0,
+          "riskLevel": "low",
+          "color": "#00aa00"
+        },
+        {
+          "role": "tenant_admin",
+          "path": "/admin/roles",
+          "accessible": false,
+          "responseTime": 0,
+          "errorCount": 1,
+          "riskLevel": "low",
+          "color": "#cccccc"
+        },
+        {
+          "role": "tenant_admin",
+          "path": "/admin/settings",
+          "accessible": true,
+          "responseTime": 950,
+          "errorCount": 0,
+          "riskLevel": "low",
+          "color": "#00aa00"
+        },
+        {
+          "role": "tenant_admin",
+          "path": "/admin/users",
+          "accessible": true,
+          "responseTime": 1600,
+          "errorCount": 0,
+          "riskLevel": "low",
+          "color": "#00aa00"
+        },
+        {
+          "role": "tenant_admin",
+          "path": "/dashboard",
+          "accessible": true,
+          "responseTime": 650,
+          "errorCount": 0,
+          "riskLevel": "low",
+          "color": "#00aa00"
+        },
+        {
+          "role": "tenant_admin",
+          "path": "/reports",
+          "accessible": true,
+          "responseTime": 1800,
+          "errorCount": 0,
+          "riskLevel": "low",
+          "color": "#00aa00"
+        },
+        {
+          "role": "tenant_admin",
+          "path": "/wms",
+          "accessible": false,
+          "responseTime": 0,
+          "errorCount": 0,
+          "riskLevel": "low",
+          "color": "#cccccc"
+        }
+      ],
+      [
+        {
+          "role": "module_admin",
+          "path": "/",
+          "accessible": true,
+          "responseTime": 900,
+          "errorCount": 0,
+          "riskLevel": "low",
+          "color": "#00aa00"
+        },
+        {
+          "role": "module_admin",
+          "path": "/accounting",
+          "accessible": false,
+          "responseTime": 0,
+          "errorCount": 0,
+          "riskLevel": "low",
+          "color": "#cccccc"
+        },
+        {
+          "role": "module_admin",
+          "path": "/admin",
+          "accessible": false,
+          "responseTime": 0,
+          "errorCount": 1,
+          "riskLevel": "low",
+          "color": "#cccccc"
+        },
+        {
+          "role": "module_admin",
+          "path": "/admin/roles",
+          "accessible": false,
+          "responseTime": 0,
+          "errorCount": 1,
+          "riskLevel": "low",
+          "color": "#cccccc"
+        },
+        {
+          "role": "module_admin",
+          "path": "/admin/settings",
+          "accessible": true,
+          "responseTime": 1000,
+          "errorCount": 0,
+          "riskLevel": "high",
+          "color": "#ff4444"
+        },
+        {
+          "role": "module_admin",
+          "path": "/admin/users",
+          "accessible": false,
+          "responseTime": 0,
+          "errorCount": 1,
+          "riskLevel": "low",
+          "color": "#cccccc"
+        },
+        {
+          "role": "module_admin",
+          "path": "/dashboard",
+          "accessible": true,
+          "responseTime": 700,
+          "errorCount": 0,
+          "riskLevel": "low",
+          "color": "#00aa00"
+        },
+        {
+          "role": "module_admin",
+          "path": "/reports",
+          "accessible": true,
+          "responseTime": 1600,
+          "errorCount": 0,
+          "riskLevel": "low",
+          "color": "#00aa00"
+        },
+        {
+          "role": "module_admin",
+          "path": "/wms",
+          "accessible": false,
+          "responseTime": 0,
+          "errorCount": 0,
+          "riskLevel": "low",
+          "color": "#cccccc"
+        }
+      ],
+      [
+        {
+          "role": "wms_user",
+          "path": "/",
+          "accessible": true,
+          "responseTime": 750,
+          "errorCount": 0,
+          "riskLevel": "low",
+          "color": "#00aa00"
+        },
+        {
+          "role": "wms_user",
+          "path": "/accounting",
+          "accessible": false,
+          "responseTime": 0,
+          "errorCount": 0,
+          "riskLevel": "low",
+          "color": "#cccccc"
+        },
+        {
+          "role": "wms_user",
+          "path": "/admin",
+          "accessible": false,
+          "responseTime": 0,
+          "errorCount": 1,
+          "riskLevel": "low",
+          "color": "#cccccc"
+        },
+        {
+          "role": "wms_user",
+          "path": "/admin/roles",
+          "accessible": false,
+          "responseTime": 0,
+          "errorCount": 1,
+          "riskLevel": "low",
+          "color": "#cccccc"
+        },
+        {
+          "role": "wms_user",
+          "path": "/admin/settings",
+          "accessible": false,
+          "responseTime": 0,
+          "errorCount": 1,
+          "riskLevel": "low",
+          "color": "#cccccc"
+        },
+        {
+          "role": "wms_user",
+          "path": "/admin/users",
+          "accessible": false,
+          "responseTime": 0,
+          "errorCount": 1,
+          "riskLevel": "low",
+          "color": "#cccccc"
+        },
+        {
+          "role": "wms_user",
+          "path": "/dashboard",
+          "accessible": true,
+          "responseTime": 600,
+          "errorCount": 0,
+          "riskLevel": "low",
+          "color": "#00aa00"
+        },
+        {
+          "role": "wms_user",
+          "path": "/reports",
+          "accessible": false,
+          "responseTime": 0,
+          "errorCount": 1,
+          "riskLevel": "low",
+          "color": "#cccccc"
+        },
+        {
+          "role": "wms_user",
+          "path": "/wms",
+          "accessible": true,
+          "responseTime": 800,
+          "errorCount": 0,
+          "riskLevel": "low",
+          "color": "#00aa00"
+        }
+      ],
+      [
+        {
+          "role": "accounting_user",
+          "path": "/",
+          "accessible": true,
+          "responseTime": 720,
+          "errorCount": 0,
+          "riskLevel": "low",
+          "color": "#00aa00"
+        },
+        {
+          "role": "accounting_user",
+          "path": "/accounting",
+          "accessible": true,
+          "responseTime": 900,
+          "errorCount": 0,
+          "riskLevel": "low",
+          "color": "#00aa00"
+        },
+        {
+          "role": "accounting_user",
+          "path": "/admin",
+          "accessible": false,
+          "responseTime": 0,
+          "errorCount": 1,
+          "riskLevel": "low",
+          "color": "#cccccc"
+        },
+        {
+          "role": "accounting_user",
+          "path": "/admin/roles",
+          "accessible": false,
+          "responseTime": 0,
+          "errorCount": 1,
+          "riskLevel": "low",
+          "color": "#cccccc"
+        },
+        {
+          "role": "accounting_user",
+          "path": "/admin/settings",
+          "accessible": false,
+          "responseTime": 0,
+          "errorCount": 1,
+          "riskLevel": "low",
+          "color": "#cccccc"
+        },
+        {
+          "role": "accounting_user",
+          "path": "/admin/users",
+          "accessible": false,
+          "responseTime": 0,
+          "errorCount": 1,
+          "riskLevel": "low",
+          "color": "#cccccc"
+        },
+        {
+          "role": "accounting_user",
+          "path": "/dashboard",
+          "accessible": true,
+          "responseTime": 580,
+          "errorCount": 0,
+          "riskLevel": "low",
+          "color": "#00aa00"
+        },
+        {
+          "role": "accounting_user",
+          "path": "/reports",
+          "accessible": true,
+          "responseTime": 1400,
+          "errorCount": 0,
+          "riskLevel": "low",
+          "color": "#00aa00"
+        },
+        {
+          "role": "accounting_user",
+          "path": "/wms",
+          "accessible": false,
+          "responseTime": 0,
+          "errorCount": 0,
+          "riskLevel": "low",
+          "color": "#cccccc"
+        }
+      ],
+      [
+        {
+          "role": "readonly_user",
+          "path": "/",
+          "accessible": true,
+          "responseTime": 680,
+          "errorCount": 0,
+          "riskLevel": "low",
+          "color": "#00aa00"
+        },
+        {
+          "role": "readonly_user",
+          "path": "/accounting",
+          "accessible": false,
+          "responseTime": 0,
+          "errorCount": 0,
+          "riskLevel": "low",
+          "color": "#cccccc"
+        },
+        {
+          "role": "readonly_user",
+          "path": "/admin",
+          "accessible": false,
+          "responseTime": 0,
+          "errorCount": 1,
+          "riskLevel": "low",
+          "color": "#cccccc"
+        },
+        {
+          "role": "readonly_user",
+          "path": "/admin/roles",
+          "accessible": false,
+          "responseTime": 0,
+          "errorCount": 1,
+          "riskLevel": "low",
+          "color": "#cccccc"
+        },
+        {
+          "role": "readonly_user",
+          "path": "/admin/settings",
+          "accessible": false,
+          "responseTime": 0,
+          "errorCount": 1,
+          "riskLevel": "low",
+          "color": "#cccccc"
+        },
+        {
+          "role": "readonly_user",
+          "path": "/admin/users",
+          "accessible": false,
+          "responseTime": 0,
+          "errorCount": 1,
+          "riskLevel": "low",
+          "color": "#cccccc"
+        },
+        {
+          "role": "readonly_user",
+          "path": "/dashboard",
+          "accessible": true,
+          "responseTime": 550,
+          "errorCount": 0,
+          "riskLevel": "low",
+          "color": "#00aa00"
+        },
+        {
+          "role": "readonly_user",
+          "path": "/reports",
+          "accessible": true,
+          "responseTime": 1200,
+          "errorCount": 0,
+          "riskLevel": "low",
+          "color": "#00aa00"
+        },
+        {
+          "role": "readonly_user",
+          "path": "/wms",
+          "accessible": false,
+          "responseTime": 0,
+          "errorCount": 0,
+          "riskLevel": "low",
+          "color": "#cccccc"
+        }
+      ]
+    ],
+    "anomalies": [
+      {
+        "role": "super_admin",
+        "path": "/reports",
+        "expected": false,
+        "actual": true,
+        "riskLevel": "high",
+        "description": "super_admin has unexpected access to /reports"
+      },
+      {
+        "role": "tenant_admin",
+        "path": "/admin/roles",
+        "expected": true,
+        "actual": false,
+        "riskLevel": "medium",
+        "description": "tenant_admin lacks expected access to /admin/roles"
+      },
+      {
+        "role": "tenant_admin",
+        "path": "/reports",
+        "expected": false,
+        "actual": true,
+        "riskLevel": "high",
+        "description": "tenant_admin has unexpected access to /reports"
+      },
+      {
+        "role": "module_admin",
+        "path": "/admin/settings",
+        "expected": false,
+        "actual": true,
+        "riskLevel": "high",
+        "description": "module_admin has unexpected access to /admin/settings"
+      },
+      {
+        "role": "module_admin",
+        "path": "/reports",
+        "expected": false,
+        "actual": true,
+        "riskLevel": "high",
+        "description": "module_admin has unexpected access to /reports"
+      },
+      {
+        "role": "accounting_user",
+        "path": "/reports",
+        "expected": false,
+        "actual": true,
+        "riskLevel": "high",
+        "description": "accounting_user has unexpected access to /reports"
+      },
+      {
+        "role": "readonly_user",
+        "path": "/reports",
+        "expected": false,
+        "actual": true,
+        "riskLevel": "high",
+        "description": "readonly_user has unexpected access to /reports"
+      }
+    ]
+  },
+  "permissionHeatmap": {
+    "title": "Role-Path Access Permission Heatmap",
+    "dimensions": {
+      "width": 6,
+      "height": 9
+    },
+    "data": [
+      {
+        "x": 0,
+        "y": 0,
+        "role": "super_admin",
+        "path": "/",
+        "value": 84,
+        "color": "#00aa00",
+        "tooltip": "super_admin → /: Accessible (800ms)"
+      },
+      {
+        "x": 0,
+        "y": 1,
+        "role": "super_admin",
+        "path": "/admin",
+        "value": 76,
+        "color": "#aadd00",
+        "tooltip": "super_admin → /admin: Accessible (1200ms)"
+      },
+      {
+        "x": 0,
+        "y": 2,
+        "role": "super_admin",
+        "path": "/admin/users",
+        "value": 70,
+        "color": "#aadd00",
+        "tooltip": "super_admin → /admin/users: Accessible (1500ms)"
+      },
+      {
+        "x": 0,
+        "y": 3,
+        "role": "super_admin",
+        "path": "/admin/settings",
+        "value": 82,
+        "color": "#00aa00",
+        "tooltip": "super_admin → /admin/settings: Accessible (900ms)"
+      },
+      {
+        "x": 0,
+        "y": 4,
+        "role": "super_admin",
+        "path": "/admin/roles",
+        "value": 78,
+        "color": "#aadd00",
+        "tooltip": "super_admin → /admin/roles: Accessible (1100ms)"
+      },
+      {
+        "x": 0,
+        "y": 5,
+        "role": "super_admin",
+        "path": "/dashboard",
+        "value": 88,
+        "color": "#00aa00",
+        "tooltip": "super_admin → /dashboard: Accessible (600ms)"
+      },
+      {
+        "x": 0,
+        "y": 6,
+        "role": "super_admin",
+        "path": "/reports",
+        "value": 58,
+        "color": "#ffaa00",
+        "tooltip": "super_admin → /reports: Accessible (2100ms)"
+      },
+      {
+        "x": 0,
+        "y": 7,
+        "role": "super_admin",
+        "path": "/wms",
+        "value": 0,
+        "color": "#ff4444",
+        "tooltip": "super_admin → /wms: Forbidden"
+      },
+      {
+        "x": 0,
+        "y": 8,
+        "role": "super_admin",
+        "path": "/accounting",
+        "value": 0,
+        "color": "#ff4444",
+        "tooltip": "super_admin → /accounting: Forbidden"
+      },
+      {
+        "x": 1,
+        "y": 0,
+        "role": "tenant_admin",
+        "path": "/",
+        "value": 83,
+        "color": "#00aa00",
+        "tooltip": "tenant_admin → /: Accessible (850ms)"
+      },
+      {
+        "x": 1,
+        "y": 1,
+        "role": "tenant_admin",
+        "path": "/admin",
+        "value": 74,
+        "color": "#aadd00",
+        "tooltip": "tenant_admin → /admin: Accessible (1300ms)"
+      },
+      {
+        "x": 1,
+        "y": 2,
+        "role": "tenant_admin",
+        "path": "/admin/users",
+        "value": 68,
+        "color": "#aadd00",
+        "tooltip": "tenant_admin → /admin/users: Accessible (1600ms)"
+      },
+      {
+        "x": 1,
+        "y": 3,
+        "role": "tenant_admin",
+        "path": "/admin/settings",
+        "value": 81,
+        "color": "#00aa00",
+        "tooltip": "tenant_admin → /admin/settings: Accessible (950ms)"
+      },
+      {
+        "x": 1,
+        "y": 4,
+        "role": "tenant_admin",
+        "path": "/admin/roles",
+        "value": 0,
+        "color": "#ff4444",
+        "tooltip": "tenant_admin → /admin/roles: Forbidden"
+      },
+      {
+        "x": 1,
+        "y": 5,
+        "role": "tenant_admin",
+        "path": "/dashboard",
+        "value": 87,
+        "color": "#00aa00",
+        "tooltip": "tenant_admin → /dashboard: Accessible (650ms)"
+      },
+      {
+        "x": 1,
+        "y": 6,
+        "role": "tenant_admin",
+        "path": "/reports",
+        "value": 64,
+        "color": "#aadd00",
+        "tooltip": "tenant_admin → /reports: Accessible (1800ms)"
+      },
+      {
+        "x": 1,
+        "y": 7,
+        "role": "tenant_admin",
+        "path": "/wms",
+        "value": 0,
+        "color": "#ff4444",
+        "tooltip": "tenant_admin → /wms: Forbidden"
+      },
+      {
+        "x": 1,
+        "y": 8,
+        "role": "tenant_admin",
+        "path": "/accounting",
+        "value": 0,
+        "color": "#ff4444",
+        "tooltip": "tenant_admin → /accounting: Forbidden"
+      },
+      {
+        "x": 2,
+        "y": 0,
+        "role": "module_admin",
+        "path": "/",
+        "value": 82,
+        "color": "#00aa00",
+        "tooltip": "module_admin → /: Accessible (900ms)"
+      },
+      {
+        "x": 2,
+        "y": 1,
+        "role": "module_admin",
+        "path": "/admin",
+        "value": 0,
+        "color": "#ff4444",
+        "tooltip": "module_admin → /admin: Forbidden"
+      },
+      {
+        "x": 2,
+        "y": 2,
+        "role": "module_admin",
+        "path": "/admin/users",
+        "value": 0,
+        "color": "#ff4444",
+        "tooltip": "module_admin → /admin/users: Forbidden"
+      },
+      {
+        "x": 2,
+        "y": 3,
+        "role": "module_admin",
+        "path": "/admin/settings",
+        "value": 80,
+        "color": "#00aa00",
+        "tooltip": "module_admin → /admin/settings: Accessible (1000ms)"
+      },
+      {
+        "x": 2,
+        "y": 4,
+        "role": "module_admin",
+        "path": "/admin/roles",
+        "value": 0,
+        "color": "#ff4444",
+        "tooltip": "module_admin → /admin/roles: Forbidden"
+      },
+      {
+        "x": 2,
+        "y": 5,
+        "role": "module_admin",
+        "path": "/dashboard",
+        "value": 86,
+        "color": "#00aa00",
+        "tooltip": "module_admin → /dashboard: Accessible (700ms)"
+      },
+      {
+        "x": 2,
+        "y": 6,
+        "role": "module_admin",
+        "path": "/reports",
+        "value": 68,
+        "color": "#aadd00",
+        "tooltip": "module_admin → /reports: Accessible (1600ms)"
+      },
+      {
+        "x": 2,
+        "y": 7,
+        "role": "module_admin",
+        "path": "/wms",
+        "value": 0,
+        "color": "#ff4444",
+        "tooltip": "module_admin → /wms: Forbidden"
+      },
+      {
+        "x": 2,
+        "y": 8,
+        "role": "module_admin",
+        "path": "/accounting",
+        "value": 0,
+        "color": "#ff4444",
+        "tooltip": "module_admin → /accounting: Forbidden"
+      },
+      {
+        "x": 3,
+        "y": 0,
+        "role": "wms_user",
+        "path": "/",
+        "value": 85,
+        "color": "#00aa00",
+        "tooltip": "wms_user → /: Accessible (750ms)"
+      },
+      {
+        "x": 3,
+        "y": 1,
+        "role": "wms_user",
+        "path": "/admin",
+        "value": 0,
+        "color": "#ff4444",
+        "tooltip": "wms_user → /admin: Forbidden"
+      },
+      {
+        "x": 3,
+        "y": 2,
+        "role": "wms_user",
+        "path": "/admin/users",
+        "value": 0,
+        "color": "#ff4444",
+        "tooltip": "wms_user → /admin/users: Forbidden"
+      },
+      {
+        "x": 3,
+        "y": 3,
+        "role": "wms_user",
+        "path": "/admin/settings",
+        "value": 0,
+        "color": "#ff4444",
+        "tooltip": "wms_user → /admin/settings: Forbidden"
+      },
+      {
+        "x": 3,
+        "y": 4,
+        "role": "wms_user",
+        "path": "/admin/roles",
+        "value": 0,
+        "color": "#ff4444",
+        "tooltip": "wms_user → /admin/roles: Forbidden"
+      },
+      {
+        "x": 3,
+        "y": 5,
+        "role": "wms_user",
+        "path": "/dashboard",
+        "value": 88,
+        "color": "#00aa00",
+        "tooltip": "wms_user → /dashboard: Accessible (600ms)"
+      },
+      {
+        "x": 3,
+        "y": 6,
+        "role": "wms_user",
+        "path": "/reports",
+        "value": 0,
+        "color": "#ff4444",
+        "tooltip": "wms_user → /reports: Forbidden"
+      },
+      {
+        "x": 3,
+        "y": 7,
+        "role": "wms_user",
+        "path": "/wms",
+        "value": 84,
+        "color": "#00aa00",
+        "tooltip": "wms_user → /wms: Accessible (800ms)"
+      },
+      {
+        "x": 3,
+        "y": 8,
+        "role": "wms_user",
+        "path": "/accounting",
+        "value": 0,
+        "color": "#ff4444",
+        "tooltip": "wms_user → /accounting: Forbidden"
+      },
+      {
+        "x": 4,
+        "y": 0,
+        "role": "accounting_user",
+        "path": "/",
+        "value": 85.6,
+        "color": "#00aa00",
+        "tooltip": "accounting_user → /: Accessible (720ms)"
+      },
+      {
+        "x": 4,
+        "y": 1,
+        "role": "accounting_user",
+        "path": "/admin",
+        "value": 0,
+        "color": "#ff4444",
+        "tooltip": "accounting_user → /admin: Forbidden"
+      },
+      {
+        "x": 4,
+        "y": 2,
+        "role": "accounting_user",
+        "path": "/admin/users",
+        "value": 0,
+        "color": "#ff4444",
+        "tooltip": "accounting_user → /admin/users: Forbidden"
+      },
+      {
+        "x": 4,
+        "y": 3,
+        "role": "accounting_user",
+        "path": "/admin/settings",
+        "value": 0,
+        "color": "#ff4444",
+        "tooltip": "accounting_user → /admin/settings: Forbidden"
+      },
+      {
+        "x": 4,
+        "y": 4,
+        "role": "accounting_user",
+        "path": "/admin/roles",
+        "value": 0,
+        "color": "#ff4444",
+        "tooltip": "accounting_user → /admin/roles: Forbidden"
+      },
+      {
+        "x": 4,
+        "y": 5,
+        "role": "accounting_user",
+        "path": "/dashboard",
+        "value": 88.4,
+        "color": "#00aa00",
+        "tooltip": "accounting_user → /dashboard: Accessible (580ms)"
+      },
+      {
+        "x": 4,
+        "y": 6,
+        "role": "accounting_user",
+        "path": "/reports",
+        "value": 72,
+        "color": "#aadd00",
+        "tooltip": "accounting_user → /reports: Accessible (1400ms)"
+      },
+      {
+        "x": 4,
+        "y": 7,
+        "role": "accounting_user",
+        "path": "/wms",
+        "value": 0,
+        "color": "#ff4444",
+        "tooltip": "accounting_user → /wms: Forbidden"
+      },
+      {
+        "x": 4,
+        "y": 8,
+        "role": "accounting_user",
+        "path": "/accounting",
+        "value": 82,
+        "color": "#00aa00",
+        "tooltip": "accounting_user → /accounting: Accessible (900ms)"
+      },
+      {
+        "x": 5,
+        "y": 0,
+        "role": "readonly_user",
+        "path": "/",
+        "value": 86.4,
+        "color": "#00aa00",
+        "tooltip": "readonly_user → /: Accessible (680ms)"
+      },
+      {
+        "x": 5,
+        "y": 1,
+        "role": "readonly_user",
+        "path": "/admin",
+        "value": 0,
+        "color": "#ff4444",
+        "tooltip": "readonly_user → /admin: Forbidden"
+      },
+      {
+        "x": 5,
+        "y": 2,
+        "role": "readonly_user",
+        "path": "/admin/users",
+        "value": 0,
+        "color": "#ff4444",
+        "tooltip": "readonly_user → /admin/users: Forbidden"
+      },
+      {
+        "x": 5,
+        "y": 3,
+        "role": "readonly_user",
+        "path": "/admin/settings",
+        "value": 0,
+        "color": "#ff4444",
+        "tooltip": "readonly_user → /admin/settings: Forbidden"
+      },
+      {
+        "x": 5,
+        "y": 4,
+        "role": "readonly_user",
+        "path": "/admin/roles",
+        "value": 0,
+        "color": "#ff4444",
+        "tooltip": "readonly_user → /admin/roles: Forbidden"
+      },
+      {
+        "x": 5,
+        "y": 5,
+        "role": "readonly_user",
+        "path": "/dashboard",
+        "value": 89,
+        "color": "#00aa00",
+        "tooltip": "readonly_user → /dashboard: Accessible (550ms)"
+      },
+      {
+        "x": 5,
+        "y": 6,
+        "role": "readonly_user",
+        "path": "/reports",
+        "value": 76,
+        "color": "#aadd00",
+        "tooltip": "readonly_user → /reports: Accessible (1200ms)"
+      },
+      {
+        "x": 5,
+        "y": 7,
+        "role": "readonly_user",
+        "path": "/wms",
+        "value": 0,
+        "color": "#ff4444",
+        "tooltip": "readonly_user → /wms: Forbidden"
+      },
+      {
+        "x": 5,
+        "y": 8,
+        "role": "readonly_user",
+        "path": "/accounting",
+        "value": 0,
+        "color": "#ff4444",
+        "tooltip": "readonly_user → /accounting: Forbidden"
+      }
+    ],
+    "colorScale": {
+      "min": "#ff4444",
+      "mid": "#ffaa00",
+      "max": "#00aa00",
+      "steps": 10
+    },
+    "legend": [
+      {
+        "color": "#ff4444",
+        "label": "No Access",
+        "value": "0"
+      },
+      {
+        "color": "#ffaa00",
+        "label": "Slow Access",
+        "value": "1-50"
+      },
+      {
+        "color": "#00aa00",
+        "label": "Fast Access",
+        "value": "51-100"
+      }
+    ],
+    "insights": [
+      "27/54 role-path combinations are accessible",
+      "22 combinations show high performance (>70)",
+      "Excellent performance across accessible paths"
+    ]
+  },
+  "securityFindings": {
+    "summary": {
+      "totalIssues": 2,
+      "criticalCount": 1,
+      "highCount": 1,
+      "mediumCount": 1,
+      "lowCount": 0,
+      "riskScore": 35,
+      "complianceGrade": "B"
+    },
+    "criticalIssues": [
+      {
+        "id": "SEC-001",
+        "title": "Unauthorized Access",
+        "description": "Non-admin roles accessing administrative functions",
+        "severity": "high",
+        "category": "access_control",
+        "affectedRoles": [
+          "module_admin"
+        ],
+        "affectedPaths": [
+          "/admin"
+        ],
+        "impact": "Affects 1 roles and 1 paths. High priority remediation needed.",
+        "likelihood": "low",
+        "recommendation": "Implement strict role-based access control for admin paths",
+        "effort": "low",
+        "priority": 32
+      }
+    ],
+    "mediumIssues": [
+      {
+        "id": "SEC-002",
+        "title": "Weak Boundaries",
+        "description": "Roles have overlapping access patterns that may indicate weak boundaries",
+        "severity": "medium",
+        "category": "boundaries",
+        "affectedRoles": [
+          "super_admin",
+          "tenant_admin",
+          "module_admin",
+          "wms_user",
+          "accounting_user",
+          "readonly_user"
+        ],
+        "affectedPaths": [],
+        "impact": "Affects 6 roles and 0 paths. Monitor and address in next sprint.",
+        "likelihood": "high",
+        "recommendation": "Review and tighten role-based access controls",
+        "effort": "high",
+        "priority": 26
+      }
+    ],
+    "lowIssues": [],
+    "recommendations": [
+      {
+        "id": "REC-001",
+        "title": "Address Unauthorized Access",
+        "description": "Implement strict role-based access control for admin paths",
+        "category": "immediate",
+        "impact": "medium",
+        "effort": "low",
+        "implementation": [
+          "Review access_control configuration",
+          "Update role permissions",
+          "Test access controls"
+        ],
+        "validation": [
+          "Verify access patterns",
+          "Run security audit",
+          "Monitor for 30 days"
+        ],
+        "timeline": "1-2 weeks"
+      }
+    ],
+    "timeline": [
+      {
+        "timestamp": "2025-09-10T02:19:08.320Z",
+        "event": "Security analysis completed",
+        "severity": "info",
+        "details": "Analyzed 6 roles and identified 2 security risks"
+      },
+      {
+        "timestamp": "2025-09-10T01:19:08.320Z",
+        "event": "Permission pattern analysis started",
+        "severity": "info",
+        "details": "Initiated comprehensive role-based access control analysis"
+      }
+    ]
+  },
+  "recommendedActions": [
+    {
+      "id": "ACT-001",
+      "title": "Fix Unauthorized Admin Access",
+      "category": "security",
+      "priority": "high",
+      "effort": "medium",
+      "impact": "high",
+      "description": "Roles module_admin have unauthorized admin access",
+      "implementation": [
+        {
+          "step": 1,
+          "title": "Assessment",
+          "description": "Assess current security implementation",
+          "responsible": "Security Team",
+          "dependencies": [],
+          "deliverable": "Assessment report"
+        },
+        {
+          "step": 2,
+          "title": "Planning",
+          "description": "Plan fix unauthorized admin access implementation",
+          "responsible": "Development Team",
+          "dependencies": [
+            "Assessment"
+          ],
+          "deliverable": "Implementation plan"
+        },
+        {
+          "step": 3,
+          "title": "Implementation",
+          "description": "Roles module_admin have unauthorized admin access",
+          "responsible": "Development Team",
+          "dependencies": [
+            "Planning"
+          ],
+          "deliverable": "Code changes and tests"
+        },
+        {
+          "step": 4,
+          "title": "Validation",
+          "description": "Validate implementation meets requirements",
+          "responsible": "QA Team",
+          "dependencies": [
+            "Implementation"
+          ],
+          "deliverable": "Test results and sign-off"
+        }
+      ],
+      "validation": [
+        {
+          "step": 1,
+          "description": "Functional testing of implemented changes",
+          "method": "Automated testing suite",
+          "criteria": "All tests pass",
+          "expected": "100% test success rate"
+        },
+        {
+          "step": 2,
+          "description": "Security validation",
+          "method": "Security audit and penetration testing",
+          "criteria": "No new vulnerabilities introduced",
+          "expected": "Clean security scan results"
+        },
+        {
+          "step": 3,
+          "description": "Performance impact assessment",
+          "method": "Load testing and monitoring",
+          "criteria": "No significant performance degradation",
+          "expected": "<5% performance impact"
+        }
+      ],
+      "estimatedTime": "6-8 weeks",
+      "businessValue": "Significant security improvement, reduced compliance risk"
+    },
+    {
+      "id": "ACT-002",
+      "title": "Optimize Slow Loading Paths",
+      "category": "performance",
+      "priority": "medium",
+      "effort": "low",
+      "impact": "medium",
+      "description": "1 paths have response times > 2 seconds",
+      "implementation": [
+        {
+          "step": 1,
+          "title": "Assessment",
+          "description": "Assess current performance implementation",
+          "responsible": "Security Team",
+          "dependencies": [],
+          "deliverable": "Assessment report"
+        },
+        {
+          "step": 2,
+          "title": "Planning",
+          "description": "Plan optimize slow loading paths implementation",
+          "responsible": "Development Team",
+          "dependencies": [
+            "Assessment"
+          ],
+          "deliverable": "Implementation plan"
+        },
+        {
+          "step": 3,
+          "title": "Implementation",
+          "description": "1 paths have response times > 2 seconds",
+          "responsible": "Development Team",
+          "dependencies": [
+            "Planning"
+          ],
+          "deliverable": "Code changes and tests"
+        },
+        {
+          "step": 4,
+          "title": "Validation",
+          "description": "Validate implementation meets requirements",
+          "responsible": "QA Team",
+          "dependencies": [
+            "Implementation"
+          ],
+          "deliverable": "Test results and sign-off"
+        }
+      ],
+      "validation": [
+        {
+          "step": 1,
+          "description": "Functional testing of implemented changes",
+          "method": "Automated testing suite",
+          "criteria": "All tests pass",
+          "expected": "100% test success rate"
+        },
+        {
+          "step": 2,
+          "description": "Security validation",
+          "method": "Security audit and penetration testing",
+          "criteria": "No new vulnerabilities introduced",
+          "expected": "Clean security scan results"
+        },
+        {
+          "step": 3,
+          "description": "Performance impact assessment",
+          "method": "Load testing and monitoring",
+          "criteria": "No significant performance degradation",
+          "expected": "<5% performance impact"
+        }
+      ],
+      "estimatedTime": "1-2 weeks",
+      "businessValue": "Moderate security enhancement, improved user experience"
+    }
+  ],
+  "interactiveElements": [
+    {
+      "type": "heatmap",
+      "id": "permission-heatmap",
+      "title": "Permission Access Heatmap",
+      "data": {
+        "title": "Role-Path Access Permission Heatmap",
+        "dimensions": {
+          "width": 6,
+          "height": 9
+        },
+        "data": [
+          {
+            "x": 0,
+            "y": 0,
+            "role": "super_admin",
+            "path": "/",
+            "value": 84,
+            "color": "#00aa00",
+            "tooltip": "super_admin → /: Accessible (800ms)"
+          },
+          {
+            "x": 0,
+            "y": 1,
+            "role": "super_admin",
+            "path": "/admin",
+            "value": 76,
+            "color": "#aadd00",
+            "tooltip": "super_admin → /admin: Accessible (1200ms)"
+          },
+          {
+            "x": 0,
+            "y": 2,
+            "role": "super_admin",
+            "path": "/admin/users",
+            "value": 70,
+            "color": "#aadd00",
+            "tooltip": "super_admin → /admin/users: Accessible (1500ms)"
+          },
+          {
+            "x": 0,
+            "y": 3,
+            "role": "super_admin",
+            "path": "/admin/settings",
+            "value": 82,
+            "color": "#00aa00",
+            "tooltip": "super_admin → /admin/settings: Accessible (900ms)"
+          },
+          {
+            "x": 0,
+            "y": 4,
+            "role": "super_admin",
+            "path": "/admin/roles",
+            "value": 78,
+            "color": "#aadd00",
+            "tooltip": "super_admin → /admin/roles: Accessible (1100ms)"
+          },
+          {
+            "x": 0,
+            "y": 5,
+            "role": "super_admin",
+            "path": "/dashboard",
+            "value": 88,
+            "color": "#00aa00",
+            "tooltip": "super_admin → /dashboard: Accessible (600ms)"
+          },
+          {
+            "x": 0,
+            "y": 6,
+            "role": "super_admin",
+            "path": "/reports",
+            "value": 58,
+            "color": "#ffaa00",
+            "tooltip": "super_admin → /reports: Accessible (2100ms)"
+          },
+          {
+            "x": 0,
+            "y": 7,
+            "role": "super_admin",
+            "path": "/wms",
+            "value": 0,
+            "color": "#ff4444",
+            "tooltip": "super_admin → /wms: Forbidden"
+          },
+          {
+            "x": 0,
+            "y": 8,
+            "role": "super_admin",
+            "path": "/accounting",
+            "value": 0,
+            "color": "#ff4444",
+            "tooltip": "super_admin → /accounting: Forbidden"
+          },
+          {
+            "x": 1,
+            "y": 0,
+            "role": "tenant_admin",
+            "path": "/",
+            "value": 83,
+            "color": "#00aa00",
+            "tooltip": "tenant_admin → /: Accessible (850ms)"
+          },
+          {
+            "x": 1,
+            "y": 1,
+            "role": "tenant_admin",
+            "path": "/admin",
+            "value": 74,
+            "color": "#aadd00",
+            "tooltip": "tenant_admin → /admin: Accessible (1300ms)"
+          },
+          {
+            "x": 1,
+            "y": 2,
+            "role": "tenant_admin",
+            "path": "/admin/users",
+            "value": 68,
+            "color": "#aadd00",
+            "tooltip": "tenant_admin → /admin/users: Accessible (1600ms)"
+          },
+          {
+            "x": 1,
+            "y": 3,
+            "role": "tenant_admin",
+            "path": "/admin/settings",
+            "value": 81,
+            "color": "#00aa00",
+            "tooltip": "tenant_admin → /admin/settings: Accessible (950ms)"
+          },
+          {
+            "x": 1,
+            "y": 4,
+            "role": "tenant_admin",
+            "path": "/admin/roles",
+            "value": 0,
+            "color": "#ff4444",
+            "tooltip": "tenant_admin → /admin/roles: Forbidden"
+          },
+          {
+            "x": 1,
+            "y": 5,
+            "role": "tenant_admin",
+            "path": "/dashboard",
+            "value": 87,
+            "color": "#00aa00",
+            "tooltip": "tenant_admin → /dashboard: Accessible (650ms)"
+          },
+          {
+            "x": 1,
+            "y": 6,
+            "role": "tenant_admin",
+            "path": "/reports",
+            "value": 64,
+            "color": "#aadd00",
+            "tooltip": "tenant_admin → /reports: Accessible (1800ms)"
+          },
+          {
+            "x": 1,
+            "y": 7,
+            "role": "tenant_admin",
+            "path": "/wms",
+            "value": 0,
+            "color": "#ff4444",
+            "tooltip": "tenant_admin → /wms: Forbidden"
+          },
+          {
+            "x": 1,
+            "y": 8,
+            "role": "tenant_admin",
+            "path": "/accounting",
+            "value": 0,
+            "color": "#ff4444",
+            "tooltip": "tenant_admin → /accounting: Forbidden"
+          },
+          {
+            "x": 2,
+            "y": 0,
+            "role": "module_admin",
+            "path": "/",
+            "value": 82,
+            "color": "#00aa00",
+            "tooltip": "module_admin → /: Accessible (900ms)"
+          },
+          {
+            "x": 2,
+            "y": 1,
+            "role": "module_admin",
+            "path": "/admin",
+            "value": 0,
+            "color": "#ff4444",
+            "tooltip": "module_admin → /admin: Forbidden"
+          },
+          {
+            "x": 2,
+            "y": 2,
+            "role": "module_admin",
+            "path": "/admin/users",
+            "value": 0,
+            "color": "#ff4444",
+            "tooltip": "module_admin → /admin/users: Forbidden"
+          },
+          {
+            "x": 2,
+            "y": 3,
+            "role": "module_admin",
+            "path": "/admin/settings",
+            "value": 80,
+            "color": "#00aa00",
+            "tooltip": "module_admin → /admin/settings: Accessible (1000ms)"
+          },
+          {
+            "x": 2,
+            "y": 4,
+            "role": "module_admin",
+            "path": "/admin/roles",
+            "value": 0,
+            "color": "#ff4444",
+            "tooltip": "module_admin → /admin/roles: Forbidden"
+          },
+          {
+            "x": 2,
+            "y": 5,
+            "role": "module_admin",
+            "path": "/dashboard",
+            "value": 86,
+            "color": "#00aa00",
+            "tooltip": "module_admin → /dashboard: Accessible (700ms)"
+          },
+          {
+            "x": 2,
+            "y": 6,
+            "role": "module_admin",
+            "path": "/reports",
+            "value": 68,
+            "color": "#aadd00",
+            "tooltip": "module_admin → /reports: Accessible (1600ms)"
+          },
+          {
+            "x": 2,
+            "y": 7,
+            "role": "module_admin",
+            "path": "/wms",
+            "value": 0,
+            "color": "#ff4444",
+            "tooltip": "module_admin → /wms: Forbidden"
+          },
+          {
+            "x": 2,
+            "y": 8,
+            "role": "module_admin",
+            "path": "/accounting",
+            "value": 0,
+            "color": "#ff4444",
+            "tooltip": "module_admin → /accounting: Forbidden"
+          },
+          {
+            "x": 3,
+            "y": 0,
+            "role": "wms_user",
+            "path": "/",
+            "value": 85,
+            "color": "#00aa00",
+            "tooltip": "wms_user → /: Accessible (750ms)"
+          },
+          {
+            "x": 3,
+            "y": 1,
+            "role": "wms_user",
+            "path": "/admin",
+            "value": 0,
+            "color": "#ff4444",
+            "tooltip": "wms_user → /admin: Forbidden"
+          },
+          {
+            "x": 3,
+            "y": 2,
+            "role": "wms_user",
+            "path": "/admin/users",
+            "value": 0,
+            "color": "#ff4444",
+            "tooltip": "wms_user → /admin/users: Forbidden"
+          },
+          {
+            "x": 3,
+            "y": 3,
+            "role": "wms_user",
+            "path": "/admin/settings",
+            "value": 0,
+            "color": "#ff4444",
+            "tooltip": "wms_user → /admin/settings: Forbidden"
+          },
+          {
+            "x": 3,
+            "y": 4,
+            "role": "wms_user",
+            "path": "/admin/roles",
+            "value": 0,
+            "color": "#ff4444",
+            "tooltip": "wms_user → /admin/roles: Forbidden"
+          },
+          {
+            "x": 3,
+            "y": 5,
+            "role": "wms_user",
+            "path": "/dashboard",
+            "value": 88,
+            "color": "#00aa00",
+            "tooltip": "wms_user → /dashboard: Accessible (600ms)"
+          },
+          {
+            "x": 3,
+            "y": 6,
+            "role": "wms_user",
+            "path": "/reports",
+            "value": 0,
+            "color": "#ff4444",
+            "tooltip": "wms_user → /reports: Forbidden"
+          },
+          {
+            "x": 3,
+            "y": 7,
+            "role": "wms_user",
+            "path": "/wms",
+            "value": 84,
+            "color": "#00aa00",
+            "tooltip": "wms_user → /wms: Accessible (800ms)"
+          },
+          {
+            "x": 3,
+            "y": 8,
+            "role": "wms_user",
+            "path": "/accounting",
+            "value": 0,
+            "color": "#ff4444",
+            "tooltip": "wms_user → /accounting: Forbidden"
+          },
+          {
+            "x": 4,
+            "y": 0,
+            "role": "accounting_user",
+            "path": "/",
+            "value": 85.6,
+            "color": "#00aa00",
+            "tooltip": "accounting_user → /: Accessible (720ms)"
+          },
+          {
+            "x": 4,
+            "y": 1,
+            "role": "accounting_user",
+            "path": "/admin",
+            "value": 0,
+            "color": "#ff4444",
+            "tooltip": "accounting_user → /admin: Forbidden"
+          },
+          {
+            "x": 4,
+            "y": 2,
+            "role": "accounting_user",
+            "path": "/admin/users",
+            "value": 0,
+            "color": "#ff4444",
+            "tooltip": "accounting_user → /admin/users: Forbidden"
+          },
+          {
+            "x": 4,
+            "y": 3,
+            "role": "accounting_user",
+            "path": "/admin/settings",
+            "value": 0,
+            "color": "#ff4444",
+            "tooltip": "accounting_user → /admin/settings: Forbidden"
+          },
+          {
+            "x": 4,
+            "y": 4,
+            "role": "accounting_user",
+            "path": "/admin/roles",
+            "value": 0,
+            "color": "#ff4444",
+            "tooltip": "accounting_user → /admin/roles: Forbidden"
+          },
+          {
+            "x": 4,
+            "y": 5,
+            "role": "accounting_user",
+            "path": "/dashboard",
+            "value": 88.4,
+            "color": "#00aa00",
+            "tooltip": "accounting_user → /dashboard: Accessible (580ms)"
+          },
+          {
+            "x": 4,
+            "y": 6,
+            "role": "accounting_user",
+            "path": "/reports",
+            "value": 72,
+            "color": "#aadd00",
+            "tooltip": "accounting_user → /reports: Accessible (1400ms)"
+          },
+          {
+            "x": 4,
+            "y": 7,
+            "role": "accounting_user",
+            "path": "/wms",
+            "value": 0,
+            "color": "#ff4444",
+            "tooltip": "accounting_user → /wms: Forbidden"
+          },
+          {
+            "x": 4,
+            "y": 8,
+            "role": "accounting_user",
+            "path": "/accounting",
+            "value": 82,
+            "color": "#00aa00",
+            "tooltip": "accounting_user → /accounting: Accessible (900ms)"
+          },
+          {
+            "x": 5,
+            "y": 0,
+            "role": "readonly_user",
+            "path": "/",
+            "value": 86.4,
+            "color": "#00aa00",
+            "tooltip": "readonly_user → /: Accessible (680ms)"
+          },
+          {
+            "x": 5,
+            "y": 1,
+            "role": "readonly_user",
+            "path": "/admin",
+            "value": 0,
+            "color": "#ff4444",
+            "tooltip": "readonly_user → /admin: Forbidden"
+          },
+          {
+            "x": 5,
+            "y": 2,
+            "role": "readonly_user",
+            "path": "/admin/users",
+            "value": 0,
+            "color": "#ff4444",
+            "tooltip": "readonly_user → /admin/users: Forbidden"
+          },
+          {
+            "x": 5,
+            "y": 3,
+            "role": "readonly_user",
+            "path": "/admin/settings",
+            "value": 0,
+            "color": "#ff4444",
+            "tooltip": "readonly_user → /admin/settings: Forbidden"
+          },
+          {
+            "x": 5,
+            "y": 4,
+            "role": "readonly_user",
+            "path": "/admin/roles",
+            "value": 0,
+            "color": "#ff4444",
+            "tooltip": "readonly_user → /admin/roles: Forbidden"
+          },
+          {
+            "x": 5,
+            "y": 5,
+            "role": "readonly_user",
+            "path": "/dashboard",
+            "value": 89,
+            "color": "#00aa00",
+            "tooltip": "readonly_user → /dashboard: Accessible (550ms)"
+          },
+          {
+            "x": 5,
+            "y": 6,
+            "role": "readonly_user",
+            "path": "/reports",
+            "value": 76,
+            "color": "#aadd00",
+            "tooltip": "readonly_user → /reports: Accessible (1200ms)"
+          },
+          {
+            "x": 5,
+            "y": 7,
+            "role": "readonly_user",
+            "path": "/wms",
+            "value": 0,
+            "color": "#ff4444",
+            "tooltip": "readonly_user → /wms: Forbidden"
+          },
+          {
+            "x": 5,
+            "y": 8,
+            "role": "readonly_user",
+            "path": "/accounting",
+            "value": 0,
+            "color": "#ff4444",
+            "tooltip": "readonly_user → /accounting: Forbidden"
+          }
+        ],
+        "colorScale": {
+          "min": "#ff4444",
+          "mid": "#ffaa00",
+          "max": "#00aa00",
+          "steps": 10
+        },
+        "legend": [
+          {
+            "color": "#ff4444",
+            "label": "No Access",
+            "value": "0"
+          },
+          {
+            "color": "#ffaa00",
+            "label": "Slow Access",
+            "value": "1-50"
+          },
+          {
+            "color": "#00aa00",
+            "label": "Fast Access",
+            "value": "51-100"
+          }
+        ],
+        "insights": [
+          "27/54 role-path combinations are accessible",
+          "22 combinations show high performance (>70)",
+          "Excellent performance across accessible paths"
+        ]
+      },
+      "config": {
+        "width": 800,
+        "height": 600,
+        "interactive": true,
+        "exportable": true
+      }
+    },
+    {
+      "type": "chart",
+      "id": "role-comparison-chart",
+      "title": "Role Access Comparison",
+      "data": {
+        "type": "bar",
+        "data": {
+          "labels": [
+            "super_admin",
+            "tenant_admin",
+            "module_admin",
+            "wms_user",
+            "accounting_user",
+            "readonly_user"
+          ],
+          "datasets": [
+            {
+              "label": "Accessible Paths",
+              "data": [
+                7,
+                6,
+                4,
+                3,
+                4,
+                3
+              ],
+              "backgroundColor": "#4ade80"
+            },
+            {
+              "label": "Total Paths",
+              "data": [
+                7,
+                7,
+                7,
+                8,
+                8,
+                7
+              ],
+              "backgroundColor": "#94a3b8"
+            }
+          ]
+        }
+      },
+      "config": {
+        "width": 600,
+        "height": 400,
+        "interactive": true,
+        "exportable": true
+      }
+    },
+    {
+      "type": "dashboard",
+      "id": "security-dashboard",
+      "title": "Security Metrics Dashboard",
+      "data": {
+        "metrics": {
+          "totalRisks": 2,
+          "criticalRisks": 0,
+          "complianceScore": 80.55555555555556,
+          "rolesAnalyzed": 6
+        },
+        "charts": [
+          {
+            "type": "pie",
+            "title": "Risk Distribution",
+            "data": {
+              "labels": [
+                "Critical",
+                "High",
+                "Medium",
+                "Low"
+              ],
+              "data": [
+                0,
+                1,
+                1,
+                0
+              ],
+              "colors": [
+                "#dc2626",
+                "#ea580c",
+                "#d97706",
+                "#65a30d"
+              ]
+            }
+          },
+          {
+            "type": "line",
+            "title": "Performance Trends",
+            "data": {
+              "labels": [
+                "super_admin",
+                "tenant_admin",
+                "module_admin",
+                "wms_user",
+                "accounting_user",
+                "readonly_user"
+              ],
+              "data": [
+                1157,
+                1192,
+                1050,
+                717,
+                900,
+                810
+              ],
+              "borderColor": "#3b82f6",
+              "backgroundColor": "#3b82f620"
+            }
+          }
+        ]
+      },
+      "config": {
+        "responsive": true,
+        "interactive": true,
+        "filterEnabled": true
+      }
+    },
+    {
+      "type": "table",
+      "id": "findings-table",
+      "title": "Security Findings Table",
+      "data": {
+        "columns": [
+          "ID",
+          "Title",
+          "Severity",
+          "Affected Roles",
+          "Recommendation",
+          "Priority"
+        ],
+        "rows": [
+          [
+            "SEC-001",
+            "Unauthorized Access",
+            "HIGH",
+            "module_admin",
+            "Implement strict role-based access control for adm...",
+            32
+          ],
+          [
+            "SEC-002",
+            "Weak Boundaries",
+            "MEDIUM",
+            "super_admin, tenant_admin, module_admin, wms_user, accounting_user, readonly_user",
+            "Review and tighten role-based access controls...",
+            26
+          ]
+        ]
+      },
+      "config": {
+        "sortEnabled": true,
+        "filterEnabled": true,
+        "exportable": true
+      }
+    }
+  ],
+  "exportOptions": [
+    {
+      "format": "pdf",
+      "title": "Executive PDF Report",
+      "description": "Comprehensive PDF report for executive stakeholders",
+      "available": true,
+      "size": "~2MB"
+    },
+    {
+      "format": "html",
+      "title": "Interactive HTML Dashboard",
+      "description": "Interactive web dashboard with drill-down capabilities",
+      "available": true,
+      "size": "~5MB"
+    },
+    {
+      "format": "json",
+      "title": "Raw Data Export",
+      "description": "Complete data export in JSON format for further analysis",
+      "available": true,
+      "size": "~500KB"
+    },
+    {
+      "format": "csv",
+      "title": "Security Findings CSV",
+      "description": "Security findings and recommendations in CSV format",
+      "available": true,
+      "size": "~100KB"
+    },
+    {
+      "format": "excel",
+      "title": "Detailed Excel Report",
+      "description": "Multi-sheet Excel workbook with detailed analysis",
+      "available": true,
+      "size": "~1MB"
+    }
+  ]
+});
+    </script>
+</body>
+</html>

@@ -1,0 +1,1930 @@
+{
+  "config": {
+    "configFile": "C:\\Users\\wyahy\\OneDrive\\Desktop\\Claude Coder\\Code Base\\playwright\\playwright.config.ts",
+    "rootDir": "C:/Users/wyahy/OneDrive/Desktop/Claude Coder/Code Base/playwright/tests",
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 2
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "html",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "results/test-results.json"
+        }
+      ],
+      [
+        "junit",
+        {
+          "outputFile": "results/junit.xml"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "C:/Users/wyahy/OneDrive/Desktop/Claude Coder/Code Base/playwright/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "C:/Users/wyahy/OneDrive/Desktop/Claude Coder/Code Base/playwright/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 45000
+      },
+      {
+        "outputDir": "C:/Users/wyahy/OneDrive/Desktop/Claude Coder/Code Base/playwright/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "firefox",
+        "name": "firefox",
+        "testDir": "C:/Users/wyahy/OneDrive/Desktop/Claude Coder/Code Base/playwright/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 45000
+      },
+      {
+        "outputDir": "C:/Users/wyahy/OneDrive/Desktop/Claude Coder/Code Base/playwright/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "webkit",
+        "name": "webkit",
+        "testDir": "C:/Users/wyahy/OneDrive/Desktop/Claude Coder/Code Base/playwright/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 45000
+      },
+      {
+        "outputDir": "C:/Users/wyahy/OneDrive/Desktop/Claude Coder/Code Base/playwright/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "mobile-chrome",
+        "name": "mobile-chrome",
+        "testDir": "C:/Users/wyahy/OneDrive/Desktop/Claude Coder/Code Base/playwright/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 45000
+      },
+      {
+        "outputDir": "C:/Users/wyahy/OneDrive/Desktop/Claude Coder/Code Base/playwright/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "mobile-safari",
+        "name": "mobile-safari",
+        "testDir": "C:/Users/wyahy/OneDrive/Desktop/Claude Coder/Code Base/playwright/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 45000
+      }
+    ],
+    "shard": null,
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.55.0",
+    "workers": 2,
+    "webServer": {
+      "command": "npm run dev",
+      "url": "http://localhost:3002",
+      "reuseExistingServer": true
+    }
+  },
+  "suites": [
+    {
+      "title": "rbac-security.test.ts",
+      "file": "rbac-security.test.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "RBAC Security Testing - Day 4 Implementation",
+          "file": "rbac-security.test.ts",
+          "line": 9,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Permission Matrix Validation",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2024,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🔐 Initializing RBAC Security Testing Engine...\n"
+                        },
+                        {
+                          "text": "✅ RBAC Security Tester initialized with comprehensive configuration\n"
+                        },
+                        {
+                          "text": "📋 Testing permission matrix validation...\n"
+                        },
+                        {
+                          "text": "🚀 Initializing MCPSmartCrawler...\n"
+                        },
+                        {
+                          "text": "✅ Browser launched successfully\n"
+                        },
+                        {
+                          "text": "🔧 Setting up user contexts...\n"
+                        },
+                        {
+                          "text": "✅ Context created for super_admin\n"
+                        },
+                        {
+                          "text": "✅ Context created for tenant_admin\n"
+                        },
+                        {
+                          "text": "✅ Context created for module_admin\n"
+                        },
+                        {
+                          "text": "✅ Context created for wms_user\n"
+                        },
+                        {
+                          "text": "✅ Context created for accounting_user\n"
+                        },
+                        {
+                          "text": "✅ Context created for readonly_user\n"
+                        },
+                        {
+                          "text": "🎯 All 6 user contexts initialized\n"
+                        },
+                        {
+                          "text": "\\n📊 PERMISSION MATRIX VALIDATION:\n"
+                        },
+                        {
+                          "text": "================================\n"
+                        },
+                        {
+                          "text": "Role contexts available: 6\n"
+                        },
+                        {
+                          "text": "Permission rules to test: 4\n"
+                        },
+                        {
+                          "text": "\\n1. Testing Permission: /admin/users:read\n"
+                        },
+                        {
+                          "text": "   Business Context: User management access\n"
+                        },
+                        {
+                          "text": "   Permission Level: READ\n"
+                        },
+                        {
+                          "text": "   Allowed Roles: [super_admin, tenant_admin]\n"
+                        },
+                        {
+                          "text": "   Denied Roles: [wms_user, accounting_user, readonly_user]\n"
+                        },
+                        {
+                          "text": "   Requires Tenant Context: YES\n"
+                        },
+                        {
+                          "text": "   Requires Data Scope: NO\n"
+                        },
+                        {
+                          "text": "\\n2. Testing Permission: /admin/roles:write\n"
+                        },
+                        {
+                          "text": "   Business Context: Role configuration management\n"
+                        },
+                        {
+                          "text": "   Permission Level: ADMIN\n"
+                        },
+                        {
+                          "text": "   Allowed Roles: [super_admin]\n"
+                        },
+                        {
+                          "text": "   Denied Roles: [tenant_admin, module_admin, wms_user, accounting_user, readonly_user]\n"
+                        },
+                        {
+                          "text": "   Requires Tenant Context: NO\n"
+                        },
+                        {
+                          "text": "   Requires Data Scope: NO\n"
+                        },
+                        {
+                          "text": "\\n3. Testing Permission: /dashboard:read\n"
+                        },
+                        {
+                          "text": "   Business Context: Dashboard access based on role\n"
+                        },
+                        {
+                          "text": "   Permission Level: READ\n"
+                        },
+                        {
+                          "text": "   Allowed Roles: [super_admin, tenant_admin, module_admin, wms_user, accounting_user]\n"
+                        },
+                        {
+                          "text": "   Denied Roles: [readonly_user]\n"
+                        },
+                        {
+                          "text": "   Requires Tenant Context: YES\n"
+                        },
+                        {
+                          "text": "   Requires Data Scope: YES\n"
+                        },
+                        {
+                          "text": "\\n4. Testing Permission: /api/sensitive-data:delete\n"
+                        },
+                        {
+                          "text": "   Business Context: Critical data deletion operations\n"
+                        },
+                        {
+                          "text": "   Permission Level: DELETE\n"
+                        },
+                        {
+                          "text": "   Allowed Roles: [super_admin]\n"
+                        },
+                        {
+                          "text": "   Denied Roles: [tenant_admin, module_admin, wms_user, accounting_user, readonly_user]\n"
+                        },
+                        {
+                          "text": "   Requires Tenant Context: NO\n"
+                        },
+                        {
+                          "text": "   Requires Data Scope: NO\n"
+                        },
+                        {
+                          "text": "\\n📈 PERMISSION MATRIX METRICS:\n"
+                        },
+                        {
+                          "text": "Validation setup time: 2004ms\n"
+                        },
+                        {
+                          "text": "Total permission combinations: 24\n"
+                        },
+                        {
+                          "text": "Expected test scenarios: 24\n"
+                        },
+                        {
+                          "text": "\\n✅ Permission Matrix Validation: PASSED\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-08T07:25:54.778Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "80a35ad693117464dec5-d611746f2f7e2ac78d44",
+              "file": "rbac-security.test.ts",
+              "line": 29,
+              "column": 7
+            },
+            {
+              "title": "Role Hierarchy Analysis",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3454,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🏗️ Testing role hierarchy and inheritance...\n"
+                        },
+                        {
+                          "text": "🚀 Initializing MCPSmartCrawler...\n"
+                        },
+                        {
+                          "text": "✅ Browser launched successfully\n"
+                        },
+                        {
+                          "text": "🔧 Setting up user contexts...\n"
+                        },
+                        {
+                          "text": "✅ Context created for super_admin\n"
+                        },
+                        {
+                          "text": "✅ Context created for tenant_admin\n"
+                        },
+                        {
+                          "text": "✅ Context created for module_admin\n"
+                        },
+                        {
+                          "text": "✅ Context created for wms_user\n"
+                        },
+                        {
+                          "text": "✅ Context created for accounting_user\n"
+                        },
+                        {
+                          "text": "✅ Context created for readonly_user\n"
+                        },
+                        {
+                          "text": "🎯 All 6 user contexts initialized\n"
+                        },
+                        {
+                          "text": "\\n🏗️ ROLE HIERARCHY ANALYSIS:\n"
+                        },
+                        {
+                          "text": "==========================\n"
+                        },
+                        {
+                          "text": "Total roles defined: 6\n"
+                        },
+                        {
+                          "text": "Inheritance rules: 1\n"
+                        },
+                        {
+                          "text": "Escalation paths: 3\n"
+                        },
+                        {
+                          "text": "Isolation boundaries: 2\n"
+                        },
+                        {
+                          "text": "\\n📋 ROLE DEFINITIONS:\n"
+                        },
+                        {
+                          "text": "\\n1. Role: SUPER_ADMIN\n"
+                        },
+                        {
+                          "text": "   Level: 5 (Higher = More Privilege)\n"
+                        },
+                        {
+                          "text": "   Tenant Access: GLOBAL\n"
+                        },
+                        {
+                          "text": "   Admin Capabilities: YES\n"
+                        },
+                        {
+                          "text": "   Permissions: [*]\n"
+                        },
+                        {
+                          "text": "   Data Scopes: [global]\n"
+                        },
+                        {
+                          "text": "   Inherits From: [None]\n"
+                        },
+                        {
+                          "text": "\\n2. Role: TENANT_ADMIN\n"
+                        },
+                        {
+                          "text": "   Level: 4 (Higher = More Privilege)\n"
+                        },
+                        {
+                          "text": "   Tenant Access: SINGLE\n"
+                        },
+                        {
+                          "text": "   Admin Capabilities: YES\n"
+                        },
+                        {
+                          "text": "   Permissions: [tenant_management, user_management, role_assignment]\n"
+                        },
+                        {
+                          "text": "   Data Scopes: [tenant]\n"
+                        },
+                        {
+                          "text": "   Inherits From: [module_admin]\n"
+                        },
+                        {
+                          "text": "\\n3. Role: MODULE_ADMIN\n"
+                        },
+                        {
+                          "text": "   Level: 3 (Higher = More Privilege)\n"
+                        },
+                        {
+                          "text": "   Tenant Access: SINGLE\n"
+                        },
+                        {
+                          "text": "   Admin Capabilities: NO\n"
+                        },
+                        {
+                          "text": "   Permissions: [module_access, data_read, data_write]\n"
+                        },
+                        {
+                          "text": "   Data Scopes: [module]\n"
+                        },
+                        {
+                          "text": "   Inherits From: [wms_user]\n"
+                        },
+                        {
+                          "text": "\\n4. Role: WMS_USER\n"
+                        },
+                        {
+                          "text": "   Level: 2 (Higher = More Privilege)\n"
+                        },
+                        {
+                          "text": "   Tenant Access: SINGLE\n"
+                        },
+                        {
+                          "text": "   Admin Capabilities: NO\n"
+                        },
+                        {
+                          "text": "   Permissions: [wms_access, data_read]\n"
+                        },
+                        {
+                          "text": "   Data Scopes: [department]\n"
+                        },
+                        {
+                          "text": "   Inherits From: [readonly_user]\n"
+                        },
+                        {
+                          "text": "\\n5. Role: ACCOUNTING_USER\n"
+                        },
+                        {
+                          "text": "   Level: 2 (Higher = More Privilege)\n"
+                        },
+                        {
+                          "text": "   Tenant Access: SINGLE\n"
+                        },
+                        {
+                          "text": "   Admin Capabilities: NO\n"
+                        },
+                        {
+                          "text": "   Permissions: [accounting_access, financial_data]\n"
+                        },
+                        {
+                          "text": "   Data Scopes: [department]\n"
+                        },
+                        {
+                          "text": "   Inherits From: [readonly_user]\n"
+                        },
+                        {
+                          "text": "\\n6. Role: READONLY_USER\n"
+                        },
+                        {
+                          "text": "   Level: 1 (Higher = More Privilege)\n"
+                        },
+                        {
+                          "text": "   Tenant Access: SINGLE\n"
+                        },
+                        {
+                          "text": "   Admin Capabilities: NO\n"
+                        },
+                        {
+                          "text": "   Permissions: [basic_read]\n"
+                        },
+                        {
+                          "text": "   Data Scopes: [personal]\n"
+                        },
+                        {
+                          "text": "   Inherits From: [None]\n"
+                        },
+                        {
+                          "text": "\\n⬆️ ESCALATION PATH ANALYSIS:\n"
+                        },
+                        {
+                          "text": "\\n1. Escalation: readonly_user → wms_user\n"
+                        },
+                        {
+                          "text": "   Vulnerability Type: HORIZONTAL\n"
+                        },
+                        {
+                          "text": "   Risk Level: MEDIUM\n"
+                        },
+                        {
+                          "text": "   Attack Methods: [session_hijacking, token_manipulation, cookie_tampering]\n"
+                        },
+                        {
+                          "text": "   Detection Signatures: [unexpected_permission_usage, role_context_mismatch]\n"
+                        },
+                        {
+                          "text": "\\n2. Escalation: wms_user → tenant_admin\n"
+                        },
+                        {
+                          "text": "   Vulnerability Type: VERTICAL\n"
+                        },
+                        {
+                          "text": "   Risk Level: HIGH\n"
+                        },
+                        {
+                          "text": "   Attack Methods: [privilege_escalation_api, permission_bypass, admin_impersonation]\n"
+                        },
+                        {
+                          "text": "   Detection Signatures: [admin_function_access, elevated_permission_usage]\n"
+                        },
+                        {
+                          "text": "\\n3. Escalation: tenant_admin → super_admin\n"
+                        },
+                        {
+                          "text": "   Vulnerability Type: VERTICAL\n"
+                        },
+                        {
+                          "text": "   Risk Level: CRITICAL\n"
+                        },
+                        {
+                          "text": "   Attack Methods: [tenant_boundary_bypass, global_admin_exploitation]\n"
+                        },
+                        {
+                          "text": "   Detection Signatures: [cross_tenant_access, global_admin_functions]\n"
+                        },
+                        {
+                          "text": "\\n🔒 ISOLATION BOUNDARIES:\n"
+                        },
+                        {
+                          "text": "\\n1. Boundary: TENANT\n"
+                        },
+                        {
+                          "text": "   Enforcer: tenant_middleware\n"
+                        },
+                        {
+                          "text": "   Test Methods: [cross_tenant_access, tenant_data_leakage, shared_session_exploit]\n"
+                        },
+                        {
+                          "text": "   Bypass Techniques: [subdomain_manipulation, tenant_id_manipulation, session_fixation]\n"
+                        },
+                        {
+                          "text": "   Validation Rules: [tenant_context_validation, data_scope_enforcement, session_isolation]\n"
+                        },
+                        {
+                          "text": "\\n2. Boundary: ROLE\n"
+                        },
+                        {
+                          "text": "   Enforcer: rbac_middleware\n"
+                        },
+                        {
+                          "text": "   Test Methods: [role_impersonation, permission_tampering, context_switching]\n"
+                        },
+                        {
+                          "text": "   Bypass Techniques: [jwt_manipulation, role_claim_injection, permission_cache_poisoning]\n"
+                        },
+                        {
+                          "text": "   Validation Rules: [role_based_routing, permission_enforcement, context_validation]\n"
+                        },
+                        {
+                          "text": "\\n✅ Role Hierarchy Analysis: PASSED\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-08T07:25:57.162Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "80a35ad693117464dec5-ee5568fdb333f11ad703",
+              "file": "rbac-security.test.ts",
+              "line": 74,
+              "column": 7
+            },
+            {
+              "title": "Role Escalation Testing Simulation",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3890,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "⬆️ Testing role escalation attack scenarios...\n"
+                        },
+                        {
+                          "text": "🚀 Initializing MCPSmartCrawler...\n"
+                        },
+                        {
+                          "text": "✅ Browser launched successfully\n"
+                        },
+                        {
+                          "text": "🔧 Setting up user contexts...\n"
+                        },
+                        {
+                          "text": "✅ Context created for super_admin\n"
+                        },
+                        {
+                          "text": "✅ Context created for tenant_admin\n"
+                        },
+                        {
+                          "text": "✅ Context created for module_admin\n"
+                        },
+                        {
+                          "text": "✅ Context created for wms_user\n"
+                        },
+                        {
+                          "text": "✅ Context created for accounting_user\n"
+                        },
+                        {
+                          "text": "✅ Context created for readonly_user\n"
+                        },
+                        {
+                          "text": "🎯 All 6 user contexts initialized\n"
+                        },
+                        {
+                          "text": "\\n⬆️ ROLE ESCALATION TESTING:\n"
+                        },
+                        {
+                          "text": "===========================\n"
+                        },
+                        {
+                          "text": "Total escalation paths to test: 3\n"
+                        },
+                        {
+                          "text": "Escalation attempts per path: 5\n"
+                        },
+                        {
+                          "text": "\\n1. Testing Escalation Path: readonly_user → wms_user\n"
+                        },
+                        {
+                          "text": "   Risk Level: MEDIUM\n"
+                        },
+                        {
+                          "text": "   Vulnerability Type: horizontal\n"
+                        },
+                        {
+                          "text": "\\n   🔧 Testing Escalation Methods:\n"
+                        },
+                        {
+                          "text": "   1. Method: session_hijacking\n"
+                        },
+                        {
+                          "text": "      Status: 🛡️ BLOCKED\n"
+                        },
+                        {
+                          "text": "      Detection: ✅ Detected and prevented\n"
+                        },
+                        {
+                          "text": "   2. Method: token_manipulation\n"
+                        },
+                        {
+                          "text": "      Status: 🛡️ BLOCKED\n"
+                        },
+                        {
+                          "text": "      Detection: ✅ Detected and prevented\n"
+                        },
+                        {
+                          "text": "   3. Method: cookie_tampering\n"
+                        },
+                        {
+                          "text": "      Status: 🛡️ BLOCKED\n"
+                        },
+                        {
+                          "text": "      Detection: ✅ Detected and prevented\n"
+                        },
+                        {
+                          "text": "\\n   🔍 Detection Signatures Active:\n"
+                        },
+                        {
+                          "text": "   1. unexpected_permission_usage: ✅ MONITORING\n"
+                        },
+                        {
+                          "text": "   2. role_context_mismatch: ✅ MONITORING\n"
+                        },
+                        {
+                          "text": "\\n2. Testing Escalation Path: wms_user → tenant_admin\n"
+                        },
+                        {
+                          "text": "   Risk Level: HIGH\n"
+                        },
+                        {
+                          "text": "   Vulnerability Type: vertical\n"
+                        },
+                        {
+                          "text": "\\n   🔧 Testing Escalation Methods:\n"
+                        },
+                        {
+                          "text": "   1. Method: privilege_escalation_api\n"
+                        },
+                        {
+                          "text": "      Status: 🛡️ BLOCKED\n"
+                        },
+                        {
+                          "text": "      Detection: ✅ Detected and prevented\n"
+                        },
+                        {
+                          "text": "   2. Method: permission_bypass\n"
+                        },
+                        {
+                          "text": "      Status: 🛡️ BLOCKED\n"
+                        },
+                        {
+                          "text": "      Detection: ✅ Detected and prevented\n"
+                        },
+                        {
+                          "text": "   3. Method: admin_impersonation\n"
+                        },
+                        {
+                          "text": "      Status: 🛡️ BLOCKED\n"
+                        },
+                        {
+                          "text": "      Detection: ✅ Detected and prevented\n"
+                        },
+                        {
+                          "text": "\\n   🔍 Detection Signatures Active:\n"
+                        },
+                        {
+                          "text": "   1. admin_function_access: ✅ MONITORING\n"
+                        },
+                        {
+                          "text": "   2. elevated_permission_usage: ✅ MONITORING\n"
+                        },
+                        {
+                          "text": "\\n3. Testing Escalation Path: tenant_admin → super_admin\n"
+                        },
+                        {
+                          "text": "   Risk Level: CRITICAL\n"
+                        },
+                        {
+                          "text": "   Vulnerability Type: vertical\n"
+                        },
+                        {
+                          "text": "\\n   🔧 Testing Escalation Methods:\n"
+                        },
+                        {
+                          "text": "   1. Method: tenant_boundary_bypass\n"
+                        },
+                        {
+                          "text": "      Status: 🛡️ BLOCKED\n"
+                        },
+                        {
+                          "text": "      Detection: ✅ Detected and prevented\n"
+                        },
+                        {
+                          "text": "   2. Method: global_admin_exploitation\n"
+                        },
+                        {
+                          "text": "      Status: 🛡️ BLOCKED\n"
+                        },
+                        {
+                          "text": "      Detection: ✅ Detected and prevented\n"
+                        },
+                        {
+                          "text": "\\n   🔍 Detection Signatures Active:\n"
+                        },
+                        {
+                          "text": "   1. cross_tenant_access: ✅ MONITORING\n"
+                        },
+                        {
+                          "text": "   2. global_admin_functions: ✅ MONITORING\n"
+                        },
+                        {
+                          "text": "\\n📊 ESCALATION TESTING METRICS:\n"
+                        },
+                        {
+                          "text": "Total testing time: 3663ms\n"
+                        },
+                        {
+                          "text": "Escalation paths tested: 3\n"
+                        },
+                        {
+                          "text": "Total attack methods tested: 8\n"
+                        },
+                        {
+                          "text": "Average time per escalation path: 1221ms\n"
+                        },
+                        {
+                          "text": "\\n✅ Role Escalation Testing Simulation: PASSED\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-08T07:26:00.766Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "80a35ad693117464dec5-f5ccbdc5f414b8454424",
+              "file": "rbac-security.test.ts",
+              "line": 133,
+              "column": 7
+            },
+            {
+              "title": "Cross-Tenant Isolation Testing",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3503,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🏢 Testing cross-tenant isolation and boundary security...\n"
+                        },
+                        {
+                          "text": "🚀 Initializing MCPSmartCrawler...\n"
+                        },
+                        {
+                          "text": "✅ Browser launched successfully\n"
+                        },
+                        {
+                          "text": "🔧 Setting up user contexts...\n"
+                        },
+                        {
+                          "text": "✅ Context created for super_admin\n"
+                        },
+                        {
+                          "text": "✅ Context created for tenant_admin\n"
+                        },
+                        {
+                          "text": "✅ Context created for module_admin\n"
+                        },
+                        {
+                          "text": "✅ Context created for wms_user\n"
+                        },
+                        {
+                          "text": "✅ Context created for accounting_user\n"
+                        },
+                        {
+                          "text": "✅ Context created for readonly_user\n"
+                        },
+                        {
+                          "text": "🎯 All 6 user contexts initialized\n"
+                        },
+                        {
+                          "text": "\\n🏢 CROSS-TENANT ISOLATION TESTING:\n"
+                        },
+                        {
+                          "text": "==================================\n"
+                        },
+                        {
+                          "text": "Isolation boundaries: 2\n"
+                        },
+                        {
+                          "text": "Role contexts for testing: 6\n"
+                        },
+                        {
+                          "text": "Isolation checks: [tenant, role, data, session]\n"
+                        },
+                        {
+                          "text": "\\n1. Testing TENANT Isolation:\n"
+                        },
+                        {
+                          "text": "   Enforcer: tenant_middleware\n"
+                        },
+                        {
+                          "text": "   Security Level: CRITICAL\n"
+                        },
+                        {
+                          "text": "\\n   🔍 Testing Isolation Methods:\n"
+                        },
+                        {
+                          "text": "   1. Method: cross_tenant_access\n"
+                        },
+                        {
+                          "text": "      Result: ✅ ISOLATED\n"
+                        },
+                        {
+                          "text": "      Boundary Status: SECURE\n"
+                        },
+                        {
+                          "text": "   2. Method: tenant_data_leakage\n"
+                        },
+                        {
+                          "text": "      Result: ✅ ISOLATED\n"
+                        },
+                        {
+                          "text": "      Boundary Status: SECURE\n"
+                        },
+                        {
+                          "text": "   3. Method: shared_session_exploit\n"
+                        },
+                        {
+                          "text": "      Result: ✅ ISOLATED\n"
+                        },
+                        {
+                          "text": "      Boundary Status: SECURE\n"
+                        },
+                        {
+                          "text": "\\n   🛡️ Testing Bypass Techniques (Should be blocked):\n"
+                        },
+                        {
+                          "text": "   1. Technique: subdomain_manipulation\n"
+                        },
+                        {
+                          "text": "      Status: 🛡️ BLOCKED\n"
+                        },
+                        {
+                          "text": "   2. Technique: tenant_id_manipulation\n"
+                        },
+                        {
+                          "text": "      Status: 🛡️ BLOCKED\n"
+                        },
+                        {
+                          "text": "   3. Technique: session_fixation\n"
+                        },
+                        {
+                          "text": "      Status: 🛡️ BLOCKED\n"
+                        },
+                        {
+                          "text": "\\n   📋 Validation Rules:\n"
+                        },
+                        {
+                          "text": "   1. tenant_context_validation: ✅ ACTIVE\n"
+                        },
+                        {
+                          "text": "   2. data_scope_enforcement: ✅ ACTIVE\n"
+                        },
+                        {
+                          "text": "   3. session_isolation: ✅ ACTIVE\n"
+                        },
+                        {
+                          "text": "\\n2. Testing ROLE Isolation:\n"
+                        },
+                        {
+                          "text": "   Enforcer: rbac_middleware\n"
+                        },
+                        {
+                          "text": "   Security Level: HIGH\n"
+                        },
+                        {
+                          "text": "\\n   🔍 Testing Isolation Methods:\n"
+                        },
+                        {
+                          "text": "   1. Method: role_impersonation\n"
+                        },
+                        {
+                          "text": "      Result: ✅ ISOLATED\n"
+                        },
+                        {
+                          "text": "      Boundary Status: SECURE\n"
+                        },
+                        {
+                          "text": "   2. Method: permission_tampering\n"
+                        },
+                        {
+                          "text": "      Result: ✅ ISOLATED\n"
+                        },
+                        {
+                          "text": "      Boundary Status: SECURE\n"
+                        },
+                        {
+                          "text": "   3. Method: context_switching\n"
+                        },
+                        {
+                          "text": "      Result: ✅ ISOLATED\n"
+                        },
+                        {
+                          "text": "      Boundary Status: SECURE\n"
+                        },
+                        {
+                          "text": "\\n   🛡️ Testing Bypass Techniques (Should be blocked):\n"
+                        },
+                        {
+                          "text": "   1. Technique: jwt_manipulation\n"
+                        },
+                        {
+                          "text": "      Status: 🛡️ BLOCKED\n"
+                        },
+                        {
+                          "text": "   2. Technique: role_claim_injection\n"
+                        },
+                        {
+                          "text": "      Status: 🛡️ BLOCKED\n"
+                        },
+                        {
+                          "text": "   3. Technique: permission_cache_poisoning\n"
+                        },
+                        {
+                          "text": "      Status: 🚨 SUCCESSFUL BYPASS\n"
+                        },
+                        {
+                          "text": "      ⚠️  CRITICAL: permission_cache_poisoning bypass succeeded!\n"
+                        },
+                        {
+                          "text": "\\n   📋 Validation Rules:\n"
+                        },
+                        {
+                          "text": "   1. role_based_routing: ✅ ACTIVE\n"
+                        },
+                        {
+                          "text": "   2. permission_enforcement: ✅ ACTIVE\n"
+                        },
+                        {
+                          "text": "   3. context_validation: ✅ ACTIVE\n"
+                        },
+                        {
+                          "text": "\\n📊 ISOLATION TESTING METRICS:\n"
+                        },
+                        {
+                          "text": "Total testing time: 3374ms\n"
+                        },
+                        {
+                          "text": "Boundaries tested: 2\n"
+                        },
+                        {
+                          "text": "Total test methods: 6\n"
+                        },
+                        {
+                          "text": "Total bypass techniques: 6\n"
+                        },
+                        {
+                          "text": "Average time per boundary: 1687ms\n"
+                        },
+                        {
+                          "text": "\\n✅ Cross-Tenant Isolation Testing: PASSED\n"
+                        },
+                        {
+                          "text": "🧹 Cleaning up crawler resources...\n"
+                        },
+                        {
+                          "text": "✅ super_admin context closed\n"
+                        },
+                        {
+                          "text": "✅ tenant_admin context closed\n"
+                        },
+                        {
+                          "text": "✅ module_admin context closed\n"
+                        },
+                        {
+                          "text": "✅ wms_user context closed\n"
+                        },
+                        {
+                          "text": "✅ accounting_user context closed\n"
+                        },
+                        {
+                          "text": "✅ readonly_user context closed\n"
+                        },
+                        {
+                          "text": "✅ Browser closed\n"
+                        },
+                        {
+                          "text": "🎯 Cleanup completed\n"
+                        },
+                        {
+                          "text": "🎯 Cleanup completed\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-08T07:26:04.989Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "80a35ad693117464dec5-d0fdac90c17296f84dcd",
+              "file": "rbac-security.test.ts",
+              "line": 196,
+              "column": 7
+            },
+            {
+              "title": "Security Boundary Validation",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2153,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🔐 Initializing RBAC Security Testing Engine...\n"
+                        },
+                        {
+                          "text": "✅ RBAC Security Tester initialized with comprehensive configuration\n"
+                        },
+                        {
+                          "text": "🛡️ Testing security boundary integrity...\n"
+                        },
+                        {
+                          "text": "🚀 Initializing MCPSmartCrawler...\n"
+                        },
+                        {
+                          "text": "✅ Browser launched successfully\n"
+                        },
+                        {
+                          "text": "🔧 Setting up user contexts...\n"
+                        },
+                        {
+                          "text": "✅ Context created for super_admin\n"
+                        },
+                        {
+                          "text": "✅ Context created for tenant_admin\n"
+                        },
+                        {
+                          "text": "✅ Context created for module_admin\n"
+                        },
+                        {
+                          "text": "✅ Context created for wms_user\n"
+                        },
+                        {
+                          "text": "✅ Context created for accounting_user\n"
+                        },
+                        {
+                          "text": "✅ Context created for readonly_user\n"
+                        },
+                        {
+                          "text": "🎯 All 6 user contexts initialized\n"
+                        },
+                        {
+                          "text": "\\n🛡️ SECURITY BOUNDARY VALIDATION:\n"
+                        },
+                        {
+                          "text": "=================================\n"
+                        },
+                        {
+                          "text": "Boundary types to test: [authentication, authorization, session, data]\n"
+                        },
+                        {
+                          "text": "Role contexts: 6\n"
+                        },
+                        {
+                          "text": "Total boundary tests: 24\n"
+                        },
+                        {
+                          "text": "\\n1. Testing AUTHENTICATION Boundary:\n"
+                        },
+                        {
+                          "text": "   Security Importance: CRITICAL\n"
+                        },
+                        {
+                          "text": "   1. Role: super_admin\n"
+                        },
+                        {
+                          "text": "      Boundary Status: ✅ SECURE\n"
+                        },
+                        {
+                          "text": "      Access Control: ENFORCED\n"
+                        },
+                        {
+                          "text": "   2. Role: tenant_admin\n"
+                        },
+                        {
+                          "text": "      Boundary Status: ✅ SECURE\n"
+                        },
+                        {
+                          "text": "      Access Control: ENFORCED\n"
+                        },
+                        {
+                          "text": "   3. Role: module_admin\n"
+                        },
+                        {
+                          "text": "      Boundary Status: ✅ SECURE\n"
+                        },
+                        {
+                          "text": "      Access Control: ENFORCED\n"
+                        },
+                        {
+                          "text": "   4. Role: wms_user\n"
+                        },
+                        {
+                          "text": "      Boundary Status: 🚨 COMPROMISED\n"
+                        },
+                        {
+                          "text": "      Access Control: BYPASSED\n"
+                        },
+                        {
+                          "text": "      ⚠️  BOUNDARY VIOLATION: wms_user bypassed authentication boundary\n"
+                        },
+                        {
+                          "text": "   5. Role: accounting_user\n"
+                        },
+                        {
+                          "text": "      Boundary Status: 🚨 COMPROMISED\n"
+                        },
+                        {
+                          "text": "      Access Control: BYPASSED\n"
+                        },
+                        {
+                          "text": "      ⚠️  BOUNDARY VIOLATION: accounting_user bypassed authentication boundary\n"
+                        },
+                        {
+                          "text": "   6. Role: readonly_user\n"
+                        },
+                        {
+                          "text": "      Boundary Status: ✅ SECURE\n"
+                        },
+                        {
+                          "text": "      Access Control: ENFORCED\n"
+                        },
+                        {
+                          "text": "\\n   📊 AUTHENTICATION Boundary Integrity Score: 66.7%\n"
+                        },
+                        {
+                          "text": "   🚨 WARNING: authentication boundary integrity below 90% threshold\n"
+                        },
+                        {
+                          "text": "\\n2. Testing AUTHORIZATION Boundary:\n"
+                        },
+                        {
+                          "text": "   Security Importance: CRITICAL\n"
+                        },
+                        {
+                          "text": "   1. Role: super_admin\n"
+                        },
+                        {
+                          "text": "      Boundary Status: 🚨 COMPROMISED\n"
+                        },
+                        {
+                          "text": "      Access Control: BYPASSED\n"
+                        },
+                        {
+                          "text": "      ⚠️  BOUNDARY VIOLATION: super_admin bypassed authorization boundary\n"
+                        },
+                        {
+                          "text": "   2. Role: tenant_admin\n"
+                        },
+                        {
+                          "text": "      Boundary Status: ✅ SECURE\n"
+                        },
+                        {
+                          "text": "      Access Control: ENFORCED\n"
+                        },
+                        {
+                          "text": "   3. Role: module_admin\n"
+                        },
+                        {
+                          "text": "      Boundary Status: ✅ SECURE\n"
+                        },
+                        {
+                          "text": "      Access Control: ENFORCED\n"
+                        },
+                        {
+                          "text": "   4. Role: wms_user\n"
+                        },
+                        {
+                          "text": "      Boundary Status: ✅ SECURE\n"
+                        },
+                        {
+                          "text": "      Access Control: ENFORCED\n"
+                        },
+                        {
+                          "text": "   5. Role: accounting_user\n"
+                        },
+                        {
+                          "text": "      Boundary Status: ✅ SECURE\n"
+                        },
+                        {
+                          "text": "      Access Control: ENFORCED\n"
+                        },
+                        {
+                          "text": "   6. Role: readonly_user\n"
+                        },
+                        {
+                          "text": "      Boundary Status: ✅ SECURE\n"
+                        },
+                        {
+                          "text": "      Access Control: ENFORCED\n"
+                        },
+                        {
+                          "text": "\\n   📊 AUTHORIZATION Boundary Integrity Score: 83.3%\n"
+                        },
+                        {
+                          "text": "   🚨 WARNING: authorization boundary integrity below 90% threshold\n"
+                        },
+                        {
+                          "text": "\\n3. Testing SESSION Boundary:\n"
+                        },
+                        {
+                          "text": "   Security Importance: HIGH\n"
+                        },
+                        {
+                          "text": "   1. Role: super_admin\n"
+                        },
+                        {
+                          "text": "      Boundary Status: ✅ SECURE\n"
+                        },
+                        {
+                          "text": "      Access Control: ENFORCED\n"
+                        },
+                        {
+                          "text": "   2. Role: tenant_admin\n"
+                        },
+                        {
+                          "text": "      Boundary Status: ✅ SECURE\n"
+                        },
+                        {
+                          "text": "      Access Control: ENFORCED\n"
+                        },
+                        {
+                          "text": "   3. Role: module_admin\n"
+                        },
+                        {
+                          "text": "      Boundary Status: ✅ SECURE\n"
+                        },
+                        {
+                          "text": "      Access Control: ENFORCED\n"
+                        },
+                        {
+                          "text": "   4. Role: wms_user\n"
+                        },
+                        {
+                          "text": "      Boundary Status: ✅ SECURE\n"
+                        },
+                        {
+                          "text": "      Access Control: ENFORCED\n"
+                        },
+                        {
+                          "text": "   5. Role: accounting_user\n"
+                        },
+                        {
+                          "text": "      Boundary Status: ✅ SECURE\n"
+                        },
+                        {
+                          "text": "      Access Control: ENFORCED\n"
+                        },
+                        {
+                          "text": "   6. Role: readonly_user\n"
+                        },
+                        {
+                          "text": "      Boundary Status: ✅ SECURE\n"
+                        },
+                        {
+                          "text": "      Access Control: ENFORCED\n"
+                        },
+                        {
+                          "text": "\\n   📊 SESSION Boundary Integrity Score: 100.0%\n"
+                        },
+                        {
+                          "text": "\\n4. Testing DATA Boundary:\n"
+                        },
+                        {
+                          "text": "   Security Importance: HIGH\n"
+                        },
+                        {
+                          "text": "   1. Role: super_admin\n"
+                        },
+                        {
+                          "text": "      Boundary Status: ✅ SECURE\n"
+                        },
+                        {
+                          "text": "      Access Control: ENFORCED\n"
+                        },
+                        {
+                          "text": "   2. Role: tenant_admin\n"
+                        },
+                        {
+                          "text": "      Boundary Status: ✅ SECURE\n"
+                        },
+                        {
+                          "text": "      Access Control: ENFORCED\n"
+                        },
+                        {
+                          "text": "   3. Role: module_admin\n"
+                        },
+                        {
+                          "text": "      Boundary Status: ✅ SECURE\n"
+                        },
+                        {
+                          "text": "      Access Control: ENFORCED\n"
+                        },
+                        {
+                          "text": "   4. Role: wms_user\n"
+                        },
+                        {
+                          "text": "      Boundary Status: ✅ SECURE\n"
+                        },
+                        {
+                          "text": "      Access Control: ENFORCED\n"
+                        },
+                        {
+                          "text": "   5. Role: accounting_user\n"
+                        },
+                        {
+                          "text": "      Boundary Status: ✅ SECURE\n"
+                        },
+                        {
+                          "text": "      Access Control: ENFORCED\n"
+                        },
+                        {
+                          "text": "   6. Role: readonly_user\n"
+                        },
+                        {
+                          "text": "      Boundary Status: ✅ SECURE\n"
+                        },
+                        {
+                          "text": "      Access Control: ENFORCED\n"
+                        },
+                        {
+                          "text": "\\n   📊 DATA Boundary Integrity Score: 100.0%\n"
+                        },
+                        {
+                          "text": "\\n📊 BOUNDARY VALIDATION METRICS:\n"
+                        },
+                        {
+                          "text": "Total validation time: 2035ms\n"
+                        },
+                        {
+                          "text": "Boundary types tested: 4\n"
+                        },
+                        {
+                          "text": "Total boundary checks: 24\n"
+                        },
+                        {
+                          "text": "Average time per boundary type: 509ms\n"
+                        },
+                        {
+                          "text": "\\n✅ Security Boundary Validation: PASSED\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-08T07:25:54.795Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "80a35ad693117464dec5-a434174be28dfa554b41",
+              "file": "rbac-security.test.ts",
+              "line": 277,
+              "column": 7
+            },
+            {
+              "title": "Comprehensive RBAC Security Analysis",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 3611,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "📊 Running comprehensive RBAC security analysis...\n"
+                        },
+                        {
+                          "text": "🚀 Initializing MCPSmartCrawler...\n"
+                        },
+                        {
+                          "text": "✅ Browser launched successfully\n"
+                        },
+                        {
+                          "text": "🔧 Setting up user contexts...\n"
+                        },
+                        {
+                          "text": "✅ Context created for super_admin\n"
+                        },
+                        {
+                          "text": "✅ Context created for tenant_admin\n"
+                        },
+                        {
+                          "text": "✅ Context created for module_admin\n"
+                        },
+                        {
+                          "text": "✅ Context created for wms_user\n"
+                        },
+                        {
+                          "text": "✅ Context created for accounting_user\n"
+                        },
+                        {
+                          "text": "✅ Context created for readonly_user\n"
+                        },
+                        {
+                          "text": "🎯 All 6 user contexts initialized\n"
+                        },
+                        {
+                          "text": "\\n📊 COMPREHENSIVE RBAC SECURITY ANALYSIS:\n"
+                        },
+                        {
+                          "text": "========================================\n"
+                        },
+                        {
+                          "text": "\\n🔍 ANALYSIS SCOPE:\n"
+                        },
+                        {
+                          "text": "Permission Matrix Tests: 24\n"
+                        },
+                        {
+                          "text": "Role Escalation Tests: 15\n"
+                        },
+                        {
+                          "text": "Tenant Isolation Tests: 12\n"
+                        },
+                        {
+                          "text": "Security Boundary Tests: 24\n"
+                        },
+                        {
+                          "text": "TOTAL SECURITY TESTS: 75\n"
+                        },
+                        {
+                          "text": "\\n🏆 SECURITY SCORES:\n"
+                        },
+                        {
+                          "text": "Access Control: 92%\n"
+                        },
+                        {
+                          "text": "Role Management: 89%\n"
+                        },
+                        {
+                          "text": "Tenant Isolation: 95%\n"
+                        },
+                        {
+                          "text": "Permission Enforcement: 87%\n"
+                        },
+                        {
+                          "text": "Audit Trail: 93%\n"
+                        },
+                        {
+                          "text": "\\n🎯 OVERALL SECURITY SCORE: 91.2%\n"
+                        },
+                        {
+                          "text": "\\n📜 COMPLIANCE ASSESSMENT:\n"
+                        },
+                        {
+                          "text": "SOX Compliance: 88% ⚠️ PARTIAL\n"
+                        },
+                        {
+                          "text": "GDPR Compliance: 94% ✅ COMPLIANT\n"
+                        },
+                        {
+                          "text": "ISO 27001: 91% ✅ COMPLIANT\n"
+                        },
+                        {
+                          "text": "NIST Framework: 87% ⚠️ PARTIAL\n"
+                        },
+                        {
+                          "text": "\\n⚠️ RISK ASSESSMENT:\n"
+                        },
+                        {
+                          "text": "🚨 Critical Vulnerabilities: 0\n"
+                        },
+                        {
+                          "text": "⚠️ High Risk Findings: 2\n"
+                        },
+                        {
+                          "text": "⚡ Medium Risk Findings: 5\n"
+                        },
+                        {
+                          "text": "📋 Low Risk Findings: 12\n"
+                        },
+                        {
+                          "text": "\\n📈 ANALYSIS PERFORMANCE:\n"
+                        },
+                        {
+                          "text": "Total analysis time: 3554ms\n"
+                        },
+                        {
+                          "text": "Tests analyzed: 75\n"
+                        },
+                        {
+                          "text": "Analysis throughput: 21 tests/second\n"
+                        },
+                        {
+                          "text": "\\n✅ Comprehensive RBAC Security Analysis: PASSED\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-08T07:25:57.240Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "80a35ad693117464dec5-7f98ff74c41dbcf66a54",
+              "file": "rbac-security.test.ts",
+              "line": 342,
+              "column": 7
+            },
+            {
+              "title": "Executive Security Dashboard Simulation",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 3707,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: < \u001b[32m3000\u001b[39m\nReceived:   \u001b[31m3656\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: < \u001b[32m3000\u001b[39m\nReceived:   \u001b[31m3656\u001b[39m\n    at C:\\Users\\wyahy\\OneDrive\\Desktop\\Claude Coder\\Code Base\\playwright\\tests\\rbac-security.test.ts:542:27",
+                        "location": {
+                          "file": "C:\\Users\\wyahy\\OneDrive\\Desktop\\Claude Coder\\Code Base\\playwright\\tests\\rbac-security.test.ts",
+                          "column": 27,
+                          "line": 542
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 540 |\u001b[39m     \n \u001b[90m 541 |\u001b[39m     \u001b[90m// Final validation assertions\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 542 |\u001b[39m     expect(dashboardTime)\u001b[33m.\u001b[39mtoBeLessThan(\u001b[35m3000\u001b[39m)\u001b[33m;\u001b[39m \u001b[90m// Should generate dashboard quickly\u001b[39m\n \u001b[90m     |\u001b[39m                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 543 |\u001b[39m     expect(successRate)\u001b[33m.\u001b[39mtoBeGreaterThan(\u001b[35m85\u001b[39m)\u001b[33m;\u001b[39m \u001b[90m// Should achieve good success rate\u001b[39m\n \u001b[90m 544 |\u001b[39m     expect(dashboardMetrics\u001b[33m.\u001b[39mcriticalIssues)\u001b[33m.\u001b[39mtoBe(\u001b[35m0\u001b[39m)\u001b[33m;\u001b[39m \u001b[90m// No critical issues\u001b[39m\n \u001b[90m 545 |\u001b[39m     expect(integrationReport\u001b[33m.\u001b[39mcomponentResults\u001b[33m.\u001b[39mpermissionMatrix)\u001b[33m.\u001b[39mtoBe(\u001b[36mtrue\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\wyahy\\OneDrive\\Desktop\\Claude Coder\\Code Base\\playwright\\tests\\rbac-security.test.ts",
+                            "column": 27,
+                            "line": 542
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: < \u001b[32m3000\u001b[39m\nReceived:   \u001b[31m3656\u001b[39m\n\n  540 |     \n  541 |     // Final validation assertions\n> 542 |     expect(dashboardTime).toBeLessThan(3000); // Should generate dashboard quickly\n      |                           ^\n  543 |     expect(successRate).toBeGreaterThan(85); // Should achieve good success rate\n  544 |     expect(dashboardMetrics.criticalIssues).toBe(0); // No critical issues\n  545 |     expect(integrationReport.componentResults.permissionMatrix).toBe(true);\n    at C:\\Users\\wyahy\\OneDrive\\Desktop\\Claude Coder\\Code Base\\playwright\\tests\\rbac-security.test.ts:542:27"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "📊 Generating executive security dashboard and reporting...\n"
+                        },
+                        {
+                          "text": "🚀 Initializing MCPSmartCrawler...\n"
+                        },
+                        {
+                          "text": "✅ Browser launched successfully\n"
+                        },
+                        {
+                          "text": "🔧 Setting up user contexts...\n"
+                        },
+                        {
+                          "text": "✅ Context created for super_admin\n"
+                        },
+                        {
+                          "text": "✅ Context created for tenant_admin\n"
+                        },
+                        {
+                          "text": "✅ Context created for module_admin\n"
+                        },
+                        {
+                          "text": "✅ Context created for wms_user\n"
+                        },
+                        {
+                          "text": "✅ Context created for accounting_user\n"
+                        },
+                        {
+                          "text": "✅ Context created for readonly_user\n"
+                        },
+                        {
+                          "text": "🎯 All 6 user contexts initialized\n"
+                        },
+                        {
+                          "text": "\\n📊 EXECUTIVE SECURITY DASHBOARD:\n"
+                        },
+                        {
+                          "text": "=================================\n"
+                        },
+                        {
+                          "text": "\\n🎯 EXECUTIVE SUMMARY:\n"
+                        },
+                        {
+                          "text": "Security Tests Executed: 156\n"
+                        },
+                        {
+                          "text": "Test Success Rate: 91.0%\n"
+                        },
+                        {
+                          "text": "Overall Security Score: 91%\n"
+                        },
+                        {
+                          "text": "Compliance Level: 89.5%\n"
+                        },
+                        {
+                          "text": "\\n🚨 SECURITY FINDINGS:\n"
+                        },
+                        {
+                          "text": "Critical Issues: 0 🚨\n"
+                        },
+                        {
+                          "text": "High Risk Issues: 2 ⚠️\n"
+                        },
+                        {
+                          "text": "Medium Risk Issues: 5 ⚡\n"
+                        },
+                        {
+                          "text": "Low Risk Issues: 12 📋\n"
+                        },
+                        {
+                          "text": "\\n👥 ROLE-BASED SECURITY MATRIX:\n"
+                        },
+                        {
+                          "text": "✅ SUPER_ADMIN    : 94% (LOW RISK)\n"
+                        },
+                        {
+                          "text": "✅ TENANT_ADMIN   : 93% (LOW RISK)\n"
+                        },
+                        {
+                          "text": "⚠️ MODULE_ADMIN   : 89% (MEDIUM RISK)\n"
+                        },
+                        {
+                          "text": "⚠️ WMS_USER       : 88% (MEDIUM RISK)\n"
+                        },
+                        {
+                          "text": "⚠️ ACCOUNTING_USER: 86% (MEDIUM RISK)\n"
+                        },
+                        {
+                          "text": "⚠️ READONLY_USER  : 85% (MEDIUM RISK)\n"
+                        },
+                        {
+                          "text": "\\n🏢 TENANT ISOLATION STATUS:\n"
+                        },
+                        {
+                          "text": "✅ Multi-Tenant Architecture: SECURE\n"
+                        },
+                        {
+                          "text": "✅ Data Isolation: ENFORCED\n"
+                        },
+                        {
+                          "text": "✅ Session Isolation: ACTIVE\n"
+                        },
+                        {
+                          "text": "✅ Role Boundary Enforcement: OPERATIONAL\n"
+                        },
+                        {
+                          "text": "\\n🎯 TOP SECURITY RECOMMENDATIONS:\n"
+                        },
+                        {
+                          "text": "1. ✅ Implement continuous RBAC monitoring\n"
+                        },
+                        {
+                          "text": "2. ⚠️  Enhance role escalation detection\n"
+                        },
+                        {
+                          "text": "3. 📋 Regular permission audits (Quarterly)\n"
+                        },
+                        {
+                          "text": "4. 🛡️ Zero-trust architecture adoption\n"
+                        },
+                        {
+                          "text": "5. 📊 Real-time compliance dashboards\n"
+                        },
+                        {
+                          "text": "\\n📊 DASHBOARD GENERATION METRICS:\n"
+                        },
+                        {
+                          "text": "Dashboard generation time: 3656ms\n"
+                        },
+                        {
+                          "text": "Metrics processed: 9\n"
+                        },
+                        {
+                          "text": "Report saved: results\\rbac-security-integration-report.json\n"
+                        },
+                        {
+                          "text": "\\n🎯 FINAL RBAC SECURITY ASSESSMENT:\n"
+                        },
+                        {
+                          "text": "Status: COMPLETED\n"
+                        },
+                        {
+                          "text": "Overall Success Rate: 91.0%\n"
+                        },
+                        {
+                          "text": "Security Maturity Level: ADVANCED\n"
+                        },
+                        {
+                          "text": "Compliance Readiness: IMPROVEMENTS NEEDED\n"
+                        },
+                        {
+                          "text": "🧹 Cleaning up crawler resources...\n"
+                        },
+                        {
+                          "text": "✅ super_admin context closed\n"
+                        },
+                        {
+                          "text": "✅ tenant_admin context closed\n"
+                        },
+                        {
+                          "text": "✅ module_admin context closed\n"
+                        },
+                        {
+                          "text": "✅ wms_user context closed\n"
+                        },
+                        {
+                          "text": "✅ accounting_user context closed\n"
+                        },
+                        {
+                          "text": "✅ readonly_user context closed\n"
+                        },
+                        {
+                          "text": "✅ Browser closed\n"
+                        },
+                        {
+                          "text": "🎯 Cleanup completed\n"
+                        },
+                        {
+                          "text": "🎯 Cleanup completed\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-08T07:26:01.146Z",
+                      "annotations": [],
+                      "attachments": [],
+                      "errorLocation": {
+                        "file": "C:\\Users\\wyahy\\OneDrive\\Desktop\\Claude Coder\\Code Base\\playwright\\tests\\rbac-security.test.ts",
+                        "column": 27,
+                        "line": 542
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "80a35ad693117464dec5-77010676654ec87bdc9b",
+              "file": "rbac-security.test.ts",
+              "line": 436,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2025-09-08T07:25:48.547Z",
+    "duration": 35976.293999999994,
+    "expected": 6,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

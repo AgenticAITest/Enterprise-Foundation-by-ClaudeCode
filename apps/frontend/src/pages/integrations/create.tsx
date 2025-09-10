@@ -109,7 +109,7 @@ const IntegrationBuilder: React.FC = () => {
   const handleIntegrationSubmit = async (data: IntegrationFormData) => {
     setIsLoading(true);
     try {
-      const response = await fetch('http://localhost:3001/api/integrations', {
+      const response = await fetch('/api/integrations', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -152,7 +152,7 @@ const IntegrationBuilder: React.FC = () => {
           break;
       }
 
-      const response = await fetch(`http://localhost:3001${endpoint}`, {
+      const response = await fetch(endpoint, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

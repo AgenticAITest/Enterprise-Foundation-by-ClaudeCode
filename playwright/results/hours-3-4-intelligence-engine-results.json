@@ -1,0 +1,261 @@
+{
+  "executionMetrics": {
+    "discoveryTime": 82233,
+    "analysisTime": 8,
+    "totalTime": 82241,
+    "rolesProcessed": 2
+  },
+  "intelligenceReport": {
+    "permissionPatterns": {
+      "roleHierarchy": {
+        "expectedHierarchy": {
+          "super_admin": [
+            "/admin",
+            "/admin/users",
+            "/admin/settings",
+            "/admin/roles",
+            "/admin/tenants"
+          ],
+          "tenant_admin": [
+            "/admin",
+            "/admin/users",
+            "/admin/settings"
+          ],
+          "module_admin": [
+            "/admin/settings"
+          ],
+          "wms_user": [
+            "/wms"
+          ],
+          "accounting_user": [
+            "/accounting"
+          ],
+          "readonly_user": [
+            "/dashboard"
+          ]
+        },
+        "actualHierarchy": {
+          "super_admin": [],
+          "tenant_admin": [
+            "/admin/modules",
+            "/admin/users",
+            "/admin/roles"
+          ]
+        },
+        "violations": [
+          {
+            "lowerRole": "tenant_admin",
+            "higherRole": "super_admin",
+            "violationType": "excessive_access",
+            "affectedPaths": [
+              "/admin/modules",
+              "/admin/users",
+              "/admin/roles"
+            ],
+            "severity": "medium"
+          }
+        ],
+        "complianceScore": 97.22222222222221
+      },
+      "accessPatterns": [
+        {
+          "pattern": "Admin-Only Access",
+          "rolesWithAccess": [
+            "super_admin",
+            "tenant_admin"
+          ],
+          "frequency": 3,
+          "riskLevel": "low",
+          "description": "Paths accessible only to administrative roles"
+        }
+      ],
+      "permissionGaps": [
+        {
+          "role": "super_admin",
+          "expectedPath": "/admin",
+          "actualResult": "forbidden",
+          "severity": "high",
+          "recommendation": "Ensure super_admin has access to /admin"
+        },
+        {
+          "role": "super_admin",
+          "expectedPath": "/admin/users",
+          "actualResult": "forbidden",
+          "severity": "high",
+          "recommendation": "Ensure super_admin has access to /admin/users"
+        },
+        {
+          "role": "super_admin",
+          "expectedPath": "/admin/settings",
+          "actualResult": "forbidden",
+          "severity": "high",
+          "recommendation": "Ensure super_admin has access to /admin/settings"
+        },
+        {
+          "role": "super_admin",
+          "expectedPath": "/admin/roles",
+          "actualResult": "forbidden",
+          "severity": "high",
+          "recommendation": "Ensure super_admin has access to /admin/roles"
+        },
+        {
+          "role": "tenant_admin",
+          "expectedPath": "/admin",
+          "actualResult": "forbidden",
+          "severity": "high",
+          "recommendation": "Ensure tenant_admin has access to /admin"
+        },
+        {
+          "role": "tenant_admin",
+          "expectedPath": "/admin/settings",
+          "actualResult": "forbidden",
+          "severity": "high",
+          "recommendation": "Ensure tenant_admin has access to /admin/settings"
+        }
+      ],
+      "securityRisks": []
+    },
+    "roleComparison": {
+      "uniqueAccess": {
+        "super_admin": [],
+        "tenant_admin": [
+          "/admin/modules",
+          "/admin/users",
+          "/admin/roles"
+        ]
+      },
+      "commonAccess": [],
+      "hierarchicalAccess": {
+        "super_admin": [],
+        "tenant_admin": [
+          "/admin/modules",
+          "/admin/users",
+          "/admin/roles"
+        ],
+        "module_admin": [],
+        "wms_user": [],
+        "accounting_user": [],
+        "readonly_user": []
+      },
+      "securityExceptions": []
+    },
+    "securityInsights": [],
+    "performanceAnalysis": {
+      "responseTimeAnalysis": {
+        "averageByRole": {
+          "tenant_admin": 5457
+        },
+        "slowestPaths": [
+          {
+            "path": "/admin/modules",
+            "role": "tenant_admin",
+            "responseTime": 8455
+          },
+          {
+            "path": "/admin/users",
+            "role": "tenant_admin",
+            "responseTime": 4925
+          },
+          {
+            "path": "/admin/roles",
+            "role": "tenant_admin",
+            "responseTime": 2992
+          }
+        ],
+        "fastestPaths": [
+          {
+            "path": "/admin/roles",
+            "role": "tenant_admin",
+            "responseTime": 2992
+          },
+          {
+            "path": "/admin/users",
+            "role": "tenant_admin",
+            "responseTime": 4925
+          },
+          {
+            "path": "/admin/modules",
+            "role": "tenant_admin",
+            "responseTime": 8455
+          }
+        ],
+        "performanceGrades": {
+          "tenant_admin": "D"
+        }
+      },
+      "errorPatterns": [
+        {
+          "errorType": "Other",
+          "frequency": 19,
+          "affectedRoles": [
+            "super_admin",
+            "tenant_admin"
+          ],
+          "affectedPaths": [
+            "/",
+            "/admin",
+            "/admin/modules",
+            "/admin/users",
+            "/admin/roles",
+            "/admin/data-scopes",
+            "/admin/audit",
+            "/admin/settings",
+            "/admin/tenants",
+            "/admin/currencies",
+            "/admin/integrations",
+            "/debug"
+          ],
+          "commonality": 100
+        }
+      ],
+      "optimizationOpportunities": [
+        {
+          "area": "performance",
+          "description": "Average response time is 5457ms - consider performance optimization",
+          "impact": "high",
+          "effort": "medium",
+          "priority": 1
+        }
+      ]
+    },
+    "recommendations": [
+      {
+        "category": "performance",
+        "title": "Optimize Slow Loading Paths",
+        "description": "3 paths have response times > 2 seconds",
+        "priority": "medium",
+        "effort": "low",
+        "impact": "medium",
+        "implementation": [
+          "Profile slow-loading routes",
+          "Implement caching strategy",
+          "Optimize database queries"
+        ],
+        "validation": [
+          "Measure response time improvements",
+          "Monitor user experience metrics",
+          "Load test optimized routes"
+        ]
+      }
+    ],
+    "executiveSummary": {
+      "securityPosture": "excellent",
+      "overallScore": 59,
+      "keyFindings": [
+        "Role hierarchy compliance: 97.2%",
+        "Security risks identified: 0",
+        "Permission gaps found: 6",
+        "Performance grade: F"
+      ],
+      "topRisks": [],
+      "quickWins": [],
+      "investmentPriorities": [
+        "Strengthen role-based access controls",
+        "Implement comprehensive audit logging",
+        "Optimize application performance",
+        "Enhance security monitoring"
+      ]
+    }
+  },
+  "timestamp": "2025-09-10T02:22:03.474Z"
+}

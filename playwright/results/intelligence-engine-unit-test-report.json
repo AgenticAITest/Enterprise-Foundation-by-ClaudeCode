@@ -1,0 +1,440 @@
+{
+  "permissionPatterns": {
+    "roleHierarchy": {
+      "expectedHierarchy": {
+        "super_admin": [
+          "/admin",
+          "/admin/users",
+          "/admin/settings",
+          "/admin/roles",
+          "/admin/tenants"
+        ],
+        "tenant_admin": [
+          "/admin",
+          "/admin/users",
+          "/admin/settings"
+        ],
+        "module_admin": [
+          "/admin/settings"
+        ],
+        "wms_user": [
+          "/wms"
+        ],
+        "accounting_user": [
+          "/accounting"
+        ],
+        "readonly_user": [
+          "/dashboard"
+        ]
+      },
+      "actualHierarchy": {
+        "super_admin": [
+          "/",
+          "/admin",
+          "/admin/users",
+          "/admin/settings",
+          "/admin/roles",
+          "/dashboard"
+        ],
+        "tenant_admin": [
+          "/",
+          "/admin",
+          "/admin/users",
+          "/admin/settings",
+          "/dashboard"
+        ],
+        "module_admin": [
+          "/",
+          "/admin/settings",
+          "/dashboard"
+        ],
+        "wms_user": [
+          "/",
+          "/dashboard",
+          "/wms"
+        ],
+        "accounting_user": [
+          "/",
+          "/dashboard",
+          "/accounting"
+        ],
+        "readonly_user": [
+          "/",
+          "/dashboard"
+        ]
+      },
+      "violations": [
+        {
+          "lowerRole": "wms_user",
+          "higherRole": "super_admin",
+          "violationType": "excessive_access",
+          "affectedPaths": [
+            "/wms"
+          ],
+          "severity": "medium"
+        },
+        {
+          "lowerRole": "accounting_user",
+          "higherRole": "super_admin",
+          "violationType": "excessive_access",
+          "affectedPaths": [
+            "/accounting"
+          ],
+          "severity": "medium"
+        },
+        {
+          "lowerRole": "wms_user",
+          "higherRole": "tenant_admin",
+          "violationType": "excessive_access",
+          "affectedPaths": [
+            "/wms"
+          ],
+          "severity": "medium"
+        },
+        {
+          "lowerRole": "accounting_user",
+          "higherRole": "tenant_admin",
+          "violationType": "excessive_access",
+          "affectedPaths": [
+            "/accounting"
+          ],
+          "severity": "medium"
+        },
+        {
+          "lowerRole": "wms_user",
+          "higherRole": "module_admin",
+          "violationType": "excessive_access",
+          "affectedPaths": [
+            "/wms"
+          ],
+          "severity": "medium"
+        },
+        {
+          "lowerRole": "accounting_user",
+          "higherRole": "module_admin",
+          "violationType": "excessive_access",
+          "affectedPaths": [
+            "/accounting"
+          ],
+          "severity": "medium"
+        }
+      ],
+      "complianceScore": 83.33333333333334
+    },
+    "accessPatterns": [
+      {
+        "pattern": "Admin-Only Access",
+        "rolesWithAccess": [
+          "super_admin",
+          "tenant_admin"
+        ],
+        "frequency": 6,
+        "riskLevel": "low",
+        "description": "Paths accessible only to administrative roles"
+      },
+      {
+        "pattern": "Universal Access",
+        "rolesWithAccess": [
+          "super_admin",
+          "tenant_admin",
+          "module_admin",
+          "wms_user",
+          "accounting_user",
+          "readonly_user"
+        ],
+        "frequency": 2,
+        "riskLevel": "medium",
+        "description": "Paths accessible to all roles - verify if intended"
+      }
+    ],
+    "permissionGaps": [
+      {
+        "role": "tenant_admin",
+        "expectedPath": "/admin/roles",
+        "actualResult": "forbidden",
+        "severity": "high",
+        "recommendation": "Ensure tenant_admin has access to /admin/roles"
+      }
+    ],
+    "securityRisks": [
+      {
+        "type": "unauthorized_access",
+        "severity": "high",
+        "affectedRoles": [
+          "module_admin"
+        ],
+        "paths": [
+          "/admin"
+        ],
+        "description": "Non-admin roles accessing administrative functions",
+        "mitigation": "Implement strict role-based access control for admin paths"
+      },
+      {
+        "type": "weak_boundaries",
+        "severity": "medium",
+        "affectedRoles": [
+          "super_admin",
+          "tenant_admin",
+          "module_admin",
+          "wms_user",
+          "accounting_user",
+          "readonly_user"
+        ],
+        "paths": [],
+        "description": "Roles have overlapping access patterns that may indicate weak boundaries",
+        "mitigation": "Review and tighten role-based access controls"
+      }
+    ]
+  },
+  "roleComparison": {
+    "uniqueAccess": {
+      "super_admin": [
+        "/",
+        "/admin",
+        "/admin/users",
+        "/admin/settings",
+        "/admin/roles",
+        "/dashboard"
+      ],
+      "tenant_admin": [
+        "/",
+        "/admin",
+        "/admin/users",
+        "/admin/settings",
+        "/dashboard"
+      ],
+      "module_admin": [
+        "/",
+        "/admin/settings",
+        "/dashboard"
+      ],
+      "wms_user": [
+        "/",
+        "/dashboard",
+        "/wms"
+      ],
+      "accounting_user": [
+        "/",
+        "/dashboard",
+        "/accounting"
+      ],
+      "readonly_user": [
+        "/",
+        "/dashboard"
+      ]
+    },
+    "commonAccess": [
+      "/",
+      "/dashboard"
+    ],
+    "hierarchicalAccess": {
+      "super_admin": [
+        "/",
+        "/admin",
+        "/admin/users",
+        "/admin/settings",
+        "/admin/roles",
+        "/dashboard"
+      ],
+      "tenant_admin": [
+        "/",
+        "/admin",
+        "/admin/users",
+        "/admin/settings",
+        "/dashboard"
+      ],
+      "module_admin": [
+        "/",
+        "/admin/settings",
+        "/dashboard"
+      ],
+      "wms_user": [
+        "/",
+        "/dashboard",
+        "/wms"
+      ],
+      "accounting_user": [
+        "/",
+        "/dashboard",
+        "/accounting"
+      ],
+      "readonly_user": [
+        "/",
+        "/dashboard"
+      ]
+    },
+    "securityExceptions": [
+      {
+        "type": "unexpected_access",
+        "role": "module_admin",
+        "path": "/admin/settings",
+        "expected": false,
+        "actual": true,
+        "riskLevel": "high"
+      }
+    ]
+  },
+  "securityInsights": [
+    {
+      "category": "access_control",
+      "finding": "High role overlap detected: 62.5% of paths are accessible by multiple roles",
+      "impact": "medium",
+      "evidence": [
+        "Role comparison analysis"
+      ],
+      "recommendation": "Review and tighten role-specific access controls"
+    },
+    {
+      "category": "access_control",
+      "finding": "Unauthorized admin access detected for roles: module_admin",
+      "impact": "high",
+      "evidence": [
+        "module_admin"
+      ],
+      "recommendation": "Implement strict admin access controls and review role permissions"
+    }
+  ],
+  "performanceAnalysis": {
+    "responseTimeAnalysis": {
+      "averageByRole": {
+        "super_admin": 1017,
+        "tenant_admin": 1070,
+        "module_admin": 867,
+        "wms_user": 717,
+        "accounting_user": 733,
+        "readonly_user": 615
+      },
+      "slowestPaths": [
+        {
+          "path": "/admin/users",
+          "role": "tenant_admin",
+          "responseTime": 1600
+        },
+        {
+          "path": "/admin/users",
+          "role": "super_admin",
+          "responseTime": 1500
+        },
+        {
+          "path": "/admin",
+          "role": "tenant_admin",
+          "responseTime": 1300
+        },
+        {
+          "path": "/admin",
+          "role": "super_admin",
+          "responseTime": 1200
+        },
+        {
+          "path": "/admin/roles",
+          "role": "super_admin",
+          "responseTime": 1100
+        }
+      ],
+      "fastestPaths": [
+        {
+          "path": "/dashboard",
+          "role": "readonly_user",
+          "responseTime": 550
+        },
+        {
+          "path": "/dashboard",
+          "role": "accounting_user",
+          "responseTime": 580
+        },
+        {
+          "path": "/dashboard",
+          "role": "super_admin",
+          "responseTime": 600
+        },
+        {
+          "path": "/dashboard",
+          "role": "wms_user",
+          "responseTime": 600
+        },
+        {
+          "path": "/dashboard",
+          "role": "tenant_admin",
+          "responseTime": 650
+        }
+      ],
+      "performanceGrades": {
+        "super_admin": "B",
+        "tenant_admin": "B",
+        "module_admin": "A",
+        "wms_user": "A",
+        "accounting_user": "A",
+        "readonly_user": "A"
+      }
+    },
+    "errorPatterns": [
+      {
+        "errorType": "Other",
+        "frequency": 16,
+        "affectedRoles": [
+          "tenant_admin",
+          "module_admin",
+          "wms_user",
+          "accounting_user",
+          "readonly_user"
+        ],
+        "affectedPaths": [
+          "/admin/roles",
+          "/admin",
+          "/admin/users",
+          "/admin/settings"
+        ],
+        "commonality": 83.33333333333334
+      }
+    ],
+    "optimizationOpportunities": [
+      {
+        "area": "security",
+        "description": "Unauthorized admin access detected - implement stricter access controls",
+        "impact": "high",
+        "effort": "medium",
+        "priority": 2
+      }
+    ]
+  },
+  "recommendations": [
+    {
+      "category": "security",
+      "title": "Fix Unauthorized Admin Access",
+      "description": "Roles module_admin have unauthorized admin access",
+      "priority": "high",
+      "effort": "medium",
+      "impact": "high",
+      "implementation": [
+        "Review role-based access control configuration",
+        "Update admin route protection",
+        "Test access controls for each role"
+      ],
+      "validation": [
+        "Verify non-admin roles cannot access /admin routes",
+        "Test role hierarchy compliance",
+        "Run security audit"
+      ]
+    }
+  ],
+  "executiveSummary": {
+    "securityPosture": "good",
+    "overallScore": 82,
+    "keyFindings": [
+      "Role hierarchy compliance: 83.3%",
+      "Security risks identified: 2",
+      "Permission gaps found: 1",
+      "Performance grade: A"
+    ],
+    "topRisks": [
+      "Non-admin roles accessing administrative functions"
+    ],
+    "quickWins": [],
+    "investmentPriorities": [
+      "Strengthen role-based access controls",
+      "Implement comprehensive audit logging",
+      "Optimize application performance",
+      "Enhance security monitoring"
+    ]
+  }
+}

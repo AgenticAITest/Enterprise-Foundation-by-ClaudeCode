@@ -14,7 +14,17 @@
       "Bash(git push:*)",
       "Bash(psql:*)",
       "Bash(node:*)",
-      "Bash(TASKKILL:*)"
+      "Bash(TASKKILL:*)",
+      "WebFetch(domain:localhost)",
+      "Bash(npm install)",
+      "Bash(npx playwright:*)",
+      "Bash(npx ts-node:*)",
+      "Bash(dir \"C:\\Users\\wyahy\\AppData\\Local\\ms-playwright\")",
+      "Bash(dir results)",
+      "Bash(cat:*)",
+      "Bash(dir:*)",
+      "Bash(PORT=3003 npm run dev)",
+      "Bash(timeout 60s npx playwright test:*)"
     ],
     "deny": [],
     "ask": []

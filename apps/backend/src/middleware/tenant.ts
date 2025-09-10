@@ -10,38 +10,43 @@ export const tenantMiddleware = async (
   try {
     // Extract subdomain from request
     const host = req.get('host') || '';
-    const subdomain = host.split('.')[0];
+    let subdomain = host.split('.')[0];
 
-    // Skip tenant resolution for localhost development
-    if (host.includes('localhost') || host.includes('127.0.0.1')) {
-      // For development, use default tenant or extract from headers
-      const devTenantId = req.headers['x-tenant-id'] as string || 'dev';
-      req.tenant = {
-        id: devTenantId,
-        subdomain: devTenantId,
-        companyName: 'Development Tenant',
-        schema: `tenant_${devTenantId}`,
-        status: 'active'
-      };
-      return next();
+    // For development environments (localhost), use header override
+    if (process.env.NODE_ENV === 'development' && (host.includes('localhost') || host.includes('127.0.0.1'))) {
+      subdomain = req.headers['x-tenant-subdomain'] as string || 'dev';
     }
 
-    // Note: In production, implement actual tenant lookup from database
-    // const tenant = await query('SELECT * FROM tenants WHERE subdomain = ?', [subdomain]);
-    if (subdomain && subdomain !== 'www') {
-      req.tenant = {
-        id: `tenant_${subdomain}`,
-        subdomain,
-        companyName: `${subdomain} Company`,
-        schema: `tenant_${subdomain}`,
-        status: 'active'
-      };
-    } else {
+    // Look up tenant from database (try subdomain first, then domain)
+    const { query } = await import('../config/database.js');
+    let tenantResult = await query(
+      'SELECT id, subdomain, company_name, status FROM tenants WHERE subdomain = $1 AND status = $2',
+      [subdomain, 'active']
+    );
+
+    // If not found by subdomain, try domain lookup
+    if (tenantResult.rows.length === 0 && subdomain.includes('.')) {
+      tenantResult = await query(
+        'SELECT id, subdomain, company_name, status FROM tenants WHERE domain = $1 AND status = $2',
+        [subdomain, 'active']
+      );
+    }
+
+    if (tenantResult.rows.length === 0) {
       return res.status(404).json({
         status: 'error',
-        message: 'Tenant not found'
+        message: `Tenant '${subdomain}' not found or inactive`
       });
     }
+
+    const tenant = tenantResult.rows[0];
+    req.tenant = {
+      id: tenant.id,
+      subdomain: tenant.subdomain,
+      companyName: tenant.company_name,
+      schema: `tenant_${tenant.subdomain}`,
+      status: tenant.status
+    };
 
     logger.info(`Tenant resolved: ${req.tenant.subdomain} (${req.tenant.id})`);
     next();

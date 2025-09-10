@@ -41,7 +41,7 @@ const ModulesPage: React.FC = () => {
       try {
         // Call the modules API directly since it's not in adminApi yet
         const token = localStorage.getItem('admin_token');
-        const response = await fetch('http://localhost:3001/api/modules', {
+        const response = await fetch('/api/modules', {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'

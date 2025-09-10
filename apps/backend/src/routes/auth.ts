@@ -68,11 +68,33 @@ router.post('/login', async (req: Request, res: Response) => {
       });
     }
 
-    // If not super admin, try tenant user login (default to 'dev' tenant for now)
-    const tenantSubdomain = 'dev'; // TODO: Extract from subdomain or request
+    // Extract tenant from email domain
+    const emailDomain = email.split('@')[1];
+    
+    if (!emailDomain) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'Invalid email format'
+      });
+    }
+
+    // Find tenant by email domain
+    const tenantResult = await query(
+      'SELECT id, subdomain, company_name, status FROM tenants WHERE domain = $1 AND status = $2',
+      [emailDomain, 'active']
+    );
+
+    if (tenantResult.rows.length === 0) {
+      return res.status(401).json({
+        status: 'error',
+        message: `Organization '${emailDomain}' not found or inactive`
+      });
+    }
+
+    const tenant = tenantResult.rows[0];
     
     const userResult = await tenantQuery(
-      tenantSubdomain,
+      tenant.subdomain,
       'SELECT id, email, password_hash, first_name, last_name, role, permissions, is_active FROM users WHERE email = $1 AND is_active = true',
       [email]
     );
@@ -99,7 +121,7 @@ router.post('/login', async (req: Request, res: Response) => {
         userId: user.id,
         email: user.email,
         role: user.role,
-        tenantId: tenantSubdomain,
+        tenantId: tenant.subdomain,
         permissions: user.permissions,
         firstName: user.first_name,
         lastName: user.last_name
@@ -108,7 +130,7 @@ router.post('/login', async (req: Request, res: Response) => {
       { expiresIn: '24h' }
     );
 
-    logger.info(`User logged in: ${user.email} (tenant: ${tenantSubdomain})`);
+    logger.info(`User logged in: ${user.email} (tenant: ${tenant.subdomain})`);
 
     res.json({
       status: 'success',
@@ -118,7 +140,7 @@ router.post('/login', async (req: Request, res: Response) => {
           id: user.id,
           email: user.email,
           role: user.role,
-          tenantId: tenantSubdomain,
+          tenantId: tenant.subdomain,
           permissions: user.permissions,
           firstName: user.first_name,
           lastName: user.last_name

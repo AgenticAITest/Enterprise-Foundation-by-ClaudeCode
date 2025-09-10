@@ -1,0 +1,220 @@
+{
+  "title": "Multi-Tenant ERP Security Analysis - Executive Summary",
+  "summary": {
+    "title": "Multi-Tenant ERP Security Analysis - Executive Summary",
+    "generatedAt": "2025-09-10T02:19:08.313Z",
+    "overallSecurityScore": 70,
+    "keyMetrics": [
+      {
+        "name": "Security Posture",
+        "value": "GOOD",
+        "trend": "stable",
+        "severity": "medium",
+        "description": "Overall security assessment based on role hierarchy and access patterns"
+      },
+      {
+        "name": "Compliance Score",
+        "value": "80.6%",
+        "trend": "up",
+        "severity": "medium",
+        "description": "Role hierarchy compliance percentage"
+      },
+      {
+        "name": "Security Risks",
+        "value": 2,
+        "trend": "stable",
+        "severity": "medium",
+        "description": "Total security risks identified across all roles"
+      },
+      {
+        "name": "Roles Analyzed",
+        "value": 6,
+        "trend": "new",
+        "severity": "low",
+        "description": "Number of user roles comprehensively analyzed"
+      }
+    ],
+    "criticalFindings": [
+      "Non-admin roles accessing administrative functions"
+    ],
+    "quickWins": [],
+    "investmentRecommendations": [
+      "Strengthen role-based access controls",
+      "Implement comprehensive audit logging",
+      "Optimize application performance",
+      "Enhance security monitoring"
+    ],
+    "complianceStatus": {
+      "overall": "partial",
+      "roleHierarchy": 80.55555555555556,
+      "accessControl": 84.0909090909091,
+      "securityBoundaries": 94.82460317460317,
+      "details": [
+        "Role hierarchy compliance: 80.6%",
+        "Security risks identified: 2",
+        "Permission gaps found: 1",
+        "Roles analyzed: 6"
+      ]
+    }
+  },
+  "keyFindings": {
+    "totalIssues": 2,
+    "criticalCount": 1,
+    "highCount": 1,
+    "mediumCount": 1,
+    "lowCount": 0,
+    "riskScore": 35,
+    "complianceGrade": "B"
+  },
+  "recommendations": [
+    {
+      "id": "ACT-001",
+      "title": "Fix Unauthorized Admin Access",
+      "category": "security",
+      "priority": "high",
+      "effort": "medium",
+      "impact": "high",
+      "description": "Roles module_admin have unauthorized admin access",
+      "implementation": [
+        {
+          "step": 1,
+          "title": "Assessment",
+          "description": "Assess current security implementation",
+          "responsible": "Security Team",
+          "dependencies": [],
+          "deliverable": "Assessment report"
+        },
+        {
+          "step": 2,
+          "title": "Planning",
+          "description": "Plan fix unauthorized admin access implementation",
+          "responsible": "Development Team",
+          "dependencies": [
+            "Assessment"
+          ],
+          "deliverable": "Implementation plan"
+        },
+        {
+          "step": 3,
+          "title": "Implementation",
+          "description": "Roles module_admin have unauthorized admin access",
+          "responsible": "Development Team",
+          "dependencies": [
+            "Planning"
+          ],
+          "deliverable": "Code changes and tests"
+        },
+        {
+          "step": 4,
+          "title": "Validation",
+          "description": "Validate implementation meets requirements",
+          "responsible": "QA Team",
+          "dependencies": [
+            "Implementation"
+          ],
+          "deliverable": "Test results and sign-off"
+        }
+      ],
+      "validation": [
+        {
+          "step": 1,
+          "description": "Functional testing of implemented changes",
+          "method": "Automated testing suite",
+          "criteria": "All tests pass",
+          "expected": "100% test success rate"
+        },
+        {
+          "step": 2,
+          "description": "Security validation",
+          "method": "Security audit and penetration testing",
+          "criteria": "No new vulnerabilities introduced",
+          "expected": "Clean security scan results"
+        },
+        {
+          "step": 3,
+          "description": "Performance impact assessment",
+          "method": "Load testing and monitoring",
+          "criteria": "No significant performance degradation",
+          "expected": "<5% performance impact"
+        }
+      ],
+      "estimatedTime": "6-8 weeks",
+      "businessValue": "Significant security improvement, reduced compliance risk"
+    },
+    {
+      "id": "ACT-002",
+      "title": "Optimize Slow Loading Paths",
+      "category": "performance",
+      "priority": "medium",
+      "effort": "low",
+      "impact": "medium",
+      "description": "1 paths have response times > 2 seconds",
+      "implementation": [
+        {
+          "step": 1,
+          "title": "Assessment",
+          "description": "Assess current performance implementation",
+          "responsible": "Security Team",
+          "dependencies": [],
+          "deliverable": "Assessment report"
+        },
+        {
+          "step": 2,
+          "title": "Planning",
+          "description": "Plan optimize slow loading paths implementation",
+          "responsible": "Development Team",
+          "dependencies": [
+            "Assessment"
+          ],
+          "deliverable": "Implementation plan"
+        },
+        {
+          "step": 3,
+          "title": "Implementation",
+          "description": "1 paths have response times > 2 seconds",
+          "responsible": "Development Team",
+          "dependencies": [
+            "Planning"
+          ],
+          "deliverable": "Code changes and tests"
+        },
+        {
+          "step": 4,
+          "title": "Validation",
+          "description": "Validate implementation meets requirements",
+          "responsible": "QA Team",
+          "dependencies": [
+            "Implementation"
+          ],
+          "deliverable": "Test results and sign-off"
+        }
+      ],
+      "validation": [
+        {
+          "step": 1,
+          "description": "Functional testing of implemented changes",
+          "method": "Automated testing suite",
+          "criteria": "All tests pass",
+          "expected": "100% test success rate"
+        },
+        {
+          "step": 2,
+          "description": "Security validation",
+          "method": "Security audit and penetration testing",
+          "criteria": "No new vulnerabilities introduced",
+          "expected": "Clean security scan results"
+        },
+        {
+          "step": 3,
+          "description": "Performance impact assessment",
+          "method": "Load testing and monitoring",
+          "criteria": "No significant performance degradation",
+          "expected": "<5% performance impact"
+        }
+      ],
+      "estimatedTime": "1-2 weeks",
+      "businessValue": "Moderate security enhancement, improved user experience"
+    }
+  ],
+  "generatedAt": "2025-09-10T02:19:09.033Z"
+}
