@@ -3,7 +3,7 @@
  * Handles all API calls to the backend admin endpoints with proper authentication
  */
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || '';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3003';
 
 interface ApiResponse<T = any> {
   status: 'success' | 'error';
@@ -62,7 +62,8 @@ interface RevenueAnalytics {
 
 class AdminApiClient {
   private getAuthHeaders(): HeadersInit {
-    const token = localStorage.getItem('admin_token');
+    // Use the same token key as the main app since super admins login through the main app
+    const token = localStorage.getItem('auth_token');
     return {
       'Content-Type': 'application/json',
       'Authorization': token ? `Bearer ${token}` : '',
@@ -110,6 +111,70 @@ class AdminApiClient {
   }
 
   // Tenant Management APIs
+  async createTenant(tenantData: {
+    companyName: string;
+    subdomain: string;
+    domain: string;
+    address1?: string;
+    address2?: string;
+    city?: string;
+    state?: string;
+    zip?: string;
+    phone?: string;
+    logo?: File;
+    adminUser: {
+      email: string;
+      password: string;
+      firstName?: string;
+      lastName?: string;
+    };
+  }): Promise<any> {
+    // Use FormData for file upload
+    const formData = new FormData();
+    
+    // Add all fields to FormData
+    formData.append('companyName', tenantData.companyName);
+    formData.append('subdomain', tenantData.subdomain);
+    formData.append('domain', tenantData.domain);
+    
+    if (tenantData.address1) formData.append('address1', tenantData.address1);
+    if (tenantData.address2) formData.append('address2', tenantData.address2);
+    if (tenantData.city) formData.append('city', tenantData.city);
+    if (tenantData.state) formData.append('state', tenantData.state);
+    if (tenantData.zip) formData.append('zip', tenantData.zip);
+    if (tenantData.phone) formData.append('phone', tenantData.phone);
+    if (tenantData.logo) formData.append('logo', tenantData.logo);
+    
+    // Add admin user data
+    formData.append('adminUser.email', tenantData.adminUser.email);
+    formData.append('adminUser.password', tenantData.adminUser.password);
+    if (tenantData.adminUser.firstName) formData.append('adminUser.firstName', tenantData.adminUser.firstName);
+    if (tenantData.adminUser.lastName) formData.append('adminUser.lastName', tenantData.adminUser.lastName);
+
+    // Make request without setting Content-Type (browser will set multipart/form-data automatically)
+    const token = localStorage.getItem('auth_token');
+    const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3003'}/api/admin/tenants`, {
+      method: 'POST',
+      headers: {
+        'Authorization': token ? `Bearer ${token}` : '',
+        // Don't set Content-Type - let browser set it with boundary for multipart/form-data
+      },
+      body: formData,
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || `HTTP error! status: ${response.status}`);
+    }
+
+    if (data.status === 'error') {
+      throw new Error(data.message || 'API request failed');
+    }
+
+    return data.data;
+  }
+
   async suspendTenant(tenantId: string, reason: string): Promise<void> {
     return this.request(`/api/admin/tenants/${tenantId}/suspend`, {
       method: 'POST',
@@ -247,27 +312,23 @@ class AdminApiClient {
   }
 
   // Module Management APIs
+  async getModules(): Promise<any[]> {
+    const data = await this.request('/api/admin/modules');
+    return data.modules;
+  }
+
+  async updateModuleStatus(moduleId: string, status: 'active' | 'inactive'): Promise<void> {
+    return this.request(`/api/admin/modules/${moduleId}/status`, {
+      method: 'PUT',
+      body: JSON.stringify({ status }),
+    });
+  }
+
   async updateModuleSettings(moduleId: string, settings: any): Promise<void> {
     return this.request(`/api/admin/modules/${moduleId}/settings`, {
       method: 'PUT',
       body: JSON.stringify(settings),
     });
-  }
-
-  async activateModule(moduleId: string): Promise<void> {
-    return this.request(`/api/modules/${moduleId}/activate`, {
-      method: 'PUT',
-    });
-  }
-
-  async deactivateModule(moduleId: string): Promise<{ dependentTenants?: number; tenantIds?: string[] }> {
-    return this.request(`/api/modules/${moduleId}/deactivate`, {
-      method: 'PUT',
-    });
-  }
-
-  async getModules(): Promise<any[]> {
-    return this.request('/api/modules');
   }
 
   // System Health APIs
@@ -281,6 +342,42 @@ class AdminApiClient {
 
   async getSecurityEvents(): Promise<any[]> {
     return this.request<any[]>('/api/audit/security-events');
+  }
+
+  // Super Admin Management APIs
+  async getSuperAdmins(): Promise<any[]> {
+    const data = await this.request('/api/admin/super-admins');
+    return data.superAdmins;
+  }
+
+  async createSuperAdmin(adminData: {
+    email: string;
+    password: string;
+    firstName: string;
+    lastName: string;
+  }): Promise<any> {
+    return this.request('/api/admin/super-admins', {
+      method: 'POST',
+      body: JSON.stringify(adminData),
+    });
+  }
+
+  async updateSuperAdmin(adminId: string, adminData: {
+    email?: string;
+    firstName?: string;
+    lastName?: string;
+    isActive?: boolean;
+  }): Promise<any> {
+    return this.request(`/api/admin/super-admins/${adminId}`, {
+      method: 'PUT',
+      body: JSON.stringify(adminData),
+    });
+  }
+
+  async deleteSuperAdmin(adminId: string): Promise<void> {
+    return this.request(`/api/admin/super-admins/${adminId}`, {
+      method: 'DELETE',
+    });
   }
 
   // Error handling wrapper for React components

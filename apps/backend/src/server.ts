@@ -2,6 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import compression from 'compression';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import { globalRateLimit, smartModuleRateLimit } from './middleware/rate-limit.middleware.js';
 import { tenantMiddleware } from './middleware/tenant.js';
 import { authMiddleware } from './middleware/auth.js';
@@ -23,12 +25,17 @@ import integrationRoutes from './routes/integrations.js';
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+// Setup static file serving for uploads
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+app.use('/uploads', express.static(path.join(__dirname, '../public/uploads')));
+
 app.use(helmet());
 app.use(compression());
 app.use(cors({
   origin: process.env.CORS_ORIGIN 
     ? process.env.CORS_ORIGIN.split(',') 
-    : ['http://localhost:3000', 'http://localhost:3002'],
+    : ['http://localhost:3000', 'http://localhost:3002', 'http://localhost:3005'],
   credentials: true
 }));
 
@@ -38,10 +45,12 @@ app.use(globalRateLimit);
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
-// Routes that don't need smart rate limiting
+// Routes that don't need smart rate limiting or authentication
 app.use('/api/auth', authRoutes);
-app.use('/api/admin', authMiddleware as any, adminStatsRoutes);
 app.use('/api/rate-limits', rateLimitRoutes);
+
+// Admin routes with authentication
+app.use('/api/admin', authMiddleware as any, adminStatsRoutes);
 
 // Smart module-based rate limiting for other API routes
 app.use('/api', smartModuleRateLimit);

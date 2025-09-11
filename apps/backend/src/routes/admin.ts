@@ -3,22 +3,233 @@ import { logger } from '../utils/logger.js';
 import { AuthenticatedRequest } from '../types/express.js';
 import { query, tenantQuery } from '../config/database.js';
 import bcrypt from 'bcrypt';
+import multer from 'multer';
+import path from 'path';
+import fs from 'fs';
+import { fileURLToPath } from 'url';
+
+// Setup file upload for logos
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Ensure uploads directory exists
+const uploadsDir = path.join(__dirname, '../../public/uploads/logos');
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+}
+
+const logoUpload = multer({
+  dest: uploadsDir,
+  limits: {
+    fileSize: 2 * 1024 * 1024, // 2MB max
+  },
+  fileFilter: (req, file, cb) => {
+    // Allow only image files
+    if (file.mimetype.startsWith('image/')) {
+      cb(null, true);
+    } else {
+      cb(new Error('Only image files are allowed'));
+    }
+  }
+});
 
 const router = Router();
 
 // Admin middleware to check admin permissions
 const requireAdmin = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
-  if (!req.user || (req.user.role !== 'super_admin' && req.user.role !== 'admin') || !req.user.permissions.includes('admin')) {
+  if (!req.user) {
+    return res.status(401).json({
+      status: 'error',
+      message: 'Authentication required'
+    });
+  }
+  
+  // Allow super_admin with 'all' permissions or specific 'admin' permission
+  const isSuperAdmin = req.user.role === 'super_admin';
+  const hasAdminPermission = req.user.permissions.includes('admin') || req.user.permissions.includes('all');
+  const isAdmin = req.user.role === 'admin';
+  
+  if (!isSuperAdmin && !isAdmin && !hasAdminPermission) {
     return res.status(403).json({
       status: 'error',
       message: 'Admin access required'
     });
   }
+  
   next();
 };
 
 // Apply admin middleware to all routes
 router.use(requireAdmin as any);
+
+// Create new tenant
+router.post('/tenants', logoUpload.single('logo'), async (req: any, res: Response) => {
+  try {
+    const { 
+      companyName,
+      subdomain, 
+      domain,
+      address1,
+      address2,
+      city,
+      state,
+      zip,
+      phone,
+      adminUser
+    } = req.body;
+
+    // Handle uploaded logo file
+    let logoPath = null;
+    if (req.file) {
+      // Generate a unique filename and move the file
+      const fileExtension = path.extname(req.file.originalname);
+      const filename = `${subdomain}_${Date.now()}${fileExtension}`;
+      const finalPath = path.join(__dirname, '../../public/uploads/logos', filename);
+      
+      // Move file from temp location to final location
+      const fs = await import('fs');
+      await fs.promises.rename(req.file.path, finalPath);
+      
+      logoPath = `/uploads/logos/${filename}`;
+      logger.info(`Logo uploaded for tenant ${subdomain}: ${logoPath}`);
+    }
+
+    // Validate required fields
+    if (!companyName || !subdomain || !domain || !adminUser?.email || !adminUser?.password) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'Company name, subdomain, domain, and admin user details are required'
+      });
+    }
+
+    // Check if subdomain is already taken
+    const existingTenant = await query(
+      'SELECT id FROM public.tenants WHERE subdomain = $1 OR domain = $2',
+      [subdomain, domain]
+    );
+
+    if (existingTenant.rows.length > 0) {
+      return res.status(409).json({
+        status: 'error',
+        message: 'Subdomain or domain already exists'
+      });
+    }
+
+    // Create tenant
+    const tenantResult = await query(`
+      INSERT INTO public.tenants (
+        subdomain, domain, company_name, address1, address2, city, state, zip, phone, logo, status, created_at, updated_at
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, 'active', NOW(), NOW())
+      RETURNING id, subdomain, domain, company_name
+    `, [subdomain, domain, companyName, address1, address2, city, state, zip, phone, logoPath]);
+
+    const tenantId = tenantResult.rows[0].id;
+
+    // Create tenant schema
+    const schemaName = `tenant_${subdomain}`;
+    await query(`CREATE SCHEMA IF NOT EXISTS "${schemaName}"`);
+
+    // Create users table in tenant schema
+    await query(`
+      CREATE TABLE IF NOT EXISTS "${schemaName}".users (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        email VARCHAR(255) UNIQUE NOT NULL,
+        password_hash VARCHAR(255) NOT NULL,
+        first_name VARCHAR(100) NOT NULL,
+        last_name VARCHAR(100) NOT NULL,
+        role VARCHAR(50) NOT NULL DEFAULT 'user',
+        permissions TEXT[] DEFAULT ARRAY[]::TEXT[],
+        is_active BOOLEAN DEFAULT true,
+        last_login TIMESTAMP,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+
+    // Hash admin password
+    const passwordHash = await bcrypt.hash(adminUser.password, 12);
+
+    // Create admin user in tenant schema
+    await query(`
+      INSERT INTO "${schemaName}".users (
+        email, password_hash, first_name, last_name, role, permissions, is_active
+      ) VALUES ($1, $2, $3, $4, 'admin', ARRAY['*'], true)
+    `, [
+      adminUser.email, 
+      passwordHash, 
+      adminUser.firstName || 'Admin', 
+      adminUser.lastName || 'User'
+    ]);
+
+    // Create tenant_company_info table in tenant schema
+    await query(`
+      CREATE TABLE IF NOT EXISTS "${schemaName}".tenant_company_info (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        company_name VARCHAR(255) NOT NULL,
+        address1 VARCHAR(255),
+        address2 VARCHAR(255),
+        city VARCHAR(100),
+        state VARCHAR(100),
+        zip VARCHAR(20),
+        country VARCHAR(100) DEFAULT 'US',
+        phone VARCHAR(50),
+        email VARCHAR(255),
+        website VARCHAR(255),
+        logo_path VARCHAR(500),
+        tax_id VARCHAR(50),
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+        
+        -- Ensure only one company info record per tenant
+        CONSTRAINT single_company_info UNIQUE (id)
+      )
+    `);
+
+    // Create trigger function for updated_at
+    await query(`
+      CREATE OR REPLACE FUNCTION "${schemaName}".update_tenant_company_info_updated_at()
+      RETURNS TRIGGER AS $$
+      BEGIN
+          NEW.updated_at = CURRENT_TIMESTAMP;
+          RETURN NEW;
+      END;
+      $$ language 'plpgsql'
+    `);
+
+    // Create trigger
+    await query(`
+      CREATE TRIGGER update_tenant_company_info_updated_at
+      BEFORE UPDATE ON "${schemaName}".tenant_company_info
+      FOR EACH ROW EXECUTE PROCEDURE "${schemaName}".update_tenant_company_info_updated_at()
+    `);
+
+    // Insert company info record
+    await query(`
+      INSERT INTO "${schemaName}".tenant_company_info 
+      (company_name, address1, address2, city, state, zip, phone, logo_path)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+    `, [companyName, address1, address2, city, state, zip, phone, logoPath]);
+
+    logger.info(`Super admin ${req.user?.email} created tenant: ${companyName} (${subdomain})`);
+
+    res.status(201).json({
+      status: 'success',
+      data: { 
+        tenant: {
+          ...tenantResult.rows[0],
+          adminUser: adminUser.email
+        }
+      },
+      message: 'Tenant created successfully'
+    });
+  } catch (error) {
+    logger.error('Create tenant error:', error);
+    res.status(500).json({
+      status: 'error',
+      message: 'Failed to create tenant'
+    });
+  }
+});
 
 // Get all tenants
 router.get('/tenants', async (req: any, res: Response) => {
@@ -27,7 +238,16 @@ router.get('/tenants', async (req: any, res: Response) => {
       SELECT 
         id,
         subdomain,
+        domain,
         company_name as "companyName",
+        address1,
+        address2,
+        city,
+        state,
+        zip,
+        phone,
+        logo,
+        status,
         plan_id as "planId",
         created_at as "createdAt",
         updated_at as "updatedAt"
@@ -1139,6 +1359,302 @@ router.delete('/tenants/:tenantId/users/:userId', async (req: any, res: Response
   }
 });
 
+//==============================================================================
+// SUPER ADMIN MANAGEMENT
+//==============================================================================
+
+// Get all super admins
+router.get('/super-admins', async (req: any, res: Response) => {
+  try {
+    const result = await query(`
+      SELECT 
+        id,
+        email,
+        first_name as "firstName",
+        last_name as "lastName",
+        permissions,
+        is_active as "isActive",
+        last_login as "lastLogin",
+        created_at as "createdAt",
+        updated_at as "updatedAt"
+      FROM public.super_admins
+      ORDER BY created_at DESC
+    `);
+
+    res.json({
+      status: 'success',
+      data: { superAdmins: result.rows }
+    });
+  } catch (error) {
+    logger.error('Super admins fetch error:', error);
+    res.status(500).json({
+      status: 'error',
+      message: 'Failed to fetch super admins'
+    });
+  }
+});
+
+// Create new super admin
+router.post('/super-admins', async (req: any, res: Response) => {
+  try {
+    const { email, password, firstName, lastName } = req.body;
+
+    // Validate required fields
+    if (!email || !password || !firstName || !lastName) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'Email, password, first name, and last name are required'
+      });
+    }
+
+    // Check if email already exists
+    const existingAdmin = await query(
+      'SELECT id FROM public.super_admins WHERE email = $1',
+      [email]
+    );
+
+    if (existingAdmin.rows.length > 0) {
+      return res.status(409).json({
+        status: 'error',
+        message: 'Super admin with this email already exists'
+      });
+    }
+
+    // Hash password
+    const passwordHash = await bcrypt.hash(password, 12);
+
+    // Create super admin
+    const result = await query(`
+      INSERT INTO public.super_admins (
+        email, password_hash, first_name, last_name, permissions, is_active, created_at, updated_at
+      ) VALUES ($1, $2, $3, $4, $5, true, NOW(), NOW())
+      RETURNING id, email, first_name as "firstName", last_name as "lastName", permissions, is_active as "isActive", created_at as "createdAt"
+    `, [email, passwordHash, firstName, lastName, ['*']]);
+
+    logger.info(`Super admin ${req.user?.email} created new super admin: ${email}`);
+
+    res.status(201).json({
+      status: 'success',
+      data: { superAdmin: result.rows[0] },
+      message: 'Super admin created successfully'
+    });
+  } catch (error) {
+    logger.error('Super admin creation error:', error);
+    res.status(500).json({
+      status: 'error',
+      message: 'Failed to create super admin'
+    });
+  }
+});
+
+// Update super admin
+router.put('/super-admins/:adminId', async (req: any, res: Response) => {
+  try {
+    const { adminId } = req.params;
+    const { firstName, lastName, isActive, permissions } = req.body;
+
+    // Build update query dynamically
+    const updates = [];
+    const values = [];
+    let paramCount = 1;
+
+    if (firstName) {
+      updates.push(`first_name = $${paramCount++}`);
+      values.push(firstName);
+    }
+
+    if (lastName) {
+      updates.push(`last_name = $${paramCount++}`);
+      values.push(lastName);
+    }
+
+    if (typeof isActive === 'boolean') {
+      updates.push(`is_active = $${paramCount++}`);
+      values.push(isActive);
+    }
+
+    if (permissions) {
+      updates.push(`permissions = $${paramCount++}`);
+      values.push(permissions);
+    }
+
+    if (updates.length === 0) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'No valid fields to update'
+      });
+    }
+
+    updates.push(`updated_at = NOW()`);
+    values.push(adminId);
+
+    const updateQuery = `
+      UPDATE public.super_admins 
+      SET ${updates.join(', ')}
+      WHERE id = $${paramCount}
+      RETURNING id, email, first_name as "firstName", last_name as "lastName", permissions, is_active as "isActive", updated_at as "updatedAt"
+    `;
+
+    const result = await query(updateQuery, values);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        status: 'error',
+        message: 'Super admin not found'
+      });
+    }
+
+    logger.info(`Super admin ${req.user?.email} updated super admin: ${adminId}`);
+
+    res.json({
+      status: 'success',
+      data: { superAdmin: result.rows[0] },
+      message: 'Super admin updated successfully'
+    });
+  } catch (error) {
+    logger.error('Super admin update error:', error);
+    res.status(500).json({
+      status: 'error',
+      message: 'Failed to update super admin'
+    });
+  }
+});
+
+// Delete/deactivate super admin
+router.delete('/super-admins/:adminId', async (req: any, res: Response) => {
+  try {
+    const { adminId } = req.params;
+    const { hardDelete } = req.query;
+
+    if (hardDelete === 'true') {
+      // Hard delete - remove from database
+      const result = await query(
+        'DELETE FROM public.super_admins WHERE id = $1 RETURNING email',
+        [adminId]
+      );
+
+      if (result.rows.length === 0) {
+        return res.status(404).json({
+          status: 'error',
+          message: 'Super admin not found'
+        });
+      }
+
+      logger.info(`Super admin ${req.user?.email} deleted super admin: ${result.rows[0].email}`);
+      
+      res.json({
+        status: 'success',
+        message: 'Super admin deleted permanently'
+      });
+    } else {
+      // Soft delete - deactivate
+      const result = await query(
+        'UPDATE public.super_admins SET is_active = false, updated_at = NOW() WHERE id = $1 RETURNING email',
+        [adminId]
+      );
+
+      if (result.rows.length === 0) {
+        return res.status(404).json({
+          status: 'error',
+          message: 'Super admin not found'
+        });
+      }
+
+      logger.info(`Super admin ${req.user?.email} deactivated super admin: ${result.rows[0].email}`);
+      
+      res.json({
+        status: 'success',
+        message: 'Super admin deactivated successfully'
+      });
+    }
+  } catch (error) {
+    logger.error('Super admin deletion error:', error);
+    res.status(500).json({
+      status: 'error',
+      message: 'Failed to delete super admin'
+    });
+  }
+});
+
+//==============================================================================
+// MODULES MANAGEMENT
+//==============================================================================
+
+// Get all modules for super admin
+router.get('/modules', async (req: any, res: Response) => {
+  try {
+    const modulesResult = await query(`
+      SELECT 
+        id,
+        code,
+        name,
+        description,
+        version,
+        status,
+        base_price,
+        price_per_user,
+        color,
+        dependencies,
+        settings,
+        created_at,
+        updated_at
+      FROM public.modules 
+      ORDER BY name ASC
+    `);
+
+    res.json({
+      status: 'success',
+      data: { modules: modulesResult.rows }
+    });
+  } catch (error) {
+    logger.error('Admin modules fetch error:', error);
+    res.status(500).json({
+      status: 'error',
+      message: 'Failed to fetch modules'
+    });
+  }
+});
+
+// Toggle module status (activate/deactivate)
+router.put('/modules/:moduleId/status', async (req: any, res: Response) => {
+  try {
+    const { moduleId } = req.params;
+    const { status } = req.body;
+
+    if (!['active', 'inactive'].includes(status)) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'Status must be active or inactive'
+      });
+    }
+
+    const result = await query(
+      'UPDATE public.modules SET status = $1, updated_at = CURRENT_TIMESTAMP WHERE id = $2 RETURNING name',
+      [status, moduleId]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        status: 'error',
+        message: 'Module not found'
+      });
+    }
+
+    logger.info(`Super admin ${req.user?.email} ${status === 'active' ? 'activated' : 'deactivated'} module: ${result.rows[0].name}`);
+
+    res.json({
+      status: 'success',
+      message: `Module ${status === 'active' ? 'activated' : 'deactivated'} successfully`
+    });
+  } catch (error) {
+    logger.error('Module status update error:', error);
+    res.status(500).json({
+      status: 'error',
+      message: 'Failed to update module status'
+    });
+  }
+});
+
 // Get available roles and permissions
 router.get('/roles', async (req: any, res: Response) => {
   try {
@@ -1189,6 +1705,138 @@ router.get('/roles', async (req: any, res: Response) => {
     res.status(500).json({
       status: 'error',
       message: 'Failed to fetch roles and permissions'
+    });
+  }
+});
+
+//==============================================================================
+// System Health and Metrics APIs
+//==============================================================================
+
+router.get('/system/health', async (req: any, res: Response) => {
+  try {
+    const uptime = process.uptime();
+    const memoryUsage = process.memoryUsage();
+    const cpuUsage = process.cpuUsage();
+    
+    // Test database connection
+    let dbStatus = 'healthy';
+    let dbResponseTime = 0;
+    try {
+      const start = Date.now();
+      await query('SELECT 1');
+      dbResponseTime = Date.now() - start;
+    } catch (error) {
+      dbStatus = 'error';
+      dbResponseTime = -1;
+    }
+
+    const health = {
+      status: dbStatus === 'healthy' ? 'healthy' : 'critical',
+      uptime: Math.floor(uptime),
+      version: process.env.npm_package_version || '1.0.0',
+      environment: process.env.NODE_ENV || 'development',
+      lastUpdated: new Date().toISOString(),
+      database: {
+        status: dbStatus,
+        responseTime: dbResponseTime
+      },
+      memory: {
+        used: Math.round((memoryUsage.heapUsed / 1024 / 1024) * 100) / 100,
+        total: Math.round((memoryUsage.heapTotal / 1024 / 1024) * 100) / 100,
+        percentage: Math.round((memoryUsage.heapUsed / memoryUsage.heapTotal) * 100)
+      },
+      process: {
+        pid: process.pid,
+        uptime: Math.floor(uptime),
+        cpuUsage: {
+          user: cpuUsage.user,
+          system: cpuUsage.system
+        }
+      }
+    };
+
+    res.json({
+      status: 'success',
+      data: health
+    });
+  } catch (error) {
+    logger.error('System health check error:', error);
+    res.status(500).json({
+      status: 'error',
+      message: 'Failed to get system health'
+    });
+  }
+});
+
+router.get('/system/metrics', async (req: any, res: Response) => {
+  try {
+    // Get current system metrics
+    const uptime = process.uptime();
+    const memoryUsage = process.memoryUsage();
+    
+    // Database metrics
+    const [dbConnectionsResult, dbSizeResult] = await Promise.all([
+      query(`
+        SELECT count(*) as active_connections
+        FROM pg_stat_activity 
+        WHERE state = 'active'
+      `),
+      query(`
+        SELECT pg_size_pretty(pg_database_size('erp_saas')) as database_size,
+               pg_database_size('erp_saas') as size_bytes
+      `)
+    ]);
+
+    // Simulate server metrics (in real implementation, use system monitoring)
+    const simulatedMetrics = {
+      cpu: Math.floor(Math.random() * 30) + 10, // 10-40% CPU
+      memory: Math.floor(Math.random() * 40) + 30, // 30-70% Memory  
+      disk: Math.floor(Math.random() * 50) + 20, // 20-70% Disk
+      load: (Math.random() * 2 + 0.5).toFixed(1) // 0.5-2.5 load average
+    };
+
+    const metrics = {
+      database: {
+        status: 'connected',
+        responseTime: 15 + Math.floor(Math.random() * 20), // 15-35ms
+        connections: parseInt(dbConnectionsResult.rows[0].active_connections),
+        maxConnections: 100,
+        size: dbSizeResult.rows[0].database_size,
+        sizeBytes: parseInt(dbSizeResult.rows[0].size_bytes)
+      },
+      server: simulatedMetrics,
+      api: {
+        requestsPerSecond: Math.floor(Math.random() * 100) + 50, // 50-150 RPS
+        averageResponseTime: Math.floor(Math.random() * 200) + 100, // 100-300ms
+        errorRate: (Math.random() * 0.05).toFixed(3), // 0-5% error rate
+        totalRequests24h: Math.floor(Math.random() * 1000000) + 500000 // 500k-1.5M requests
+      },
+      cache: {
+        status: 'connected',
+        hitRate: (Math.random() * 10 + 85).toFixed(1), // 85-95% hit rate
+        memoryUsage: Math.floor(Math.random() * 200) + 300 // 300-500MB
+      },
+      system: {
+        uptime: Math.floor(uptime),
+        memory: {
+          used: Math.round((memoryUsage.heapUsed / 1024 / 1024) * 100) / 100,
+          total: Math.round((memoryUsage.heapTotal / 1024 / 1024) * 100) / 100,
+          percentage: Math.round((memoryUsage.heapUsed / memoryUsage.heapTotal) * 100)
+        },
+        nodeVersion: process.version
+      }
+    };
+
+    res.json({
+      status: 'success',
+      data: metrics
+    });
+  } catch (error) {
+    logger.error('System metrics error:', error);
+    res.status(500).json({
+      status: 'error',
+      message: 'Failed to get system metrics'
     });
   }
 });

@@ -46,6 +46,7 @@ const TenantsPage: React.FC = () => {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [showDetails, setShowDetails] = useState<Tenant | null>(null);
   const [showModules, setShowModules] = useState<Tenant | null>(null);
+  const [showCreateTenant, setShowCreateTenant] = useState(false);
 
   useEffect(() => {
     const loadTenants = async () => {
@@ -159,6 +160,297 @@ const TenantsPage: React.FC = () => {
 
   const statusCounts = getStatusCounts();
 
+  // Create Tenant Modal Component
+  const CreateTenantModal = () => {
+    const [formData, setFormData] = useState({
+      companyName: '',
+      subdomain: '',
+      domain: '',
+      address1: '',
+      address2: '',
+      city: '',
+      state: '',
+      zip: '',
+      phone: '',
+      logo: undefined as File | undefined,
+      adminUser: {
+        email: '',
+        password: '',
+        firstName: '',
+        lastName: ''
+      }
+    });
+    const [isCreating, setIsCreating] = useState(false);
+    const [createError, setCreateError] = useState<string | null>(null);
+
+    const handleSubmit = async (e: React.FormEvent) => {
+      e.preventDefault();
+      setIsCreating(true);
+      setCreateError(null);
+
+      try {
+        const result = await adminApi.createTenant(formData);
+        
+        // Add the new tenant to the list
+        const newTenant: Tenant = {
+          id: result.tenant.id,
+          subdomain: result.tenant.subdomain,
+          companyName: result.tenant.company_name,
+          status: 'active',
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          userCount: 1, // Admin user
+          moduleCount: 0,
+          revenue: 0
+        };
+        
+        setTenants(prev => [newTenant, ...prev]);
+        setSuccessMessage(`Tenant "${formData.companyName}" created successfully`);
+        setShowCreateTenant(false);
+        
+        // Auto-hide success message
+        setTimeout(() => setSuccessMessage(null), 5000);
+      } catch (error) {
+        setCreateError(error instanceof Error ? error.message : 'Failed to create tenant');
+      } finally {
+        setIsCreating(false);
+      }
+    };
+
+    if (!showCreateTenant) return null;
+
+    return (
+      <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center p-4">
+        <div className="bg-white rounded-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+          <div className="p-6 border-b border-gray-200">
+            <h2 className="text-xl font-semibold">Create New Tenant</h2>
+            <p className="text-gray-600 text-sm mt-1">Add a new tenant organization to the platform</p>
+          </div>
+
+          <form onSubmit={handleSubmit} className="p-6 space-y-6">
+            {/* Error Alert */}
+            {createError && (
+              <div className="flex items-center gap-2 p-4 bg-red-50 border border-red-200 rounded-md text-sm text-red-600">
+                <AlertCircle className="h-4 w-4" />
+                {createError}
+              </div>
+            )}
+
+            {/* Company Information */}
+            <div>
+              <h3 className="font-medium text-gray-900 mb-4">Company Information</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Company Name *</label>
+                  <input
+                    type="text"
+                    required
+                    value={formData.companyName}
+                    onChange={(e) => setFormData(prev => ({ ...prev, companyName: e.target.value }))}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Acme Corporation"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Subdomain *</label>
+                  <input
+                    type="text"
+                    required
+                    value={formData.subdomain}
+                    onChange={(e) => setFormData(prev => ({ ...prev, subdomain: e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, '') }))}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="acme"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">Will be used as: {formData.subdomain}.yourapp.com</p>
+                </div>
+              </div>
+              
+              {/* Logo Upload */}
+              <div className="mt-4">
+                <label className="block text-sm font-medium text-gray-700 mb-1">Company Logo</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    setFormData(prev => ({ ...prev, logo: file || undefined }));
+                  }}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+                <p className="text-xs text-gray-500 mt-1">Upload company logo (PNG, JPG, GIF - max 2MB)</p>
+              </div>
+            </div>
+
+            {/* Contact Information */}
+            <div>
+              <h3 className="font-medium text-gray-900 mb-4">Contact Information</h3>
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Email Domain *</label>
+                  <input
+                    type="text"
+                    required
+                    value={formData.domain}
+                    onChange={(e) => setFormData(prev => ({ ...prev, domain: e.target.value.toLowerCase() }))}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="acme.com"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">Users with this email domain will be associated with this tenant</p>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Address 1</label>
+                    <input
+                      type="text"
+                      value={formData.address1}
+                      onChange={(e) => setFormData(prev => ({ ...prev, address1: e.target.value }))}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      placeholder="123 Main Street"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Address 2</label>
+                    <input
+                      type="text"
+                      value={formData.address2}
+                      onChange={(e) => setFormData(prev => ({ ...prev, address2: e.target.value }))}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      placeholder="Suite 100"
+                    />
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">City</label>
+                    <input
+                      type="text"
+                      value={formData.city}
+                      onChange={(e) => setFormData(prev => ({ ...prev, city: e.target.value }))}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      placeholder="San Francisco"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">State</label>
+                    <input
+                      type="text"
+                      value={formData.state}
+                      onChange={(e) => setFormData(prev => ({ ...prev, state: e.target.value }))}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      placeholder="CA"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">ZIP</label>
+                    <input
+                      type="text"
+                      value={formData.zip}
+                      onChange={(e) => setFormData(prev => ({ ...prev, zip: e.target.value }))}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      placeholder="94102"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                  <input
+                    type="tel"
+                    value={formData.phone}
+                    onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="+1 (555) 123-4567"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Admin User */}
+            <div>
+              <h3 className="font-medium text-gray-900 mb-4">Admin User</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Email *</label>
+                  <input
+                    type="email"
+                    required
+                    value={formData.adminUser.email}
+                    onChange={(e) => setFormData(prev => ({ 
+                      ...prev, 
+                      adminUser: { ...prev.adminUser, email: e.target.value }
+                    }))}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="admin@acme.com"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Password *</label>
+                  <input
+                    type="password"
+                    required
+                    value={formData.adminUser.password}
+                    onChange={(e) => setFormData(prev => ({ 
+                      ...prev, 
+                      adminUser: { ...prev.adminUser, password: e.target.value }
+                    }))}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="••••••••"
+                    minLength={8}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+                  <input
+                    type="text"
+                    value={formData.adminUser.firstName}
+                    onChange={(e) => setFormData(prev => ({ 
+                      ...prev, 
+                      adminUser: { ...prev.adminUser, firstName: e.target.value }
+                    }))}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="John"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+                  <input
+                    type="text"
+                    value={formData.adminUser.lastName}
+                    onChange={(e) => setFormData(prev => ({ 
+                      ...prev, 
+                      adminUser: { ...prev.adminUser, lastName: e.target.value }
+                    }))}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Doe"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Actions */}
+            <div className="flex items-center justify-end gap-4 pt-4 border-t border-gray-200">
+              <button
+                type="button"
+                onClick={() => setShowCreateTenant(false)}
+                className="px-4 py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
+                disabled={isCreating}
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                disabled={isCreating}
+                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+              >
+                {isCreating && <Loader2 className="h-4 w-4 animate-spin" />}
+                {isCreating ? 'Creating...' : 'Create Tenant'}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    );
+  };
+
   if (loading) {
     return (
       <div className="space-y-8">
@@ -188,7 +480,10 @@ const TenantsPage: React.FC = () => {
           </p>
         </div>
         
-        <button className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+        <button 
+          onClick={() => setShowCreateTenant(true)}
+          className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+        >
           <Plus className="h-4 w-4" />
           Add Tenant
         </button>
@@ -379,6 +674,8 @@ const TenantsPage: React.FC = () => {
       </div>
 
       {/* Modals */}
+      <CreateTenantModal />
+      
       {showDetails && (
         <TenantDetailsSimple 
           tenant={showDetails}

@@ -26,18 +26,18 @@ interface AuthProviderProps {
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<SuperAdmin | null>(null);
-  const [token, setToken] = useState<string | null>(localStorage.getItem('admin_token'));
+  const [token, setToken] = useState<string | null>(localStorage.getItem('auth_token'));
   const [loading, setLoading] = useState(true);
 
   const isAuthenticated = !!user && !!token;
 
   useEffect(() => {
     const initAuth = async () => {
-      const savedToken = localStorage.getItem('admin_token');
+      const savedToken = localStorage.getItem('auth_token');
       
       if (savedToken) {
         try {
-          const response = await fetch('/api/auth/me', {
+          const response = await fetch('http://localhost:3003/api/auth/me', {
             headers: {
               'Authorization': `Bearer ${savedToken}`,
               'Content-Type': 'application/json'
@@ -52,16 +52,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
               setToken(savedToken);
             } else {
               // Not a super admin, clear token
-              localStorage.removeItem('admin_token');
+              localStorage.removeItem('auth_token');
               setToken(null);
             }
           } else {
-            localStorage.removeItem('admin_token');
+            localStorage.removeItem('auth_token');
             setToken(null);
           }
         } catch (error) {
           console.error('Auth initialization error:', error);
-          localStorage.removeItem('admin_token');
+          localStorage.removeItem('auth_token');
           setToken(null);
         }
       }
@@ -74,7 +74,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const login = async (email: string, password: string) => {
     try {
-      const response = await fetch('/api/auth/login', {
+      const response = await fetch('http://localhost:3003/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -93,7 +93,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         
         setUser(user);
         setToken(token);
-        localStorage.setItem('admin_token', token);
+        localStorage.setItem('auth_token', token);
       } else {
         const error = await response.json();
         throw new Error(error.message || 'Login failed');
@@ -107,7 +107,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const logout = () => {
     setUser(null);
     setToken(null);
-    localStorage.removeItem('admin_token');
+    localStorage.removeItem('auth_token');
   };
 
   const value = {
